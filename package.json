@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/gianordoli/autocomplete_display/issues"
   },
-  "homepage": "https://github.com/gianordoli/autocomplete_display"
+  "homepage": "https://github.com/gianordoli/autocomplete_display",
+  "dependencies": {
+    "underscore": "^1.8.3",
+    "body-parser": "^1.12.3",
+    "express": "^4.12.3",
+    "mongodb": "^2.0.27"
+  }
 }
