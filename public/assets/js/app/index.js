@@ -22,6 +22,7 @@ app.init = function() {
 	        	console.log('Got response from server.');
 	        	// console.log(response);
 	        	console.log('Got ' + response.length + ' total objects.');
+
 	        	var clusteredData = _.groupBy(response, function(item, index, list){
 	        		// console.log(item['query']);
 	        		return item['query'];
@@ -29,6 +30,9 @@ app.init = function() {
 	        	console.log(clusteredData);
 	        	console.log('Clustering to ' + Object.keys(clusteredData).length + ' unique objects.');
 	        	clusteredData = _.shuffle(clusteredData);
+	        	
+	        	clusteredData = _.sample(clusteredData, 50);
+
 	        	appendResults(clusteredData);
 	        }
 	    });				
@@ -46,10 +50,10 @@ app.init = function() {
 					var itemContent = $('<img src="' + item['thumbnail'] + '" />');
 				
 				}else if(item['service'] == 'images'){
-					var itemContent = $('<img class="item" src="' + item['url'] + '" />')
+					var itemContent = $('<img src="' + item['url'] + '" />')
 				
 				}else{
-					var itemContent = $('<h2 class="item">' + item['query'] + '</h2>');
+					var itemContent = $('<h2>' + item['query'] + '</h2>');
 				}
 
 				var itemDescription = $('<ul>' +
@@ -62,9 +66,29 @@ app.init = function() {
 				$(container).append(itemContainer);
 				$(itemContainer).append(itemContent)
 								.append(itemDescription);
+
+				drawLayout(container);
 			});				
-		}
+		}		
 	}
+
+	var drawLayout = function(parentDiv){
+		$container = $(parentDiv).masonry();
+		$('.item').css('visibility', 'hidden');
+		// layout Masonry again after all images have loaded
+		$container.imagesLoaded( function() {
+			$container.masonry({
+				// columnWidth: 50,
+				containerStyle: null,
+				itemSelector: '.item'
+			});
+			$container.masonry('on', 'layoutComplete', function(items){
+				$('#loader-container').remove();
+				$('.item').css('visibility', 'visible');
+			  	// attachEvents();
+			});
+		});
+	}	
 
 	loadData();
 
