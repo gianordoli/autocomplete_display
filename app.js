@@ -95,7 +95,7 @@ app.post('/start', function(request, response) {
         recordsCollection.find({
             'date': { '$gt': date1, '$lte': date2 },
             // 'language_code': 'pt-BR'
-            '$or': [{'language_code': 'pt-BR'}, {'language_code': 'de'}],
+            '$or': [{'language_code': 'pt-BR'}, {'language_code': 'de'}, {'language_code': 'it'}],
             'letter': 'a'
         }).toArray(function(err, results) {
             // console.dir(results);

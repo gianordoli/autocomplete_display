@@ -45,9 +45,11 @@ app.init = function() {
 		var container = $('#container');
 
 		for(var key in data){
+
+			var itemContainer = $('<div class="item"></div>');
+
 			data[key].forEach(function(item, index, array){
 				// console.log(item);
-				var itemContainer = $('<div class="item"></div>');
 
 				if(item['service'] == 'youtube'){
 					var itemContent = $('<img src="' + item['thumbnail'] + '" />');
@@ -66,10 +68,11 @@ app.init = function() {
 										'<li>ranking: ' + item['ranking'] + '</li>' +
 										'</ul>');
 
-				$(container).append(itemContainer);
-				$(itemContainer).append(itemContent);
-								// .append(itemDescription);
+				$(itemContainer).append(itemContent)
+								.append(itemDescription);
 			});
+
+			$(container).append(itemContainer);			
 		}
 
 		drawLayout(container);		
