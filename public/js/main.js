@@ -4,20 +4,6 @@ var app = {};
 
 app.init = function() {
 
-	var convertToServerTimeZone = function(date){
-	    //EST
-	    var localToUtcOffsetMin = new Date().getTimezoneOffset();
-	    var localToUtcOffsetMillis = localToUtcOffsetMin * 60000;
-	    var clientDateMillis = Date.parse(new Date(date));
-	    var serverDateMillis = clientDateMillis + localToUtcOffsetMillis;
-	    return serverDateMillis;
-	    // offset = -5.0
-	    // clientDate = new Date(date);
-	    // utc = clientDate.getTime() + (clientDate.getTimezoneOffset() * 60000);
-	    // serverDate = new Date(utc + (3600000*offset));
-	    // console.log(serverDate.toLocaleString());
-	};
-
 	var loadData = function(){
 
 		var startDate = new Date(2015, 02, 24);
@@ -33,19 +19,61 @@ app.init = function() {
 	        if(response.error){
 	        	throw response.error	
 	        }else{
-	        	console.log(response);
+	        	console.log('Got response from server.');
+	        	// console.log(response);
+	        	console.log('Got ' + response.length + ' total objects.');
+	        	var clusteredData = _.groupBy(response, function(item, index, list){
+	        		// console.log(item['query']);
+	        		return item['query'];
+	        	});
+	        	console.log(clusteredData);
+	        	console.log('Clustering to ' + Object.keys(clusteredData).length + ' unique objects.');
+	        	clusteredData = _.shuffle(clusteredData);
+	        	appendResults(clusteredData);
 	        }
 	    });				
 	}
 
+	var appendResults = function(data){
+		console.log('Appending results...');
+		var container = $('#container');
+		for(var key in data){
+			data[key].forEach(function(item, index, array){
+				// console.log(item);
+				var itemContainer = $('<div class="item"></div>');
+
+				if(item['service'] == 'youtube'){
+					var itemContent = $('<img src="' + item['thumbnail'] + '" />');
+				
+				}else if(item['service'] == 'images'){
+					var itemContent = $('<img class="item" src="' + item['url'] + '" />')
+				
+				}else{
+					var itemContent = $('<h2 class="item">' + item['query'] + '</h2>');
+				}
+
+				var itemDescription = $('<ul>' +
+										'<li>query: ' + item['query'] + '</li>' +
+										'<li>language: ' + item['language_name'] + '</li>' +
+										'<li>service: ' + item['service'] + '</li>' +
+										'<li>ranking: ' + item['ranking'] + '</li>' +
+										'</ul>');
+
+				$(container).append(itemContainer);
+				$(itemContainer).append(itemContent)
+								.append(itemDescription);
+			});				
+		}
+	}
+
 	loadData();
 
-	var obj = {
-	    videoId: 'jtDnmVjPfvM',
-	    thumbnail: 'https://i.ytimg.com/vi/jtDnmVjPfvM/hqdefault.jpg'
-	};
+	// var obj = {
+	//     videoId: 'jtDnmVjPfvM',
+	//     thumbnail: 'https://i.ytimg.com/vi/jtDnmVjPfvM/hqdefault.jpg'
+	// };
 
-	$('body').append('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + obj['videoId'] + '" frameborder="0" allowfullscreen></iframe>')
+	// $('body').append('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + obj['videoId'] + '" frameborder="0" allowfullscreen></iframe>')
 };
 
 app.init();
