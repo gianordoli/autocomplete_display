@@ -14,13 +14,21 @@ body{
 }
 
 .item{
-	display: inline-block;
+	/*display: inline-block;*/
+	margin: 10px;
 }
 
 .item h2{
+	margin: 0;
+	display: block;
+	text-align: center;
 	padding: 10px;
+	border: 8px solid #fb81ac;
+	text-transform: uppercase;
+	color: #fb81ac;
 }
 
 .item img{
-	max-width: 200px
+	max-width: 300px;
+	max-height: 300px;	
 }

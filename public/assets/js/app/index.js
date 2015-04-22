@@ -31,7 +31,7 @@ app.init = function() {
 	        	console.log('Clustering to ' + Object.keys(clusteredData).length + ' unique objects.');
 	        	clusteredData = _.shuffle(clusteredData);
 	        	
-	        	clusteredData = _.sample(clusteredData, 50);
+	        	// clusteredData = _.sample(clusteredData, 50);
 
 	        	appendResults(clusteredData);
 	        }
@@ -39,8 +39,11 @@ app.init = function() {
 	}
 
 	var appendResults = function(data){
+		
 		console.log('Appending results...');
+		
 		var container = $('#container');
+
 		for(var key in data){
 			data[key].forEach(function(item, index, array){
 				// console.log(item);
@@ -64,29 +67,34 @@ app.init = function() {
 										'</ul>');
 
 				$(container).append(itemContainer);
-				$(itemContainer).append(itemContent)
-								.append(itemDescription);
+				$(itemContainer).append(itemContent);
+								// .append(itemDescription);
+			});
+		}
 
-				drawLayout(container);
-			});				
-		}		
+		drawLayout(container);		
 	}
 
 	var drawLayout = function(parentDiv){
+		console.log('Called drawLayout.');
 		$container = $(parentDiv).masonry();
-		$('.item').css('visibility', 'hidden');
+		// $('.item').css('visibility', 'hidden');
 		// layout Masonry again after all images have loaded
 		$container.imagesLoaded( function() {
+			console.log('Finished loading images.');
+			console.log('Calling Masonry');
 			$container.masonry({
 				// columnWidth: 50,
 				containerStyle: null,
 				itemSelector: '.item'
 			});
-			$container.masonry('on', 'layoutComplete', function(items){
-				$('#loader-container').remove();
-				$('.item').css('visibility', 'visible');
-			  	// attachEvents();
-			});
+
+		// 	$container.masonry('on', 'layoutComplete', function(items){
+		// 		console.log('Masonry layout complete.');
+		// 		$('#loader-container').remove();
+		// 		$('.item').css('visibility', 'visible');
+		// 	  	// attachEvents();
+		// 	});
 		});
 	}	
 
