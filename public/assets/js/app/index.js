@@ -8,7 +8,7 @@ app.init = function() {
 		var ul = $('<ul></ul>');
 		for(var i = 65; i <= 90; i++){
 			var letter = String.fromCharCode(i);
-			var li = $('<li><a class="letter-bt" href="#">' + letter  +'</a>');
+			var li = $('<li><a class="letter-bt" href="#' + letter + '">' + letter  +'</a>');
 			$(ul).append(li);
 		}
 		$('nav').append(ul);
@@ -18,55 +18,64 @@ app.init = function() {
 
 	var loadData = function(letter){
 
-		if(letter != currLetter){
-			$('#container').empty();
-			// append loading
-			currLetter = letter;
+		// Don't make a new request until it gets a response from the server
+		if(!isLoadingNextDay){
+
+			isLoadingNextDay = true;
+
+			// Date
+			var prevDate = currDate - oneDayInMillis;
+
+			// Letter
+			if(letter != currLetter){
+				$('#container').empty();
+				// append loading
+				currLetter = letter;
+			}
+
+			$.post('/start', {
+				date: currDate,
+				letter: letter
+			}, function(response) {
+		        // console.log(response);
+		        if(response.error){
+		        	throw response.error	
+		        }else{
+		        	console.log('Got response from server.');
+		        	// console.log(response);
+		        	console.log('Got ' + response.length + ' total objects.');
+
+		        	var clusteredData = _.groupBy(response, function(item, index, list){
+		        		// console.log(item['query']);
+		        		return item['query'];
+		        	});
+		        	console.log(clusteredData);
+		        	console.log('Clustering to ' + Object.keys(clusteredData).length + ' unique objects.');	      
+
+		        	var sortedData = _.sortBy(clusteredData, function(value, key, collection){
+		        		return key;
+		        	});
+		        	console.log(sortedData);
+		        	// clusteredData = _.shuffle(clusteredData);
+		        	// clusteredData = _.sample(clusteredData, 50);
+
+		        	isLoadingNextDay = false;
+		        	currDate = prevDate;
+		        	appendResults(sortedData);		        	
+		        }
+		    });
 		}
-
-		var startDate = new Date(2015, 02, 24);
-		console.log(startDate.getTime());
-		// console.log(startDate.getHours());
-		// startDate = convertToServerTimeZone(startDate);
-		// console.log(startDate.getHours());
-
-		$.post('/start', {
-			date: startDate.getTime(),
-			letter: letter
-		}, function(response) {
-	        // console.log(response);
-	        if(response.error){
-	        	throw response.error	
-	        }else{
-	        	console.log('Got response from server.');
-	        	// console.log(response);
-	        	console.log('Got ' + response.length + ' total objects.');
-
-	        	var clusteredData = _.groupBy(response, function(item, index, list){
-	        		// console.log(item['query']);
-	        		return item['query'];
-	        	});
-	        	console.log(clusteredData);
-	        	console.log('Clustering to ' + Object.keys(clusteredData).length + ' unique objects.');	      
-
-	        	var sortedData = _.sortBy(clusteredData, function(value, key, collection){
-	        		return key;
-	        	});
-	        	console.log(sortedData);
-	        	// clusteredData = _.shuffle(clusteredData);
-	        	// clusteredData = _.sample(clusteredData, 50);
-
-	        	appendResults(sortedData);
-	        }
-	    });				
 	}
 
 	var appendResults = function(data){
 		
 		console.log('Appending results...');
-		
+
+		var dayTitle = $('<h2>' + data[0][0]['date'] + '</h2>');
 		var dayContainer = $('<div class="day-container"></div>');
-		$('#container').append(dayContainer);
+		
+		$('#container').append(dayTitle)
+					   .append(dayContainer);
 
 		for(var index in data){
 
@@ -123,24 +132,27 @@ app.init = function() {
 				itemSelector: '.item'
 			});
 			isMasonry = true;
-
-		// 	$container.masonry('on', 'layoutComplete', function(items){
-		// 		console.log('Masonry layout complete.');
-		// 		$('#loader-container').remove();
-		// 		$('.item').css('visibility', 'visible');
-		// 	  	// attachEvents();
-		// 	});
 		});
 	}
 
 	var attachEvents = function(){
+		// Play video
 		$('.video-container').off().on('click', function(){
 			console.log($(this).attr('videoid'));
 			$(this).html(embedYoutube($(this).attr('videoid')));
 		});
 
+		// Load content from letter
 		$('a.letter-bt').off().on('click', function(){
+			currDate = new Date(2015, 02, 24).getTime();			
 			loadData($(this).html());
+		});
+
+		// Infinite scroll
+		$(window).scroll(function()	{
+		    if($(window).scrollTop() == $(document).height() - $(window).height()) {
+		        loadData(currLetter);
+		    }
 		});		
 	}
 
@@ -153,17 +165,12 @@ app.init = function() {
 
 	// GLOBAL VARS
 	var currLetter = 'a';
-	var isMasonry = false;
+	var oneDayInMillis = 86400000;
+	var isLoadingNextDay = false;
+	var currDate = new Date(2015, 02, 24).getTime();
 
 	loadData(currLetter);
 	appendNavBar();
-
-	// var obj = {
-	//     videoId: 'jtDnmVjPfvM',
-	//     thumbnail: 'https://i.ytimg.com/vi/jtDnmVjPfvM/hqdefault.jpg'
-	// };
-
-	// $('body').append('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + obj['videoId'] + '" frameborder="0" allowfullscreen></iframe>')
 };
 
 app.init();
