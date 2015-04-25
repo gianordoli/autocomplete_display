@@ -52,7 +52,8 @@ function loadImages(db, callback){
 
     console.log('Called loadImages.');
 
-    var imagesCollection = db.collection('images');
+    // var imagesCollection = db.collection('images');
+    var imagesCollection = db.collection('images_2');
 
     imagesCollection.find({}).toArray(function(err, results) {            
         console.log('Found ' + results.length + ' images.');
@@ -74,8 +75,9 @@ function loadYoutube(db, callback){
 }
 
 app.post('/start', function(request, response) {
-
+    console.log(request.body['letter']);
     console.log(request.body['date']);
+
     var date1 = new Date(parseInt(request.body['date']) - 86400000);
     var date2 = new Date(parseInt(request.body['date']));
 
@@ -94,12 +96,13 @@ app.post('/start', function(request, response) {
 
         recordsCollection.find({
             'date': { '$gt': date1, '$lte': date2 },
-            // 'language_code': 'pt-BR'
-            '$or': [{'language_code': 'pt-BR'}, {'language_code': 'de'}, {'language_code': 'it'}],
-            'letter': 'a'
+            // 'language_code': 'pt-BR',
+            '$or': [{'language_code': 'pt-BR'}, {'language_code': 'de'}, {'language_code': 'it'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'fr'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'da'}],
+            'letter': request.body['letter'].toLowerCase()
+
         }).toArray(function(err, results) {
             // console.dir(results);
-            // console.log(results.length);
+            console.log(results.length);
 
             // Getting youtube and images url from the other DBs
             for(var i = 0; i < results.length; i++){
