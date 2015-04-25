@@ -96,6 +96,7 @@ app.post('/start', function(request, response) {
 
         recordsCollection.find({
             'date': { '$gt': date1, '$lte': date2 },
+            // 'service': 'youtube',
             // 'language_code': 'pt-BR',
             '$or': [{'language_code': 'pt-BR'}, {'language_code': 'de'}, {'language_code': 'it'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'fr'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'da'}, {'language_code': 'fi'}],
             'letter': request.body['letter'].toLowerCase()

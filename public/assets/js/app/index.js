@@ -144,7 +144,7 @@ app.init = function() {
 				var itemContent = $('<div class="web-container"><h1>' + data[index]['query'] + '</h1></div>');
 			}
 
-			var itemDescription = $('<div class="description"><div>');
+			var itemDescription = $('<div class="description" style="display:none"><div>');
 				if(data[index]['service'] != 'web'){
 					$(itemDescription).append('<h2>' + data[index]['query'] + '</h2>');
 				}
@@ -187,13 +187,13 @@ app.init = function() {
 
 	var attachEvents = function(){
 		// Play video
-		$('.youtube-container').off().on('click', function(){
+		$('.youtube-container').off('click').on('click', function(){
 			console.log($(this).attr('videoid'));
 			$(this).html(embedYoutube($(this).attr('videoid')));
 		});
 
 		// Load content from letter
-		$('a.letter-bt').off().on('click', function(){
+		$('a.letter-bt').off('click').on('click', function(){
 			currDate = new Date(2015, 02, 24).getTime();			
 			// loadData($(this).html());
 		});
@@ -210,6 +210,24 @@ app.init = function() {
 		    if($(window).scrollTop() == $(document).height() - $(window).height()) {
 		        loadData(location.hash.substring(1, location.hash.length));
 		    }
+		});
+
+		// Show description
+		$('.item').off('mouseenter').on('mouseenter', function(){
+			$(this).css({
+				'z-index': 1000
+			});
+			$(this).children('.description').css({
+				'display': 'block'
+			});
+		});
+		$('.item').off('mouseleave').on('mouseleave', function(){
+			$(this).css({
+				'z-index': 0
+			});			
+			$(this).children('.description').css({
+				'display': 'none'
+			});
 		});		
 	}
 
