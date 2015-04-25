@@ -43,32 +43,53 @@ body{
 		Each repeated query is grouped into one of these */
 		#container .day-container .item{
 			/*display: inline-block;*/
-			margin: 10px;
-			border: 2px solid blue;
+			margin: 5px;
 		}
 
-			/*---------- Google Web ----------*/
-			#container .day-container .item h2{
-				margin: 0;
-				display: block;
-				text-align: center;
-				padding: 10px;
-				border: 8px solid #fb81ac;
-				text-transform: uppercase;
-				color: #fb81ac;
+			/*---------- Description ---------*/
+			#container .day-container .item .description{
+
 			}
 
+			/*---------- Description ---------*/
+			#container .day-container .item .description h2{
+				text-align: left;
+			}
+
+			#container .day-container .item .description ul{
+				padding: 0;
+				list-style-type: none;
+			}
+
+			/*---------- Google Web ----------*/
+			container .day-container .item div.web-container{
+
+			}
+				#container .day-container .item div.web-container h1{
+					margin: 0;
+					display: block;
+					text-align: center;
+					padding: 10px;
+					border: 8px solid #2073f0;
+					text-transform: uppercase;
+					color: #2073f0;
+				}
+
 			/*-------- Google Images ---------*/
-			/* Restraining the size of the images */
-			.item div.img-container img{
-				max-width: 300px;
-				max-height: 300px;	
+			#container .day-container .item div.img-container{
+				border: 8px solid #ffba0f;
 			}		
+
+				/* Restraining the size of the images */
+				#container .day-container .item div.img-container img{
+					max-width: 300px;
+					max-height: 300px;
+				}
 
 			/*----------- Youtube ------------*/
 			/* Thumbs for videos are loaded as background images,
 			so we need to set a size for the parent div */
-			#container .day-container .item div.video-container{
+			#container .day-container .item div.youtube-container{
 				width: 300px;
 				height: 168px;
 			    background-repeat: no-repeat;
@@ -76,10 +97,11 @@ body{
 			    background-position: center;
 			    text-align: center;
 			    /*overflow: hidden;*/
+			    border: 8px solid #db503d;
 			}
 
 				/* Play Button */
-				#container .day-container .item div.video-container img{
+				#container .day-container .item div.youtube-container img{
 					position: relative;
 					top: calc(50% - 20px);
 					width: 40px;
@@ -87,7 +109,7 @@ body{
 				} 
 
 				/* youtube embed */
-				#container .day-container .item div.video-container iframe{
+				#container .day-container .item div.youtube-container iframe{
 					width: 300px;
 					height: 168px;
 					/*position: relative;

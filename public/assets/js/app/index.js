@@ -27,12 +27,6 @@ app.init = function() {
 			// Date
 			var prevDate = currDate - oneDayInMillis;
 
-			// Letter
-			if(letter != currLetter){
-				$('#container').empty();
-				currLetter = letter;
-			}
-
 			$.post('/start', {
 				date: currDate,
 				letter: letter
@@ -64,58 +58,59 @@ app.init = function() {
 
     	var clusteredData = _.groupBy(data['results'], function(item, index, list){
     		// console.log(item['query']);
-    		return item['query'];
+    		return item['query'] + '#' + item['service'];
     	});
-    	console.log(clusteredData);
-    	console.log('Clustering to ' + Object.keys(clusteredData).length + ' unique objects.');	      
+    	// console.log(clusteredData);
+    	console.log('Clustering to ' + Object.keys(clusteredData).length + ' query#service objects.');	      
 
     	var sortedData = _.sortBy(clusteredData, function(value, key, collection){
-    		return key;
+    		// console.log(key.substring(0, key.indexOf('#')));
+    		return key.substring(0, key.indexOf('#'));
     	});
-    	console.log(sortedData);
+    	// console.log(sortedData);
     	// clusteredData = _.shuffle(clusteredData);
     	// clusteredData = _.sample(clusteredData, 50);
 
-    	var groupedByService = [];
+    	var groupedQueries = [];
 
     	for(var i in sortedData){
     		// console.log(sortedData[i]);
     		var thisQuery = {
     			query: sortedData[i][0]['query'],
-    			web: [],	// A key-value pair with language and ranking
-    			images: [],
-    			youtube: [],
-    			image_url: '',
-    			youtube_id: '',
-    			youtube_image_url: ''
+    			service: sortedData[i][0]['service'],
+    			languages: [],	// key-value pairs with language and ranking
     		}
 
     		for(var j in sortedData[i]){
     			// console.log(sortedData[i][j]);
-    			var service = sortedData[i][j]['service'];
     			var language = sortedData[i][j]['language_name'];
     			var ranking = sortedData[i][j]['ranking'];
     			
     			// Creating the array of {language: ranking}
     			var thisLanguage = {};
     			thisLanguage[language] = ranking;
-    			thisQuery[service].push(thisLanguage);
+    			thisQuery['languages'].push(thisLanguage);
 
     			// Storing images and youtube videos
     			if(sortedData[i][j]['service'] == 'images'){
-    				thisQuery['image_url'] = sortedData[i][j]['url'];	
+    				thisQuery['url'] = sortedData[i][j]['url'];	
     			}else if(sortedData[i][j]['service'] == 'youtube'){
-					thisQuery['youtube_id'] = sortedData[i][j]['videoId'];
-	    			thisQuery['youtube_image_url'] = sortedData[i][j]['thumbnail'];
+					thisQuery['videoId'] = sortedData[i][j]['videoId'];
+	    			thisQuery['thumbnail'] = sortedData[i][j]['thumbnail'];
     			}
     		}
-
-    		groupedByService.push(thisQuery);
+    		thisQuery['languages'] = _.sortBy(thisQuery['languages'], function(item, index, array){
+    			var key = Object.keys(item)[0];
+    			var value = item[key];
+    			// console.log(key + ': ' + value);
+    			return value;
+    		});
+    		// console.log(thisQuery['languages']);
+    		groupedQueries.push(thisQuery);
     	}
+    	// console.log(groupedQueries);
 
-    	console.log(groupedByService);
-
-    	appendResults(data['date'], groupedByService);
+    	appendResults(data['date'], groupedQueries);
 	}
 
 	var appendResults = function(date, data){
@@ -131,60 +126,40 @@ app.init = function() {
 
 		for(var index in data){
 
-			var itemContainer = $('<div class="item"><h1>' + data[index]['query'] + '</h1></div>');
-			
-			// WEB
-			if(data[index]['web'].length > 0){
-				var itemContent = $('<h2>' + data[index]['query'] + '</h2>');
-				$(itemContainer).append(itemContent);
-			}
-
-			// IMAGES
-			if(data[index]['images'].length > 0){
-				var itemContent = $('<div class="img-container">' +
-									'<img src="' + data[index]['image_url'] + '" />' +
-									'</div>');
-				$(itemContainer).append(itemContent);
-			}
-
-			if(data[index]['youtube'].length > 0){
-				var itemContent = $('<div class="video-container" ' +
-									'style="background-image: url(' + data[index]['youtube_image_url'] + ')" ' +
-									'videoid="' + data[index]['youtube_id'] + '">' +
+			var itemContainer = $('<div class="item"></div>');
+				
+			if(data[index]['service'] == 'youtube'){
+				var itemContent = $('<div class="youtube-container" ' +
+									'style="background-image: url(' + data[index]['thumbnail'] + ')" ' +
+									'videoid="' + data[index]['videoId'] + '">' +
 									'<img src="/assets/img/play.png"/>' +
 									'</div>');
-				$(itemContainer).append(itemContent);
-			}			
+			
+			}else if(data[index]['service'] == 'images'){
+				var itemContent = $('<div class="img-container">' +
+									'<img src="' + data[index]['url'] + '" />' +
+									'</div>');
+			
+			}else{
+				var itemContent = $('<div class="web-container"><h1>' + data[index]['query'] + '</h1></div>');
+			}
 
-			// data[index].forEach(function(item, index, array){
-			// 	// console.log(item);	
-				
-			// 	if(item['service'] == 'youtube'){
-			// 		var itemContent = $('<div class="video-container" ' +
-			// 							'style="background-image: url(' + item['thumbnail'] + ')" ' +
-			// 							'videoid="' + item['videoId'] + '">' +
-			// 							'<img src="/assets/img/play.png"/>' +
-			// 							'</div>');
-				
-			// 	}else if(item['service'] == 'images'){
-			// 		var itemContent = $('<div class="img-container">' +
-			// 							'<img src="' + item['url'] + '" />' +
-			// 							'</div>');
-				
-			// 	}else{
-			// 		var itemContent = $('<h2>' + item['query'] + '</h2>');
-			// 	}
+			var itemDescription = $('<div class="description"><div>');
+				if(data[index]['service'] != 'web'){
+					$(itemDescription).append('<h2>' + data[index]['query'] + '</h2>');
+				}
+				$(itemDescription).append('<h3>' + servicesAlias[data[index]['service']] + '</h3>');
 
-			// 	var itemDescription = $('<ul>' +
-			// 							'<li>query: ' + item['query'] + '</li>' +
-			// 							'<li>language: ' + item['language_name'] + '</li>' +
-			// 							'<li>service: ' + item['service'] + '</li>' +
-			// 							'<li>ranking: ' + item['ranking'] + '</li>' +
-			// 							'</ul>');
+				var itemLanguages = $('<ul></ul>')
+				for(var i in data[index]['languages']){
+	    			var key = Object.keys(data[index]['languages'][i])[0];
+	    			var value = data[index]['languages'][i][key];
+					$(itemLanguages).append('<li>' + '#' + (value + 1) + ' in ' + key + '</li>'); 
+				}
+				$(itemDescription).append(itemLanguages);
 
-			// 	$(itemContainer).append(itemContent)
-			// 					.append(itemDescription);
-			// });
+			$(itemContainer).append(itemContent)
+							.append(itemDescription);
 
 			$(dayContainer).append(itemContainer);			
 		}
@@ -212,7 +187,7 @@ app.init = function() {
 
 	var attachEvents = function(){
 		// Play video
-		$('.video-container').off().on('click', function(){
+		$('.youtube-container').off().on('click', function(){
 			console.log($(this).attr('videoid'));
 			$(this).html(embedYoutube($(this).attr('videoid')));
 		});
@@ -220,13 +195,20 @@ app.init = function() {
 		// Load content from letter
 		$('a.letter-bt').off().on('click', function(){
 			currDate = new Date(2015, 02, 24).getTime();			
-			loadData($(this).html());
+			// loadData($(this).html());
 		});
+
+		// Has router
+	    $(window).off('hashchange').on('hashchange', function() {
+	        console.log('Current hash is ' + location.hash);
+	        $('#container').empty();
+	        loadData(location.hash.substring(1, location.hash.length));
+	    });
 
 		// Infinite scroll
 		$(window).scroll(function()	{
 		    if($(window).scrollTop() == $(document).height() - $(window).height()) {
-		        loadData(currLetter);
+		        loadData(location.hash.substring(1, location.hash.length));
 		    }
 		});		
 	}
@@ -244,16 +226,20 @@ app.init = function() {
 
 		$('#container').append(loaderContainer);
 		$(loaderContainer).append(loader);
-	}	
+	}
 
 	// GLOBAL VARS
-	var currLetter = 'a';
 	var oneDayInMillis = 86400000;
 	var isLoadingData = false;
 	var currDate = new Date(2015, 02, 24).getTime();
+	var servicesAlias = {
+		web: 'Google Web',
+		images: 'Google Images',
+		youtube: 'Youtube'
+	}
 
 	appendNavBar();
-	loadData(currLetter);
+	loadData(location.hash.substring(1, location.hash.length));	
 };
 
 app.init();
