@@ -82,9 +82,12 @@ app.init = function() {
     		// console.log(sortedData[i]);
     		var thisQuery = {
     			query: sortedData[i][0]['query'],
-    			web: [],
+    			web: [],	// A key-value pair with language and ranking
     			images: [],
-    			youtube: []
+    			youtube: [],
+    			image_url: '',
+    			youtube_id: '',
+    			youtube_image_url: ''
     		}
 
     		for(var j in sortedData[i]){
@@ -92,9 +95,19 @@ app.init = function() {
     			var service = sortedData[i][j]['service'];
     			var language = sortedData[i][j]['language_name'];
     			var ranking = sortedData[i][j]['ranking'];
+    			
+    			// Creating the array of {language: ranking}
     			var thisLanguage = {};
     			thisLanguage[language] = ranking;
     			thisQuery[service].push(thisLanguage);
+
+    			// Storing images and youtube videos
+    			if(sortedData[i][j]['service'] == 'images'){
+    				thisQuery['image_url'] = sortedData[i][j]['url'];	
+    			}else if(sortedData[i][j]['service'] == 'youtube'){
+					thisQuery['youtube_id'] = sortedData[i][j]['videoId'];
+	    			thisQuery['youtube_image_url'] = sortedData[i][j]['thumbnail'];
+    			}
     		}
 
     		groupedByService.push(thisQuery);
@@ -102,15 +115,7 @@ app.init = function() {
 
     	console.log(groupedByService);
 
-    	// sortedData = _.map(sortedData, function(item, index, array){
-    	// 	console.log(item);
-    	// 	var groupedByService = {
-    	// 		query: item
-
-    	// 	};
-    	// });
-
-    	// appendResults(data['date'], sortedData);	
+    	appendResults(data['date'], groupedByService);
 	}
 
 	var appendResults = function(date, data){
@@ -126,37 +131,60 @@ app.init = function() {
 
 		for(var index in data){
 
-			var itemContainer = $('<div class="item"></div>');
+			var itemContainer = $('<div class="item"><h1>' + data[index]['query'] + '</h1></div>');
+			
+			// WEB
+			if(data[index]['web'].length > 0){
+				var itemContent = $('<h2>' + data[index]['query'] + '</h2>');
+				$(itemContainer).append(itemContent);
+			}
 
-			data[index].forEach(function(item, index, array){
-				// console.log(item);	
-				
-				if(item['service'] == 'youtube'){
-					var itemContent = $('<div class="video-container" ' +
-										'style="background-image: url(' + item['thumbnail'] + ')" ' +
-										'videoid="' + item['videoId'] + '">' +
-										'<img src="/assets/img/play.png"/>' +
-										'</div>');
-				
-				}else if(item['service'] == 'images'){
-					var itemContent = $('<div class="img-container">' +
-										'<img src="' + item['url'] + '" />' +
-										'</div>');
-				
-				}else{
-					var itemContent = $('<h2>' + item['query'] + '</h2>');
-				}
+			// IMAGES
+			if(data[index]['images'].length > 0){
+				var itemContent = $('<div class="img-container">' +
+									'<img src="' + data[index]['image_url'] + '" />' +
+									'</div>');
+				$(itemContainer).append(itemContent);
+			}
 
-				var itemDescription = $('<ul>' +
-										'<li>query: ' + item['query'] + '</li>' +
-										'<li>language: ' + item['language_name'] + '</li>' +
-										'<li>service: ' + item['service'] + '</li>' +
-										'<li>ranking: ' + item['ranking'] + '</li>' +
-										'</ul>');
+			if(data[index]['youtube'].length > 0){
+				var itemContent = $('<div class="video-container" ' +
+									'style="background-image: url(' + data[index]['youtube_image_url'] + ')" ' +
+									'videoid="' + data[index]['youtube_id'] + '">' +
+									'<img src="/assets/img/play.png"/>' +
+									'</div>');
+				$(itemContainer).append(itemContent);
+			}			
 
-				$(itemContainer).append(itemContent)
-								.append(itemDescription);
-			});
+			// data[index].forEach(function(item, index, array){
+			// 	// console.log(item);	
+				
+			// 	if(item['service'] == 'youtube'){
+			// 		var itemContent = $('<div class="video-container" ' +
+			// 							'style="background-image: url(' + item['thumbnail'] + ')" ' +
+			// 							'videoid="' + item['videoId'] + '">' +
+			// 							'<img src="/assets/img/play.png"/>' +
+			// 							'</div>');
+				
+			// 	}else if(item['service'] == 'images'){
+			// 		var itemContent = $('<div class="img-container">' +
+			// 							'<img src="' + item['url'] + '" />' +
+			// 							'</div>');
+				
+			// 	}else{
+			// 		var itemContent = $('<h2>' + item['query'] + '</h2>');
+			// 	}
+
+			// 	var itemDescription = $('<ul>' +
+			// 							'<li>query: ' + item['query'] + '</li>' +
+			// 							'<li>language: ' + item['language_name'] + '</li>' +
+			// 							'<li>service: ' + item['service'] + '</li>' +
+			// 							'<li>ranking: ' + item['ranking'] + '</li>' +
+			// 							'</ul>');
+
+			// 	$(itemContainer).append(itemContent)
+			// 					.append(itemDescription);
+			// });
 
 			$(dayContainer).append(itemContainer);			
 		}
