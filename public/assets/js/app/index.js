@@ -19,9 +19,10 @@ app.init = function() {
 	var loadData = function(letter){
 
 		// Don't make a new request until it gets a response from the server
-		if(!isLoadingNextDay){
+		if(!isLoadingData){
 
-			isLoadingNextDay = true;
+			isLoadingData = true;
+			appendLoader();
 
 			// Date
 			var prevDate = currDate - oneDayInMillis;
@@ -29,7 +30,6 @@ app.init = function() {
 			// Letter
 			if(letter != currLetter){
 				$('#container').empty();
-				// append loading
 				currLetter = letter;
 			}
 
@@ -39,8 +39,10 @@ app.init = function() {
 			}, function(response) {
 		        // console.log(response);
 		        if(response.error){
-		        	throw response.error	
-		        }else{
+		        	throw response.error
+
+		        // Loaded results
+		        }else if(response.length > 0){
 		        	console.log('Got response from server.');
 		        	// console.log(response);
 		        	console.log('Got ' + response.length + ' total objects.');
@@ -59,9 +61,13 @@ app.init = function() {
 		        	// clusteredData = _.shuffle(clusteredData);
 		        	// clusteredData = _.sample(clusteredData, 50);
 
-		        	isLoadingNextDay = false;
+		        	isLoadingData = false;
 		        	currDate = prevDate;
 		        	appendResults(sortedData);		        	
+
+		        // Reached the first date (response.length == 0)
+		        }else{
+
 		        }
 		    });
 		}
@@ -70,7 +76,8 @@ app.init = function() {
 	var appendResults = function(data){
 		
 		console.log('Appending results...');
-
+		
+		$('#loader-container').remove();
 		var dayTitle = $('<h2>' + data[0][0]['date'] + '</h2>');
 		var dayContainer = $('<div class="day-container"></div>');
 		
@@ -163,14 +170,22 @@ app.init = function() {
 		return iframe;
 	}
 
+	var appendLoader = function(){
+		var loaderContainer = $('<div id="loader-container"></div>')
+		var loader = $('<span class="loader"></span>');
+
+		$('#container').append(loaderContainer);
+		$(loaderContainer).append(loader);
+	}	
+
 	// GLOBAL VARS
 	var currLetter = 'a';
 	var oneDayInMillis = 86400000;
-	var isLoadingNextDay = false;
+	var isLoadingData = false;
 	var currDate = new Date(2015, 02, 24).getTime();
 
-	loadData(currLetter);
 	appendNavBar();
+	loadData(currLetter);
 };
 
 app.init();
