@@ -97,12 +97,12 @@ app.post('/start', function(request, response) {
         recordsCollection.find({
             'date': { '$gt': date1, '$lte': date2 },
             // 'language_code': 'pt-BR',
-            '$or': [{'language_code': 'pt-BR'}, {'language_code': 'de'}, {'language_code': 'it'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'fr'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'da'}],
+            '$or': [{'language_code': 'pt-BR'}, {'language_code': 'de'}, {'language_code': 'it'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'fr'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'da'}, {'language_code': 'fi'}],
             'letter': request.body['letter'].toLowerCase()
 
         }).toArray(function(err, results) {
             // console.dir(results);
-            console.log(results.length);
+            console.log('Found ' + results.length + ' results.');
 
             // Getting youtube and images url from the other DBs
             for(var i = 0; i < results.length; i++){
@@ -131,7 +131,15 @@ app.post('/start', function(request, response) {
                     // console.log(results[i]);
                 }
             }
-            response.json(results);
+            console.log('Grabbed image and youtube urls.');
+
+            console.log('Sending back results.');
+            console.log(date2);
+            console.log(results.length);
+            response.json({
+                date: date2,
+                results: results
+            });
 
             db.close(); // Let's close the db 
         });         

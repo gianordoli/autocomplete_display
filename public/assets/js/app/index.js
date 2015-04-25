@@ -42,28 +42,15 @@ app.init = function() {
 		        	throw response.error
 
 		        // Loaded results
-		        }else if(response.length > 0){
+		        }else if(response['results'].length > 0){
 		        	console.log('Got response from server.');
-		        	// console.log(response);
-		        	console.log('Got ' + response.length + ' total objects.');
+		        	console.log(response);
+		        	console.log('Got ' + response['results'].length + ' total objects.');
 
-		        	var clusteredData = _.groupBy(response, function(item, index, list){
-		        		// console.log(item['query']);
-		        		return item['query'];
-		        	});
-		        	console.log(clusteredData);
-		        	console.log('Clustering to ' + Object.keys(clusteredData).length + ' unique objects.');	      
+    				isLoadingData = false;
+    				currDate = prevDate;
 
-		        	var sortedData = _.sortBy(clusteredData, function(value, key, collection){
-		        		return key;
-		        	});
-		        	console.log(sortedData);
-		        	// clusteredData = _.shuffle(clusteredData);
-		        	// clusteredData = _.sample(clusteredData, 50);
-
-		        	isLoadingData = false;
-		        	currDate = prevDate;
-		        	appendResults(sortedData);		        	
+		        	processData(response);
 
 		        // Reached the first date (response.length == 0)
 		        }else{
@@ -73,12 +60,31 @@ app.init = function() {
 		}
 	}
 
-	var appendResults = function(data){
+	var processData = function(data){
+
+    	var clusteredData = _.groupBy(data['results'], function(item, index, list){
+    		// console.log(item['query']);
+    		return item['query'];
+    	});
+    	console.log(clusteredData);
+    	console.log('Clustering to ' + Object.keys(clusteredData).length + ' unique objects.');	      
+
+    	var sortedData = _.sortBy(clusteredData, function(value, key, collection){
+    		return key;
+    	});
+    	console.log(sortedData);
+    	// clusteredData = _.shuffle(clusteredData);
+    	// clusteredData = _.sample(clusteredData, 50);
+
+    	appendResults(data['date'], sortedData);	
+	}
+
+	var appendResults = function(date, data){
 		
 		console.log('Appending results...');
 		
 		$('#loader-container').remove();
-		var dayTitle = $('<h2>' + data[0][0]['date'] + '</h2>');
+		var dayTitle = $('<h2>' + date + '</h2>');
 		var dayContainer = $('<div class="day-container"></div>');
 		
 		$('#container').append(dayTitle)
