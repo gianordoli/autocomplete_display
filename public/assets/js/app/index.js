@@ -76,7 +76,41 @@ app.init = function() {
     	// clusteredData = _.shuffle(clusteredData);
     	// clusteredData = _.sample(clusteredData, 50);
 
-    	appendResults(data['date'], sortedData);	
+    	var groupedByService = [];
+
+    	for(var i in sortedData){
+    		// console.log(sortedData[i]);
+    		var thisQuery = {
+    			query: sortedData[i][0]['query'],
+    			web: [],
+    			images: [],
+    			youtube: []
+    		}
+
+    		for(var j in sortedData[i]){
+    			// console.log(sortedData[i][j]);
+    			var service = sortedData[i][j]['service'];
+    			var language = sortedData[i][j]['language_name'];
+    			var ranking = sortedData[i][j]['ranking'];
+    			var thisLanguage = {};
+    			thisLanguage[language] = ranking;
+    			thisQuery[service].push(thisLanguage);
+    		}
+
+    		groupedByService.push(thisQuery);
+    	}
+
+    	console.log(groupedByService);
+
+    	// sortedData = _.map(sortedData, function(item, index, array){
+    	// 	console.log(item);
+    	// 	var groupedByService = {
+    	// 		query: item
+
+    	// 	};
+    	// });
+
+    	// appendResults(data['date'], sortedData);	
 	}
 
 	var appendResults = function(date, data){
