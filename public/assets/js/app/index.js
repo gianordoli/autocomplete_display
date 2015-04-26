@@ -28,7 +28,7 @@ app.init = function() {
 		$('body').append(container);  	
 		appendLoader(container);
 
-		$.post('/start', {
+		$.post('/letter', {
 			letter: letter
 		}, function(response) {
 	        // console.log(response);
@@ -115,6 +115,7 @@ app.init = function() {
 				
 			var itemContainer = $('<div class="item ' + data[index]['service'] + '"></div>');				
 
+			// YOUTUBE
 			if(data[index]['service'] == 'youtube'){
 
 				var itemContent = $('<div class="content" ' +
@@ -122,25 +123,30 @@ app.init = function() {
 									'videoid="' + data[index]['videoId'] + '">' +
 									'<img src="/assets/img/play.png"/>' +
 									'</div>');
-			
+			// GOOGLE IMAGES
 			}else if(data[index]['service'] == 'images'){
 
 				var itemContent = $('<div class="content">' +
 									'<img src="' + data[index]['url'] + '" />' +
 									'</div>');
-			
+			// GOOGLE WEB
 			}else{
 
 				var itemContent = $('<div class="content"><h1>' + data[index]['query'] + '</h1></div>');
 			}
 
+			// DESCRIPTION
 			var itemDescription = $('<div class="description" style="display:none"><div>');
 
+				// Query
 				if(data[index]['service'] != 'web'){
 					$(itemDescription).append('<h2>' + data[index]['query'] + '</h2>');
 				}
+
+				// Service
 				$(itemDescription).append('<h3>' + servicesAlias[data[index]['service']] + '</h3>');
 
+				// Languages
 				var itemLanguages = $('<ul></ul>')
 				for(var i in data[index]['languages']){
 	    			var key = Object.keys(data[index]['languages'][i])[0];
@@ -149,10 +155,12 @@ app.init = function() {
 				}
 				$(itemDescription).append(itemLanguages);
 
-			$(itemContainer).append(itemContent)
-							.append(itemDescription);
+				// More info
+				$(itemDescription).append('<a href="query.html#' + data[index]['query'] + '">More Info</a>');
 
-			$(container).append(itemContainer);			
+			$(container).append(itemContainer);
+			$(itemContainer).append(itemContent)
+							.append(itemDescription);		
 		}
 
 		drawLayout(container);		

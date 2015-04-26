@@ -21,8 +21,8 @@ app.init = function() {
 		console.log('Calling loadData.')
 		console.log('Requesting: ' + query + '.');
 
-		$.post('/start', {
-			letter: query
+		$.post('/query', {
+			query: query
 		}, function(response) {
 	        // console.log(response);
 	        if(response.error){

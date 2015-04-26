@@ -74,7 +74,7 @@ function loadYoutube(db, callback){
     });
 }
 
-app.post('/start', function(request, response) {
+app.post('/letter', function(request, response) {
     console.log(request.body['letter']);
     
     // console.log(request.body['date']);
@@ -138,6 +138,67 @@ app.post('/start', function(request, response) {
             console.log(results.length);
             response.json({
                 // date: date2,
+                results: results
+            });
+
+            db.close(); // Let's close the db 
+        });         
+    });
+});
+
+app.post('/query', function(request, response) {
+    console.log(request.body['query']);
+
+    MongoClient.connect('mongodb://127.0.0.1:27017/thesis', function(err, db) {
+        
+        console.log('Connecting to DB...');
+        
+        if(err) throw err;
+        
+        console.log('Connected.');
+
+        var recordsCollection = db.collection('records');
+
+        recordsCollection.find({
+            query: request.body['query'],
+            '$or': [{'language_code': 'pt-BR'}, {'language_code': 'de'}, {'language_code': 'it'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'fr'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'da'}, {'language_code': 'fi'}, {'language_code': 'hu'}]
+
+        }).toArray(function(err, results) {
+            // console.dir(results);
+            console.log('Found ' + results.length + ' results.');
+
+            // // Getting youtube and images url from the other DBs
+            // for(var i = 0; i < results.length; i++){
+            //     if(results[i]['service'] == 'images'){
+            //         // console.log(results[i]['query']);
+            //         var record = _.find(imagesInDB, function(item, index, list){
+            //             // console.log(item['query']);
+            //             return item['query'] == results[i]['query'];
+            //         });
+            //         // console.log(results[i]['query']);
+            //         // console.log(record);
+            //         results[i]['url'] = record['url'];
+            //         // console.log(results[i]);
+
+            //     }else if(results[i]['service'] == 'youtube'){
+            //         // console.log(results[i]['query']);
+            //         var record = _.find(youtubeInDB, function(item, index, list){
+            //             // console.log(item);
+            //             // console.log(item['query']);
+            //             return item['query'] == results[i]['query'];
+            //         });
+            //         // console.log(results[i]['query']);
+            //         // console.log(record);
+            //         results[i]['videoId'] = record['videoId'];
+            //         results[i]['thumbnail'] = record['thumbnail'];
+            //         // console.log(results[i]);
+            //     }
+            // }
+            // console.log('Grabbed image and youtube urls.');
+
+            console.log('Sending back results.');
+
+            response.json({
                 results: results
             });
 
