@@ -18,8 +18,12 @@ app.init = function() {
 
 	var loadData = function(letter){
 
+		console.log('Calling loadData.')
+
 		// Don't make a new request until it gets a response from the server
 		if(!isLoadingData){
+
+			console.log('Requesting: letter ' + letter + ', date: ' + new Date(currDate));
 
 			isLoadingData = true;
 			appendLoader();
@@ -51,6 +55,9 @@ app.init = function() {
 
 		        }
 		    });
+
+		}else{
+			console.log('>>> Request already in progress.')
 		}
 	}
 
