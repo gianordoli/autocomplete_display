@@ -76,13 +76,12 @@ function loadYoutube(db, callback){
 
 app.post('/start', function(request, response) {
     console.log(request.body['letter']);
-    console.log(request.body['date']);
-
-    var date1 = new Date(parseInt(request.body['date']) - 86400000);
-    var date2 = new Date(parseInt(request.body['date']));
-
-    console.log(date1.getFullYear() + '/' + date1.getMonth() + '/' + date1.getDate() + ' - ' + date1.getHours() + ':' + date1.getMinutes() + ':' + date1.getSeconds());
-    console.log(date2.getFullYear() + '/' + date2.getMonth() + '/' + date2.getDate() + ' - ' + date2.getHours() + ':' + date2.getMinutes() + ':' + date2.getSeconds());
+    
+    // console.log(request.body['date']);
+    // var date1 = new Date(parseInt(request.body['date']) - 86400000);
+    // var date2 = new Date(parseInt(request.body['date']));
+    // console.log(date1.getFullYear() + '/' + date1.getMonth() + '/' + date1.getDate() + ' - ' + date1.getHours() + ':' + date1.getMinutes() + ':' + date1.getSeconds());
+    // console.log(date2.getFullYear() + '/' + date2.getMonth() + '/' + date2.getDate() + ' - ' + date2.getHours() + ':' + date2.getMinutes() + ':' + date2.getSeconds());
 
     MongoClient.connect('mongodb://127.0.0.1:27017/thesis', function(err, db) {
         
@@ -95,7 +94,7 @@ app.post('/start', function(request, response) {
         var recordsCollection = db.collection('records');
 
         recordsCollection.find({
-            'date': { '$gt': date1, '$lte': date2 },
+            // 'date': { '$gt': date1, '$lte': date2 },
             // 'service': 'youtube',
             // 'language_code': 'pt-BR',
             '$or': [{'language_code': 'pt-BR'}, {'language_code': 'de'}, {'language_code': 'it'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'fr'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'da'}, {'language_code': 'fi'}, {'language_code': 'hu'}],
@@ -135,10 +134,10 @@ app.post('/start', function(request, response) {
             console.log('Grabbed image and youtube urls.');
 
             console.log('Sending back results.');
-            console.log(date2);
+            // console.log(date2);
             console.log(results.length);
             response.json({
-                date: date2,
+                // date: date2,
                 results: results
             });
 

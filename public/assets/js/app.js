@@ -37,6 +37,8 @@ require(['config'], function () {
 			    });
 			});
 
+		}else{
+			loadMainScript(filename);
 		}
 	});
 

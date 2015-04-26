@@ -18,50 +18,37 @@ app.init = function() {
 
 	var loadData = function(letter){
 
-		console.log('Calling loadData.')
+		console.log('Calling loadData.');
+		console.log('Requesting: letter ' + letter + '.');
 
-		// Don't make a new request until it gets a response from the server
-		if(!isLoadingData){
+    	// Don't make a new request until it gets a response from the server
+    	disableNavigation();
+		$('#container').remove();
+		var container = $('<div id="container"></div>');
+		$('body').append(container);  	
+		appendLoader(container);
 
-			console.log('Requesting: letter ' + letter + ', date: ' + new Date(currDate));
+		$.post('/start', {
+			letter: letter
+		}, function(response) {
+	        // console.log(response);
+	        if(response.error){
+	        	throw response.error
 
-			isLoadingData = true;
-			appendLoader();
+	        // Loaded results
+	        }else{
+	        	console.log('Got response from server.');
+	        	console.log(response);
+	        	console.log('Got ' + response['results'].length + ' total objects.');
 
-			// Date
-			var prevDate = currDate - oneDayInMillis;
-
-			$.post('/start', {
-				date: currDate,
-				letter: letter
-			}, function(response) {
-		        // console.log(response);
-		        if(response.error){
-		        	throw response.error
-
-		        // Loaded results
-		        }else if(response['results'].length > 0){
-		        	console.log('Got response from server.');
-		        	console.log(response);
-		        	console.log('Got ' + response['results'].length + ' total objects.');
-
-    				isLoadingData = false;
-    				currDate = prevDate;
-
-		        	processData(response);
-
-		        // Reached the first date (response.length == 0)
-		        }else{
-
-		        }
-		    });
-
-		}else{
-			console.log('>>> Request already in progress.')
-		}
+				enableNavigation();
+				$(container).empty();				
+	        	processData(response, container);
+	        }
+	    });
 	}
 
-	var processData = function(data){
+	var processData = function(data, container){
 
     	var clusteredData = _.groupBy(data['results'], function(item, index, list){
     		// console.log(item['query']);
@@ -117,19 +104,12 @@ app.init = function() {
     	}
     	// console.log(groupedQueries);
 
-    	appendResults(data['date'], groupedQueries);
+    	appendResults(groupedQueries, container);
 	}
 
-	var appendResults = function(date, data){
+	var appendResults = function(data, container){
 		
 		console.log('Appending results...');
-		
-		$('#loader-container').remove();
-		var dayTitle = $('<h2>' + date + '</h2>');
-		var dayContainer = $('<div class="day-container"></div>');
-		
-		$('#container').append(dayTitle)
-					   .append(dayContainer);
 
 		for(var index in data){
 				
@@ -175,10 +155,10 @@ app.init = function() {
 			$(itemContainer).append(itemContent)
 							.append(itemDescription);
 
-			$(dayContainer).append(itemContainer);			
+			$(container).append(itemContainer);			
 		}
 
-		drawLayout(dayContainer);		
+		drawLayout(container);		
 		attachEvents();
 	}
 
@@ -206,25 +186,17 @@ app.init = function() {
 			$(this).html(embedYoutube($(this).attr('videoid')));
 		});
 
-		// Load content from letter
-		$('a.letter-bt').off('click').on('click', function(){
-			currDate = new Date(2015, 02, 24).getTime();			
-			// loadData($(this).html());
-		});
-
-		// Has router
+		// Hash router
 	    $(window).off('hashchange').on('hashchange', function() {
-	        console.log('Current hash is ' + location.hash);
-	        $('#container').empty();
 	        loadData(location.hash.substring(1, location.hash.length));
 	    });
 
 		// Infinite scroll
-		$(window).scroll(function()	{
-		    if($(window).scrollTop() == $(document).height() - $(window).height()) {
-		        loadData(location.hash.substring(1, location.hash.length));
-		    }
-		});
+		// $(window).scroll(function()	{
+		//     if($(window).scrollTop() == $(document).height() - $(window).height()) {
+		//         loadData(location.hash.substring(1, location.hash.length));
+		//     }
+		// });
 
 		// Show description
 		$('.item').off('mouseenter').on('mouseenter', function(){
@@ -245,6 +217,16 @@ app.init = function() {
 		});		
 	}
 
+	var disableNavigation = function(){
+		console.log('Called disableNavigation.');
+		$('nav').find('a.letter-bt').addClass('not-active');
+	}
+
+	var enableNavigation = function(){
+		console.log('Called enableNavigation.');
+		$('nav').find('a.letter-bt').removeClass('not-active');
+	}
+
 	var embedYoutube = function(id){
 		var iframe = '<iframe src="https://www.youtube.com/embed/' +
 					 id +		
@@ -252,18 +234,15 @@ app.init = function() {
 		return iframe;
 	}
 
-	var appendLoader = function(){
+	var appendLoader = function(container){
 		var loaderContainer = $('<div id="loader-container"></div>')
 		var loader = $('<span class="loader"></span>');
 
-		$('#container').append(loaderContainer);
+		$(container).append(loaderContainer);
 		$(loaderContainer).append(loader);
 	}
 
 	// GLOBAL VARS
-	var oneDayInMillis = 86400000;
-	var isLoadingData = false;
-	var currDate = new Date(2015, 02, 24).getTime();
 	var servicesAlias = {
 		web: 'Google Web',
 		images: 'Google Images',
