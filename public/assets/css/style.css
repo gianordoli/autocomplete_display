@@ -58,6 +58,7 @@ body{
 			#container .day-container .item .description{
 				padding: 10px;
 				color: white;
+				word-wrap: break-word;
 			}
 
 				#container .day-container .item.web .description{
@@ -110,6 +111,7 @@ body{
 					#container .day-container .item.img div.content img{
 						max-width: 300px;
 						max-height: 300px;
+						display: block;
 						/*max-width: 15vw;*/
 						/*max-width: 25%;*/
 					}
