@@ -70,7 +70,7 @@ body{
 					background-color: #2073f0;
 				}
 
-				#container .item.img .description{
+				#container .item.images .description{
 					background-color: #ffba0f;
 				}
 
@@ -108,12 +108,12 @@ body{
 					}
 
 				/*-------- Google Images ---------*/
-				#container .item.img div.content{
+				#container .item.images div.content{
 					border-color: #ffba0f;
 				}		
 
 					/* Restraining the size of the images */
-					#container .item.img div.content img{
+					#container .item.images div.content img{
 						/*max-width: 300px;*/
 						/*max-height: 300px;*/
 						display: block;

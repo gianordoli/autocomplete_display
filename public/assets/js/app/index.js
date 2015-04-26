@@ -113,9 +113,9 @@ app.init = function() {
 
 		for(var index in data){
 				
-			if(data[index]['service'] == 'youtube'){
+			var itemContainer = $('<div class="item ' + data[index]['service'] + '"></div>');				
 
-				var itemContainer = $('<div class="item youtube"></div>');
+			if(data[index]['service'] == 'youtube'){
 
 				var itemContent = $('<div class="content" ' +
 									'style="background-image: url(' + data[index]['thumbnail'] + ')" ' +
@@ -125,20 +125,17 @@ app.init = function() {
 			
 			}else if(data[index]['service'] == 'images'){
 
-				var itemContainer = $('<div class="item img"></div>');
-
 				var itemContent = $('<div class="content">' +
 									'<img src="' + data[index]['url'] + '" />' +
 									'</div>');
 			
 			}else{
 
-				var itemContainer = $('<div class="item web"></div>');				
-
 				var itemContent = $('<div class="content"><h1>' + data[index]['query'] + '</h1></div>');
 			}
 
 			var itemDescription = $('<div class="description" style="display:none"><div>');
+
 				if(data[index]['service'] != 'web'){
 					$(itemDescription).append('<h2>' + data[index]['query'] + '</h2>');
 				}
