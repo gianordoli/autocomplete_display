@@ -15,6 +15,7 @@ body{
 
 	nav{
 		text-align: center;
+		border-bottom: 8px solid black;
 	}
 
 	nav ul{
@@ -40,8 +41,8 @@ body{
 
 	/* Day Container */
 	#container .day-container{
-		/*???*/
-		border: 1px solid black;
+		border-top: 8px solid black;
+		padding: 10px;
 	}
 
 		/* Each Result
@@ -89,8 +90,10 @@ body{
 
 				/* Restraining the size of the images */
 				#container .day-container .item div.img-container img{
-					max-width: 300px;
-					max-height: 300px;
+					/*max-width: 300px;
+					max-height: 300px;*/
+					max-width: 15vw;
+					/*max-width: 25%;*/
 				}
 
 			/*----------- Youtube ------------*/

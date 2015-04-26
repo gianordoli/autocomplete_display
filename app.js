@@ -53,7 +53,7 @@ function loadImages(db, callback){
     console.log('Called loadImages.');
 
     // var imagesCollection = db.collection('images');
-    var imagesCollection = db.collection('images_2');
+    var imagesCollection = db.collection('images');
 
     imagesCollection.find({}).toArray(function(err, results) {            
         console.log('Found ' + results.length + ' images.');
