@@ -8,7 +8,7 @@ app.init = function() {
 		var ul = $('<ul></ul>');
 		for(var i = 65; i <= 90; i++){
 			var letter = String.fromCharCode(i);
-			var li = $('<li><a class="letter-bt" href="#' + letter + '">' + letter  +'</a>');
+			var li = $('<li><a class="letter-bt" href="#' + letter + '">' + letter  +'</a></li>');
 			$(ul).append(li);
 		}
 		$('nav').append(ul);
@@ -23,6 +23,8 @@ app.init = function() {
 
     	// Don't make a new request until it gets a response from the server
     	disableNavigation();
+    	removeSelectedLetter();
+    	highlightSelectedLetter();
 		$('#container').remove();
 		var container = $('<div id="container"></div>');
 		$('body').append(container);  	
@@ -220,6 +222,20 @@ app.init = function() {
 				'display': 'none'
 			});
 		});		
+	}
+
+	var removeSelectedLetter = function(){
+		console.log('Called removeSelectedLetter.');
+		$('nav').find('a.letter-bt').removeClass('selected');
+	}
+
+	var highlightSelectedLetter = function(){
+		console.log('Called highlightSelectedLetter.');
+		$('nav').find('a.letter-bt').each(function(index, item){
+			if(location.hash.substring(1, location.hash.length) == $(item).html()){
+				$(item).addClass('selected');
+			}
+		});
 	}
 
 	var disableNavigation = function(){
