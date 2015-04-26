@@ -52,79 +52,97 @@ body{
 			margin: 5px;
 		}
 
+
+
 			/*---------- Description ---------*/
 			#container .day-container .item .description{
-				background-color: white;
-				border: 1px solid black;
 				padding: 10px;
+				color: white;
 			}
 
-			/*---------- Description ---------*/
-			#container .day-container .item .description h2{
-				text-align: left;
-			}
-
-			#container .day-container .item .description ul{
-				padding: 0;
-				list-style-type: none;
-			}
-
-			/*---------- Google Web ----------*/
-			container .day-container .item div.web-container{
-
-			}
-				#container .day-container .item div.web-container h1{
-					margin: 0;
-					display: block;
-					text-align: center;
-					padding: 10px;
-					border: 8px solid #2073f0;
-					text-transform: uppercase;
-					color: #2073f0;
+				#container .day-container .item.web .description{
+					background-color: #2073f0;
 				}
 
-			/*-------- Google Images ---------*/
-			#container .day-container .item div.img-container{
-				border: 8px solid #ffba0f;
-			}		
-
-				/* Restraining the size of the images */
-				#container .day-container .item div.img-container img{
-					/*max-width: 300px;
-					max-height: 300px;*/
-					max-width: 15vw;
-					/*max-width: 25%;*/
+				#container .day-container .item.img .description{
+					background-color: #ffba0f;
 				}
 
-			/*----------- Youtube ------------*/
-			/* Thumbs for videos are loaded as background images,
-			so we need to set a size for the parent div */
-			#container .day-container .item div.youtube-container{
-				width: 300px;
-				height: 168px;
-			    background-repeat: no-repeat;
-			    background-size: cover;
-			    background-position: center;
-			    text-align: center;
-			    /*overflow: hidden;*/
-			    border: 8px solid #db503d;
-			}
+				#container .day-container .item.youtube .description{
+					background-color: #db503d;
+				}
 
-				/* Play Button */
-				#container .day-container .item div.youtube-container img{
-					position: relative;
-					top: calc(50% - 20px);
-					width: 40px;
-					height: 40px;
-				} 
+				#container .day-container .item .description h2{
+					text-align: left;
+				}
 
-				/* youtube embed */
-				#container .day-container .item div.youtube-container iframe{
+				#container .day-container .item .description ul{
+					padding: 0;
+					list-style-type: none;
+				}
+
+
+			/*----------- Content ------------*/
+			#container .day-container .item div.content{
+				border-width: 8px;
+				border-style: solid;
+			}			
+
+				/*---------- Google Web ----------*/
+				#container .day-container .item.web div.content{
+					border-color: #2073f0;
+				}
+					#container .day-container .item.web div.content h1{
+						margin: 0;
+						display: block;
+						text-align: center;
+						padding: 10px;
+						text-transform: uppercase;
+						color: #2073f0;
+					}
+
+				/*-------- Google Images ---------*/
+				#container .day-container .item.img div.content{
+					border-color: #ffba0f;
+				}		
+
+					/* Restraining the size of the images */
+					#container .day-container .item.img div.content img{
+						max-width: 300px;
+						max-height: 300px;
+						/*max-width: 15vw;*/
+						/*max-width: 25%;*/
+					}
+
+				/*----------- Youtube ------------*/
+				/* Thumbs for videos are loaded as background images,
+				so we need to set a size for the parent div */
+				#container .day-container .item.youtube div.content{
 					width: 300px;
 					height: 168px;
-					/*position: relative;
-					top: -25px;*/
-				} 
+				    background-repeat: no-repeat;
+				    background-size: cover;
+				    background-position: center;
+				    text-align: center;
+				    /*overflow: hidden;*/
+				    border-color: #db503d;
+				}
+
+					/* Play Button */
+					#container .day-container .item.youtube div.content img{
+						position: relative;
+						top: calc(50% - 20px);
+						width: 40px;
+						height: 40px;
+					} 
+
+					/* youtube embed */
+					#container .day-container .item.youtube div.content iframe{
+						width: 300px;
+						height: 168px;
+						/*position: relative;
+						top: -25px;*/
+					} 
 
 /*----- LOADER -----*/
 #loader-container{

@@ -132,23 +132,30 @@ app.init = function() {
 					   .append(dayContainer);
 
 		for(var index in data){
-
-			var itemContainer = $('<div class="item"></div>');
 				
 			if(data[index]['service'] == 'youtube'){
-				var itemContent = $('<div class="youtube-container" ' +
+
+				var itemContainer = $('<div class="item youtube"></div>');
+
+				var itemContent = $('<div class="content" ' +
 									'style="background-image: url(' + data[index]['thumbnail'] + ')" ' +
 									'videoid="' + data[index]['videoId'] + '">' +
 									'<img src="/assets/img/play.png"/>' +
 									'</div>');
 			
 			}else if(data[index]['service'] == 'images'){
-				var itemContent = $('<div class="img-container">' +
+
+				var itemContainer = $('<div class="item img"></div>');
+
+				var itemContent = $('<div class="content">' +
 									'<img src="' + data[index]['url'] + '" />' +
 									'</div>');
 			
 			}else{
-				var itemContent = $('<div class="web-container"><h1>' + data[index]['query'] + '</h1></div>');
+
+				var itemContainer = $('<div class="item web"></div>');				
+
+				var itemContent = $('<div class="content"><h1>' + data[index]['query'] + '</h1></div>');
 			}
 
 			var itemDescription = $('<div class="description" style="display:none"><div>');
@@ -194,7 +201,7 @@ app.init = function() {
 
 	var attachEvents = function(){
 		// Play video
-		$('.youtube-container').off('click').on('click', function(){
+		$('.youtube').off('click').on('click', function(){
 			console.log($(this).attr('videoid'));
 			$(this).html(embedYoutube($(this).attr('videoid')));
 		});
