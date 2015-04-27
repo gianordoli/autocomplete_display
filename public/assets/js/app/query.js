@@ -39,12 +39,29 @@ app.init = function() {
 	}
 
 	var processData = function(data){
+
+		// Some milliseconds are messed up!
+		// Let's set minutes, seconds and millis to zero
+		for(var i in data['results']){
+			data['results'][i]['date'] = new Date(data['results'][i]['date']);
+			data['results'][i]['date'].setMinutes(0);
+			data['results'][i]['date'].setSeconds(0);
+			data['results'][i]['date'].setMilliseconds(0);
+			data['results'][i]['date'] = data['results'][i]['date'].getTime();
+		}
+
 		var groupedByDate = _.groupBy(data['results'], function(item, index, array){
-			// console.log(item);
+			console.log(item['date']);
 			return item['date'];
 		});
 		// console.log(groupedByDate);
-		appendResults(data['main'], groupedByDate);
+
+		var sortedByDate = _.sortBy(groupedByDate, function(value, key, collection){
+			return key;
+		});
+		// console.log(sortedByDate);
+
+		appendResults(data['main'], sortedByDate);
 	}
 
 	var appendResults = function(main, data){
@@ -74,22 +91,42 @@ app.init = function() {
 			var mainContent = $('<div class="content"><h1>' + main['query'] + '</h1></div>');
 		}
 
-		$('#container').append(mainContainer);
-		$(mainContainer).append(mainContent);
-
 		// DESCRIPTION
-		// var itemDescription = $('<div class="description" style="display:none"><div>');
+		var mainDescription = $('<div class="description"><div>');
 
-		// 	// Query
-		// 	if(main['service'] != 'web'){
-		// 		$(itemDescription).append('<h2>' + main['query'] + '</h2>');
-		// 	}
+			// Query
+			if(main['service'] != 'web'){
+				$(mainDescription).append('<h2>' + main['query'] + '</h2>');
+			}
 
-		// var item
+			// Service
+			$(mainDescription).append('<h3>' + servicesAlias[main['service']] + '</h3>');			
 
-		// for(var i in data){
-		// 	var dateContainer = $()
-		// }
+		$('#container').append(mainContainer);
+		$(mainContainer).append(mainContent)
+						.append(mainDescription);
+
+		// DATES
+		for(var i in data){
+			
+			console.log(data[i]);
+
+			var dateContainer = $('<div class="date-container"></div>');
+			$(dateContainer).append('<h2>' + formatDateMMDDYYY(data[i][0]['date']) + '</h2>');
+
+			var languagesList = $('<ul></ul>');
+
+			for(var j in data[i]){
+				// console.log(data[i][j]);
+				// var sortedByRanking = _.(data[i][j], function(item, index, list){
+				// return item['ranking'];
+				// });
+				// $(itemLanguages).append('<li>' + '#' + (sortedByRanking[j] + 1) + ' in ' + sortedByRanking[j]['language'] + '</li>');
+			}
+
+			$('#container').append(dateContainer);
+			// $(dateContainer).append(languagesList);
+		}
 
 		attachEvents();
 	}
@@ -110,6 +147,17 @@ app.init = function() {
 					 id +		
 					 '?autoplay=1" frameborder="0" allowfullscreen></iframe>';
 		return iframe;
+	}
+
+	// Formats UTC date to MM/DD/YYYY
+	var formatDateMMDDYYY = function(date){
+		var newDate = new Date(date);
+		// console.log(newDate);
+		var monthString = newDate.getMonth() + 1;
+		if (monthString < 10) monthString = '0' + monthString;
+		var dateString = newDate.getDate();
+		var yearString = newDate.getFullYear();
+		return monthString + '/' + dateString + '/' + yearString;
 	}	
 
 	// GLOBAL VARS
