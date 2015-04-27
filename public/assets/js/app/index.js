@@ -1,8 +1,4 @@
-/* Your code starts here */
-
-var app = {};
-
-app.init = function() {
+define(['./common'], function (common) {
 
 	var appendNavBar = function(){
 		var ul = $('<ul></ul>');
@@ -28,7 +24,7 @@ app.init = function() {
 		$('#container').remove();
 		var container = $('<div id="container"></div>');
 		$('body').append(container);  	
-		appendLoader(container);
+		common.appendLoader(container);
 
 		$.post('/letter', {
 			letter: letter
@@ -44,7 +40,7 @@ app.init = function() {
 	        	console.log('Got ' + response['results'].length + ' total objects.');
 
 				enableNavigation();
-				$(container).empty();				
+				$(container).empty();
 	        	processData(response, container);
 	        }
 	    });
@@ -74,7 +70,9 @@ app.init = function() {
     		var thisQuery = {
     			query: sortedData[i][0]['query'],
     			service: sortedData[i][0]['service'],
-    			languages: [],	// key-value pairs with language and ranking
+    			languages: [],	// All languages
+    			ranking: [],	// All ranking positions
+    			dates: []		// All dates
     		}
 
     		for(var j in sortedData[i]){
@@ -255,14 +253,6 @@ app.init = function() {
 		return iframe;
 	}
 
-	var appendLoader = function(container){
-		var loaderContainer = $('<div id="loader-container"></div>')
-		var loader = $('<span class="loader"></span>');
-
-		$(container).append(loaderContainer);
-		$(loaderContainer).append(loader);
-	}
-
 	// GLOBAL VARS
 	var servicesAlias = {
 		web: 'Google Web',
@@ -272,6 +262,5 @@ app.init = function() {
 
 	appendNavBar();
 	loadData(location.hash.substring(1, location.hash.length));	
-};
 
-app.init();
+});
