@@ -162,7 +162,7 @@ app.init = function() {
 
 			$(container).append(itemContainer);
 			$(itemContainer).append(itemContent)
-							.append(itemDescription);		
+							.append(itemDescription);
 		}
 
 		drawLayout(container);		

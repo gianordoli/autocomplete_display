@@ -69,7 +69,7 @@ body{
 				   color: white;
 				}		
 
-/* Results */
+/*-------------------- RESULTS --------------------*/
 #container{
 	width: 100%;
 	height: 100%;
@@ -97,10 +97,12 @@ body{
 
 			#container .item.images .description{
 				background-color: #ffba0f;
+				max-width: calc(15vw + 16px);
 			}
 
 			#container .item.youtube .description{
 				background-color: #db503d;
+				max-width: 300px;
 			}
 
 			#container .item .description h2{
@@ -117,6 +119,7 @@ body{
 		#container .item div.content{
 			border-width: 8px;
 			border-style: solid;
+			display: block;
 		}			
 
 			/*---------- Google Web ----------*/
@@ -176,6 +179,78 @@ body{
 					/*position: relative;
 					top: -25px;*/
 				} 
+
+
+/*-------------------- DETAIL --------------------*/
+
+	#container .main{
+		margin: 5px;
+	}
+
+		/*----------- Content ------------*/
+		#container .main div.content{
+			border-width: 8px;
+			border-style: solid;
+		}			
+
+			/*---------- Google Web ----------*/
+			#container .main.web div.content{
+				border-color: #2073f0;
+			}
+				#container .main.web div.content h1{
+					margin: 0;
+					display: block;
+					text-align: center;
+					padding: 10px;
+					text-transform: uppercase;
+					color: #2073f0;
+				}
+
+			/*-------- Google Images ---------*/
+			#container .main.images div.content{
+				border-color: #ffba0f;
+				display: inline-block;
+			}		
+
+				/* Restraining the size of the images */
+				#container .main.images div.content img{
+					/*max-width: 300px;*/
+					/*max-height: 300px;*/
+					display: block;
+					max-width: 15vw;
+					/*width: 15vw;*/
+					/*max-width: 25%;*/
+				}
+
+			/*----------- Youtube ------------*/
+			/* Thumbs for videos are loaded as background images,
+			so we need to set a size for the parent div */
+			#container .main.youtube div.content{
+				width: 300px;
+				height: 168px;
+			    background-repeat: no-repeat;
+			    background-size: cover;
+			    background-position: center;
+			    text-align: center;
+			    /*overflow: hidden;*/
+			    border-color: #db503d;
+			}
+
+				/* Play Button */
+				#container .main.youtube div.content img{
+					position: relative;
+					top: calc(50% - 20px);
+					width: 40px;
+					height: 40px;
+				} 
+
+				/* youtube embed */
+				#container .main.youtube div.content iframe{
+					width: 300px;
+					height: 168px;
+					/*position: relative;
+					top: -25px;*/
+				} 				
 
 /*----- LOADER -----*/
 #loader-container{

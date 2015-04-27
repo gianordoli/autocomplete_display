@@ -104,34 +104,7 @@ app.post('/letter', function(request, response) {
             // console.dir(results);
             console.log('Found ' + results.length + ' results.');
 
-            // Getting youtube and images url from the other DBs
-            for(var i = 0; i < results.length; i++){
-                if(results[i]['service'] == 'images'){
-                    // console.log(results[i]['query']);
-                    var record = _.find(imagesInDB, function(item, index, list){
-                        // console.log(item['query']);
-                        return item['query'] == results[i]['query'];
-                    });
-                    // console.log(results[i]['query']);
-                    // console.log(record);
-                    results[i]['url'] = record['url'];
-                    // console.log(results[i]);
-
-                }else if(results[i]['service'] == 'youtube'){
-                    // console.log(results[i]['query']);
-                    var record = _.find(youtubeInDB, function(item, index, list){
-                        // console.log(item);
-                        // console.log(item['query']);
-                        return item['query'] == results[i]['query'];
-                    });
-                    // console.log(results[i]['query']);
-                    // console.log(record);
-                    results[i]['videoId'] = record['videoId'];
-                    results[i]['thumbnail'] = record['thumbnail'];
-                    // console.log(results[i]);
-                }
-            }
-            console.log('Grabbed image and youtube urls.');
+            results = getUrls(results);
 
             console.log('Sending back results.');
             // console.log(date2);
@@ -167,38 +140,13 @@ app.post('/query', function(request, response) {
             // console.dir(results);
             console.log('Found ' + results.length + ' results.');
 
-            // // Getting youtube and images url from the other DBs
-            // for(var i = 0; i < results.length; i++){
-            //     if(results[i]['service'] == 'images'){
-            //         // console.log(results[i]['query']);
-            //         var record = _.find(imagesInDB, function(item, index, list){
-            //             // console.log(item['query']);
-            //             return item['query'] == results[i]['query'];
-            //         });
-            //         // console.log(results[i]['query']);
-            //         // console.log(record);
-            //         results[i]['url'] = record['url'];
-            //         // console.log(results[i]);
-
-            //     }else if(results[i]['service'] == 'youtube'){
-            //         // console.log(results[i]['query']);
-            //         var record = _.find(youtubeInDB, function(item, index, list){
-            //             // console.log(item);
-            //             // console.log(item['query']);
-            //             return item['query'] == results[i]['query'];
-            //         });
-            //         // console.log(results[i]['query']);
-            //         // console.log(record);
-            //         results[i]['videoId'] = record['videoId'];
-            //         results[i]['thumbnail'] = record['thumbnail'];
-            //         // console.log(results[i]);
-            //     }
-            // }
-            // console.log('Grabbed image and youtube urls.');
-
             console.log('Sending back results.');
 
+            var main = getUrls(results.slice(0, 1))[0];
+            // console.log(main);
+
             response.json({
+                main: main,
                 results: results
             });
 
@@ -206,6 +154,43 @@ app.post('/query', function(request, response) {
         });         
     });
 });
+
+var getUrls = function(data){
+
+    console.log('Calling getUrls.');
+
+    // Getting youtube and images url from the other DBs
+    for(var i = 0; i < data.length; i++){
+        if(data[i]['service'] == 'images'){
+            // console.log(data[i]['query']);
+            var record = _.find(imagesInDB, function(item, index, list){
+                // console.log(item['query']);
+                return item['query'] == data[i]['query'];
+            });
+            // console.log(data[i]['query']);
+            // console.log(record);
+            data[i]['url'] = record['url'];
+            // console.log(data[i]);
+
+        }else if(data[i]['service'] == 'youtube'){
+            // console.log(data[i]['query']);
+            var record = _.find(youtubeInDB, function(item, index, list){
+                // console.log(item);
+                // console.log(item['query']);
+                return item['query'] == data[i]['query'];
+            });
+            // console.log(data[i]['query']);
+            // console.log(record);
+            data[i]['videoId'] = record['videoId'];
+            data[i]['thumbnail'] = record['thumbnail'];
+            // console.log(results[i]);
+        }
+    }
+
+    console.log('Grabbed image and youtube urls.');
+
+    return data;
+}
 
 /*----------------- INIT SERVER -----------------*/
 var PORT = 3000; //the port you want to use
