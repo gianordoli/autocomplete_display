@@ -51,7 +51,7 @@ app.init = function() {
 		}
 
 		var groupedByDate = _.groupBy(data['results'], function(item, index, array){
-			console.log(item['date']);
+			// console.log(item['date']);
 			return item['date'];
 		});
 		// console.log(groupedByDate);
@@ -108,24 +108,24 @@ app.init = function() {
 
 		// DATES
 		for(var i in data){
-			
-			console.log(data[i]);
+			// console.log(data[i]);
 
 			var dateContainer = $('<div class="date-container"></div>');
 			$(dateContainer).append('<h2>' + formatDateMMDDYYY(data[i][0]['date']) + '</h2>');
 
+			// Languages
+			var sortedByRanking = _.sortBy(data[i], function(item, index, list){
+				return item['ranking'];
+			});
 			var languagesList = $('<ul></ul>');
 
-			for(var j in data[i]){
+			for(var j in sortedByRanking){
 				// console.log(data[i][j]);
-				// var sortedByRanking = _.(data[i][j], function(item, index, list){
-				// return item['ranking'];
-				// });
-				// $(itemLanguages).append('<li>' + '#' + (sortedByRanking[j] + 1) + ' in ' + sortedByRanking[j]['language'] + '</li>');
+				$(languagesList).append('<li>' + '#' + (sortedByRanking[j]['ranking'] + 1) + ' in ' + sortedByRanking[j]['language_name'] + '</li>');
 			}
 
 			$('#container').append(dateContainer);
-			// $(dateContainer).append(languagesList);
+			$(dateContainer).append(languagesList);
 		}
 
 		attachEvents();
