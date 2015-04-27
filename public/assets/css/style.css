@@ -185,18 +185,21 @@ body{
 
 	#container .main{
 		margin: 5px;
+		text-align: center;
 	}
 
 		/*----------- Content ------------*/
 		#container .main div.content{
 			border-width: 8px;
 			border-style: solid;
+			display: inline-block;
 		}			
 
 			/*---------- Google Web ----------*/
 			#container .main.web div.content{
 				border-color: #2073f0;
 			}
+
 				#container .main.web div.content h1{
 					margin: 0;
 					display: block;
@@ -204,30 +207,25 @@ body{
 					padding: 10px;
 					text-transform: uppercase;
 					color: #2073f0;
+					font-size: 4em;
 				}
 
 			/*-------- Google Images ---------*/
 			#container .main.images div.content{
 				border-color: #ffba0f;
-				display: inline-block;
 			}		
 
 				/* Restraining the size of the images */
 				#container .main.images div.content img{
-					/*max-width: 300px;*/
-					/*max-height: 300px;*/
 					display: block;
-					max-width: 15vw;
-					/*width: 15vw;*/
-					/*max-width: 25%;*/
 				}
 
 			/*----------- Youtube ------------*/
 			/* Thumbs for videos are loaded as background images,
 			so we need to set a size for the parent div */
 			#container .main.youtube div.content{
-				width: 300px;
-				height: 168px;
+				width: 496px;
+				height: 376px;
 			    background-repeat: no-repeat;
 			    background-size: cover;
 			    background-position: center;
@@ -246,8 +244,8 @@ body{
 
 				/* youtube embed */
 				#container .main.youtube div.content iframe{
-					width: 300px;
-					height: 168px;
+					width: 496px;
+					height: 376px;
 					/*position: relative;
 					top: -25px;*/
 				} 				

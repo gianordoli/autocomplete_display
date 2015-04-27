@@ -90,12 +90,27 @@ app.init = function() {
 		// for(var i in data){
 		// 	var dateContainer = $()
 		// }
-		
+
+		attachEvents();
 	}
 
 	var attachEvents = function(){
 
+		console.log('Called attachEvents.');
+
+		// Play video
+		$('.main.youtube').children('.content').off('click').on('click', function(){
+			console.log($(this).attr('videoid'));
+			$(this).html(embedYoutube($(this).attr('videoid')));
+		});
 	}
+
+	var embedYoutube = function(id){
+		var iframe = '<iframe src="https://www.youtube.com/embed/' +
+					 id +		
+					 '?autoplay=1" frameborder="0" allowfullscreen></iframe>';
+		return iframe;
+	}	
 
 	// GLOBAL VARS
 	var servicesAlias = {
