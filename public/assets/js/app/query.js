@@ -27,15 +27,9 @@ define(['./common'], function (common) {
 
 	var processData = function(data){
 
-		// Some milliseconds are messed up!
-		// Let's set minutes, seconds and millis to zero
-		for(var i in data['results']){
-			data['results'][i]['date'] = new Date(data['results'][i]['date']);
-			data['results'][i]['date'].setMinutes(0);
-			data['results'][i]['date'].setSeconds(0);
-			data['results'][i]['date'].setMilliseconds(0);
-			data['results'][i]['date'] = data['results'][i]['date'].getTime();
-		}
+		console.log('Called processData.')
+
+		data['results'] = common.refineDates(data['results']);
 
 		var groupedByDate = _.groupBy(data['results'], function(item, index, array){
 			// console.log(item['date']);
@@ -98,7 +92,7 @@ define(['./common'], function (common) {
 			// console.log(data[i]);
 
 			var dateContainer = $('<div class="date-container"></div>');
-			$(dateContainer).append('<h2>' + formatDateMMDDYYY(data[i][0]['date']) + '</h2>');
+			$(dateContainer).append('<h2>' + common.formatDateMMDDYYY(data[i][0]['date']) + '</h2>');
 
 			// Languages
 			var sortedByRanking = _.sortBy(data[i], function(item, index, list){
@@ -136,17 +130,6 @@ define(['./common'], function (common) {
 		return iframe;
 	}
 
-	// Formats UTC date to MM/DD/YYYY
-	var formatDateMMDDYYY = function(date){
-		var newDate = new Date(date);
-		// console.log(newDate);
-		var monthString = newDate.getMonth() + 1;
-		if (monthString < 10) monthString = '0' + monthString;
-		var dateString = newDate.getDate();
-		var yearString = newDate.getFullYear();
-		return monthString + '/' + dateString + '/' + yearString;
-	}	
-
 	// GLOBAL VARS
 	var servicesAlias = {
 		web: 'Google Web',
@@ -155,5 +138,5 @@ define(['./common'], function (common) {
 	}
 
 	loadData(location.hash.substring(1, location.hash.length));	
-	
+
 });

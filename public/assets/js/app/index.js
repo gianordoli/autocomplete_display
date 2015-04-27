@@ -36,7 +36,7 @@ define(['./common'], function (common) {
 	        // Loaded results
 	        }else{
 	        	console.log('Got response from server.');
-	        	console.log(response);
+	        	// console.log(response);
 	        	console.log('Got ' + response['results'].length + ' total objects.');
 
 				enableNavigation();
@@ -47,6 +47,9 @@ define(['./common'], function (common) {
 	}
 
 	var processData = function(data, container){
+
+		console.log('Called processData.');
+		data['results'] = common.refineDates(data['results']);
 
     	var clusteredData = _.groupBy(data['results'], function(item, index, list){
     		// console.log(item['query']);
@@ -71,7 +74,7 @@ define(['./common'], function (common) {
     			query: sortedData[i][0]['query'],
     			service: sortedData[i][0]['service'],
     			languages: [],	// All languages
-    			ranking: [],	// All ranking positions
+    			rankings: [],	// All ranking positions
     			dates: []		// All dates
     		}
 
@@ -79,11 +82,17 @@ define(['./common'], function (common) {
     			// console.log(sortedData[i][j]);
     			var language = sortedData[i][j]['language_name'];
     			var ranking = sortedData[i][j]['ranking'];
+    			var date = sortedData[i][j]['date'];
     			
-    			// Creating the array of {language: ranking}
-    			var thisLanguage = {};
-    			thisLanguage[language] = ranking;
-    			thisQuery['languages'].push(thisLanguage);
+    			if(thisQuery['languages'].indexOf(language) < 0){
+    				thisQuery['languages'].push(language);
+    			}
+    			if(thisQuery['rankings'].indexOf(ranking) < 0){
+    				thisQuery['rankings'].push(ranking);
+    			}
+    			if(thisQuery['dates'].indexOf(date) < 0){
+    				thisQuery['dates'].push(date);
+    			}
 
     			// Storing images and youtube videos
     			if(sortedData[i][j]['service'] == 'images'){
@@ -94,11 +103,15 @@ define(['./common'], function (common) {
     			}
     		}
     		thisQuery['languages'] = _.sortBy(thisQuery['languages'], function(item, index, array){
-    			var key = Object.keys(item)[0];
-    			var value = item[key];
-    			// console.log(key + ': ' + value);
-    			return value;
+    			return item;
     		});
+    		thisQuery['rankings'] = _.sortBy(thisQuery['rankings'], function(item, index, array){
+    			return item;
+    		});
+    		thisQuery['dates'] = _.sortBy(thisQuery['dates'], function(item, index, array){
+    			return item;
+    		});
+    		console.log(thisQuery);
     		// console.log(thisQuery['languages']);
     		groupedQueries.push(thisQuery);
     	}
@@ -147,13 +160,29 @@ define(['./common'], function (common) {
 				$(itemDescription).append('<h3>' + servicesAlias[data[index]['service']] + '</h3>');
 
 				// Languages
-				var itemLanguages = $('<ul></ul>')
+				var languagesText = 'Appears in ';
 				for(var i in data[index]['languages']){
-	    			var key = Object.keys(data[index]['languages'][i])[0];
-	    			var value = data[index]['languages'][i][key];
-					$(itemLanguages).append('<li>' + '#' + (value + 1) + ' in ' + key + '</li>'); 
+					if(i > 0){
+						if(data[index]['languages'].length > 2){
+							languagesText += ', ';
+						}
+		    			if(i == data[index]['languages'].length - 1){
+		    				if(data[index]['languages'].length == 2){
+		    					languagesText += ' ';
+		    				}
+		    				languagesText += 'and ';
+		    			}						
+					}
+	    			languagesText += data[index]['languages'][i];
 				}
-				$(itemDescription).append(itemLanguages);
+				$(itemDescription).append('<p>' + languagesText + '</p>');
+
+				// Dates
+				var datesText = 'From ' +
+									common.formatDateMMDDYYY(data[index]['dates'][0]) +
+									' to ' +
+									common.formatDateMMDDYYY(data[index]['dates'][data[index]['dates'].length - 1]);
+				$(itemDescription).append('<p>' + datesText + '</p>');
 
 				// More info
 				$(itemDescription).append('<a href="query.html#' + data[index]['query'] + '">More Info</a>');
