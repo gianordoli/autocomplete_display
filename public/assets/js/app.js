@@ -18,7 +18,7 @@ require(['config'], function () {
 		console.log('Loading dependencies for '+filename);
 
 		// INDEX
-		if(filename == 'index'){
+		if(filename == 'archive'){
 
 			// masonry
 			require(['masonry'], function(Masonry) {

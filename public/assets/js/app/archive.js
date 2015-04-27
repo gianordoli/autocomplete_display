@@ -153,7 +153,7 @@ define(['./common'], function (common) {
 
 				// Query
 				if(data[index]['service'] != 'web'){
-					$(itemDescription).append('<h2>' + data[index]['query'] + '</h2>');
+					$(itemDescription).append('<h2>' + data[index]['query'].toUpperCase() + '</h2>');
 				}
 
 				// Service

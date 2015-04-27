@@ -1,4 +1,4 @@
-define(['./common'], function (common) {
+define(['./common', 'd3'], function (common) {
 
 	var loadData = function(query){
 
@@ -31,6 +31,7 @@ define(['./common'], function (common) {
 
 		data['results'] = common.refineDates(data['results']);
 
+		/*---------- Dates Tables ----------*/
 		var groupedByDate = _.groupBy(data['results'], function(item, index, array){
 			// console.log(item['date']);
 			return item['date'];
@@ -43,71 +44,65 @@ define(['./common'], function (common) {
 		// console.log(sortedByDate);
 
 		appendResults(data['main'], sortedByDate);
+
+
+		/*---------- D3 Chart ----------*/
+		var groupedByLanguage = _.groupBy(data['results'], function(item, index, array){
+			return item['language_name'];
+		});
+		// console.log(groupedByLanguage);
+
+		// Let's make things easier for D3... Passing the min and max dates
+		var dateRange = [sortedByDate[0][0]['date'], sortedByDate[sortedByDate.length - 1][0]['date']];
+        // D3 needs an Array! You can't pass the languages as keys
+        groupedByLanguage = _.toArray(groupedByLanguage);
+        for(var i in groupedByLanguage){
+        	groupedByLanguage[i] = _.sortBy(groupedByLanguage[i], function(item, index, array){
+        		return item['date'];
+        	});
+        }
+
+		drawChart(groupedByLanguage, dateRange);
 	}
 
 	var appendResults = function(main, data){
 
 		console.log('Appending results...');
 		// console.log(main);
-				
-		var mainContainer = $('<div class="main ' + main['service'] + '"></div>');
 
-		// YOUTUBE
-		if(main['service'] == 'youtube'){
-
-			var mainContent = $('<div class="content" ' +
-								'style="background-image: url(' + main['thumbnail'] + ')" ' +
-								'videoid="' + main['videoId'] + '">' +
-								'<img src="/assets/img/play.png"/>' +
-								'</div>');
-		// GOOGLE IMAGES
-		}else if(main['service'] == 'images'){
-
-			var mainContent = $('<div class="content">' +
-								'<img src="' + main['url'] + '" />' +
-								'</div>');
-		// GOOGLE WEB
-		}else{
-
-			var mainContent = $('<div class="content"><h1>' + main['query'] + '</h1></div>');
-		}
-
-		// DESCRIPTION
-		var mainDescription = $('<div class="description"><div>');
-
+		// HEADER
+		var header = $('<div class="query-page-header ' + main['service'] + '"><div>');
 			// Query
-			if(main['service'] != 'web'){
-				$(mainDescription).append('<h2>' + main['query'] + '</h2>');
-			}
-
+			$(header).append('<h1>' + main['query'].toUpperCase() + '</h1>');
 			// Service
-			$(mainDescription).append('<h3>' + servicesAlias[main['service']] + '</h3>');			
+			$(header).append('<h2 class="description">' + servicesAlias[main['service']] + '</h2>');			
+		$('#container').append(header);	
+		$('#container').append('<br/>');		
+				
+		// CONTENT		
+		if(main['service'] != 'web'){
+			var mainContainer = $('<div class="main"></div>');
 
-		$('#container').append(mainContainer);
-		$(mainContainer).append(mainContent)
-						.append(mainDescription);
+			// YOUTUBE
+			if(main['service'] == 'youtube'){
 
-		// DATES
-		for(var i in data){
-			// console.log(data[i]);
+				var mainContent = $('<div class="content ' +  main['service'] + '" ' +
+									'style="background-image: url(' + main['thumbnail'] + ')" ' +
+									'videoid="' + main['videoId'] + '">' +
+									'<img src="/assets/img/play.png"/>' +
+									'</div>');
+			// GOOGLE IMAGES
+			}else if(main['service'] == 'images'){
 
-			var dateContainer = $('<div class="date-container"></div>');
-			$(dateContainer).append('<h2>' + common.formatDateMMDDYYY(data[i][0]['date']) + '</h2>');
-
-			// Languages
-			var sortedByRanking = _.sortBy(data[i], function(item, index, list){
-				return item['ranking'];
-			});
-			var languagesList = $('<ul></ul>');
-
-			for(var j in sortedByRanking){
-				// console.log(data[i][j]);
-				$(languagesList).append('<li>' + '#' + (sortedByRanking[j]['ranking'] + 1) + ' in ' + sortedByRanking[j]['language_name'] + '</li>');
+				var mainContent = $('<div class="content ' +  main['service'] + '">' +
+									'<img src="' + main['url'] + '" />' +
+									'</div>');
 			}
-
-			$('#container').append(dateContainer);
-			$(dateContainer).append(languagesList);
+			$('#container').append(mainContainer);
+			$(mainContainer).append(mainContent);
 		}
+
+		// appendDates(data);
 
 		attachEvents();
 	}
@@ -128,6 +123,162 @@ define(['./common'], function (common) {
 					 id +		
 					 '?autoplay=1" frameborder="0" allowfullscreen></iframe>';
 		return iframe;
+	}
+
+	var parseHsla = function(color){
+		var myHslaColor = 'hsla(' + color.h + ', ' + color.s + '%, ' + color.l + '%, ' + color.a +')';
+		return myHslaColor;
+	}
+
+	var drawChart = function(dataset, dateRange){
+
+		console.log('Called drawChart');
+
+		/*----- LAYOUT -----*/
+		var svgSize = {	width: 600, height: 400	};
+		var margin = { top: 10, right: 10, bottom: 50, left: 80 };
+		var width  = svgSize.width - margin.left - margin.right;
+		var height = svgSize.height - margin.top - margin.bottom;
+		
+		var languagesPalette = [];
+		for(var i in dataset){
+			var hue = i * 360 / dataset.length;
+			languagesPalette.push({
+				language_name: dataset[i][0]['language_name'],
+				color: parseHsla({h: hue, s: 100, l: 50, a: 0.5})	
+			});
+		}
+		// console.log(languagesPalette);
+
+		// Header
+		var chartContainer = $('<div id="chart-container"></div>');
+		$('#container').append(chartContainer);
+
+		// Canvas
+		var svg = d3.select('#chart-container')
+					.append('svg')
+					.attr('id', 'chart')
+					.attr('width', width + margin.left + margin.right)
+				    .attr('height', height + margin.top + margin.bottom);		
+
+        // Now the whole chart will be inside a group
+        var chart = svg.append("g")
+                       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");				    
+
+		var xScale = d3.time.scale()
+						.domain(d3.extent(dateRange, function(d, i){
+							return d;
+						}))
+						.range([0, width]);
+
+		var yScale = d3.scale.linear()
+					   .domain([1, 10])
+					   .range([0, height]);
+
+		var line = d3.svg.line()
+					    .x(function(d, i) {
+					    	return xScale(d['date']);
+					    })
+					    .y(function(d) {
+					    	return yScale(d['ranking'] + 1);
+					    });
+
+
+		// X Scale
+		var xAxis = d3.svg.axis()
+							.ticks(5)
+							.innerTickSize(20)
+						    .scale(xScale)
+						    .orient("bottom");
+
+		// Y Scale
+		var yAxis = d3.svg.axis()
+						    .innerTickSize(20)
+						    .scale(yScale)
+						    .orient("left");
+
+        // Now appending the axes
+        chart.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .attr("class", "x axis")
+            .call(xAxis);
+
+        chart.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text") // Label
+            .attr("transform", "rotate(-90)")
+            .attr("y", -40)
+            .attr("x", -height/2)
+            .attr("class", "label")
+            .style("text-anchor", "end")
+            .text("Position");
+
+		// d3.selectAll("g.y.axis g.tick line")
+		//     .attr("x2", function(d){
+		//            return width;
+		//     });
+
+	  	// Lines
+		var language = chart.selectAll(".line")
+				      		.data(dataset)
+						    .enter()
+							.append("path")
+							.attr("class", "line")
+							// .attr('stroke', parseHsla(categoriesColors[parseInt(cat) - 1], 1))
+							.attr('stroke', function(d, i){
+								return languagesPalette[i]['color'];
+							})
+							.attr('d', function(d, i){
+								// console.log(d);
+								// Shrinking lines to 0
+								var emptyHistory = [];
+								for(var j in d){
+									var emptyRecord = {
+										ranking: 9,
+										date: d[j]['date']
+									};
+									emptyHistory.push(emptyRecord);
+								}
+								return line(emptyHistory);
+							})
+							.transition()
+							.duration(1000)
+							.attr("d", function(d, i) {
+								return line(d);
+							});
+							
+
+		var languagesList = $('<ul></ul>');
+		for(var i in languagesPalette){
+			$(languagesList).append('<li><div class="language-marker" style="background-color:' + languagesPalette[i]['color'] + '"></div>' + languagesPalette[i]['language_name'] + '</li>')
+		}
+		$(chartContainer).append(languagesList);
+
+	}
+
+	var appendDates = function(data){
+		// DATES
+		for(var i in data){
+			// console.log(data[i]);
+
+			var dateContainer = $('<div class="date-container"></div>');
+			$(dateContainer).append('<h2>' + common.formatDateMMDDYYY(data[i][0]['date']) + '</h2>');
+
+			// Languages
+			var sortedByRanking = _.sortBy(data[i], function(item, index, list){
+				return item['ranking'];
+			});
+			var languagesList = $('<ul></ul>');
+
+			for(var j in sortedByRanking){
+				// console.log(data[i][j]);
+				$(languagesList).append('<li>' + '#' + (sortedByRanking[j]['ranking'] + 1) + ' in ' + sortedByRanking[j]['language_name'] + '</li>');
+			}
+
+			$('#container').append(dateContainer);
+			$(dateContainer).append(languagesList);
+		}		
 	}
 
 	// GLOBAL VARS

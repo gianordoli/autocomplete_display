@@ -1,4 +1,4 @@
-/*---------- GLOBAL ----------*/
+/*-------------------- GLOBAL --------------------*/
 * {
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
@@ -25,7 +25,39 @@ a:visited{ outline: 0; color: #333; }
 a:active,
 a:hover{ outline: 0; color: #3939bf; }
 
-/*---------- STYLES ----------*/
+
+/*-------------------- COLORS --------------------*/
+.web{
+	border: 8px solid #2073f0;
+	color: #2073f0;
+}
+
+	.web .description{
+		background-color: #2073f0;
+		color: white;
+	}
+
+.images{
+	border: 8px solid #ffba0f;
+	color: #ffba0f;
+}
+
+	.images .description{
+		background-color: #ffba0f;
+		color: white;
+	}
+
+.youtube{
+    border: 8px solid #db503d;
+    color: #db503d;	
+}
+
+	.youtube .description{
+		background-color: #db503d;
+		color: white;
+	}
+
+/*-------------------- STYLES --------------------*/
 
 body{
 	font-size: 11px;
@@ -93,17 +125,17 @@ body{
 			word-wrap: break-word;
 		}
 
-			#container .item.web .description{
+/*			#container .item.web .description{
 				background-color: #2073f0;
-			}
+			}*/
 
 			#container .item.images .description{
-				background-color: #ffba0f;
+				/*background-color: #ffba0f;*/
 				max-width: calc(15vw + 16px);
 			}
 
 			#container .item.youtube .description{
-				background-color: #db503d;
+				/*background-color: #db503d;*/
 				max-width: 300px;
 			}
 
@@ -118,29 +150,28 @@ body{
 
 
 		/*----------- Content ------------*/
-		#container .item div.content{
+		/*#container .item div.content{
 			border-width: 8px;
 			border-style: solid;
 			display: block;
-		}			
+		}*/
 
 			/*---------- Google Web ----------*/
-			#container .item.web div.content{
+			/*#container .item.web div.content{
 				border-color: #2073f0;
-			}
+			}*/
 				#container .item.web div.content h1{
 					margin: 0;
 					display: block;
-					text-align: center;
 					padding: 10px;
+					text-align: center;					
 					text-transform: uppercase;
-					color: #2073f0;
 				}
 
 			/*-------- Google Images ---------*/
-			#container .item.images div.content{
+			/*#container .item.images div.content{
 				border-color: #ffba0f;
-			}		
+			}*/		
 
 				/* Restraining the size of the images */
 				#container .item.images div.content img{
@@ -163,7 +194,6 @@ body{
 			    background-position: center;
 			    text-align: center;
 			    /*overflow: hidden;*/
-			    border-color: #db503d;
 			}
 
 				/* Play Button */
@@ -185,24 +215,47 @@ body{
 
 /*-------------------- PAGE: QUERY --------------------*/
 
+#container .query-page-header{
+	margin: 20px;
+	display: inline-block;
+	text-align: center;	
+}
+
+	#container .query-page-header h1{
+		margin: 0;
+		padding: 10px;
+		text-transform: uppercase;
+		font-size: 4em;
+	}
+
+	#container .query-page-header h2{
+		margin: 0;
+		padding: 10px;
+		/*text-transform: uppercase;*/
+		font-size: 3em;
+		height: 100%;
+	}	
+
 	#container .main{
-		margin: 5px;
+		/*margin: 5px;*/
+		/*width: 50%;*/
 		text-align: center;
+		display: inline-block;
+		vertical-align: top;
 	}
 
 		/*----------- Content ------------*/
 		#container .main div.content{
-			border-width: 8px;
-			border-style: solid;
-			display: inline-block;
+			/*display: block;*/
+			float: right;
 		}			
 
 			/*---------- Google Web ----------*/
-			#container .main.web div.content{
+/*			#container .main.web div.content{
 				border-color: #2073f0;
-			}
+			}*/
 
-				#container .main.web div.content h1{
+				/*#container .main.web div.content h1{
 					margin: 0;
 					display: block;
 					text-align: center;
@@ -210,22 +263,21 @@ body{
 					text-transform: uppercase;
 					color: #2073f0;
 					font-size: 6em;
-				}
+				}*/
 
 			/*-------- Google Images ---------*/
-			#container .main.images div.content{
+/*			#container .main.images div.content{
 				border-color: #ffba0f;
-			}		
+			}	*/	
 
-				/* Restraining the size of the images */
-				#container .main.images div.content img{
+				#container .main div.content.images img{
 					display: block;
 				}
 
 			/*----------- Youtube ------------*/
 			/* Thumbs for videos are loaded as background images,
 			so we need to set a size for the parent div */
-			#container .main.youtube div.content{
+			#container .main div.content.youtube{
 				width: 496px;
 				height: 376px;
 			    background-repeat: no-repeat;
@@ -233,11 +285,11 @@ body{
 			    background-position: center;
 			    text-align: center;
 			    /*overflow: hidden;*/
-			    border-color: #db503d;
+			    /*border-color: #db503d;*/
 			}
 
 				/* Play Button */
-				#container .main.youtube div.content img{
+				#container .main div.content.youtube img{
 					position: relative;
 					top: calc(50% - 20px);
 					width: 40px;
@@ -245,7 +297,7 @@ body{
 				} 
 
 				/* youtube embed */
-				#container .main.youtube div.content iframe{
+				#container .main div.content.youtube iframe{
 					width: 496px;
 					height: 376px;
 					/*position: relative;
@@ -265,7 +317,7 @@ body{
 			list-style-type: none;
 		}
 
-/*----- LOADER -----*/
+/*-------------------- LOADER --------------------*/
 #loader-container{
 	text-align: center;
 /*	top: 50%;
@@ -315,4 +367,75 @@ body{
     to {
     	transform: rotate(90deg);
     }
+}
+
+/*-------------------- CHART --------------------*/
+
+#chart-container{
+	display: inline-block;
+	/*width: 50%;*/
+}
+
+	#chart-container svg{
+		display: block;
+		/*float: left;*/
+	}
+
+	#chart-container ul{
+		padding: 0;
+		display: block;		
+		width: 510px;
+		text-align: left;
+		margin: 0 0 0 80px;
+		/*float: left;*/
+	}
+
+		#chart-container ul li{
+			display: inline-block;
+			font-size: 1em;
+			margin: 5px 10px 5px 0;
+		}
+
+			#chart-container ul li div.language-marker{
+				width: 20px;
+				height: 20px;
+				display: inline-block;
+				margin-right: 5px;
+				padding: 0;
+				border: 0;
+				vertical-align: middle;
+			}
+
+		#chart-container text{
+			fill: #333;
+		}
+
+path.line{
+	fill: none;
+	stroke-width: 8px;
+}
+
+/*----- Axis -----*/
+/* Outer Tick */
+.axis path {
+  display: none;
+}
+
+/* Inner Ticks */
+.axis line {
+  fill: none;
+  stroke: #333;
+  stroke-width: 4px;
+  shape-rendering: crispEdges;
+}
+
+/* Labels */
+.axis text.label{
+	font-size: 1.6em;
+}
+
+/* Numbers */
+.axis text{
+  font-size: 1.2em;
+  font-weight: bold;
 }

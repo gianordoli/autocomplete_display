@@ -97,7 +97,7 @@ app.post('/letter', function(request, response) {
             // 'date': { '$gt': date1, '$lte': date2 },
             // 'service': 'youtube',
             // 'language_code': 'pt-BR',
-            '$or': [{'language_code': 'pt-BR'}, {'language_code': 'de'}, {'language_code': 'it'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'fr'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'da'}, {'language_code': 'fi'}, {'language_code': 'hu'}],
+            '$or': [{'language_code': 'da'}, {'language_code': 'de'}, {'language_code': 'en'}, {'language_code': 'es'}, {'language_code': 'fi'}, {'language_code': 'fr'}, {'language_code': 'hu'}, {'language_code': 'id'}, {'language_code': 'is'}, {'language_code': 'it'}, {'language_code': 'nl'}, {'language_code': 'nl'}, {'language_code': 'pt-BR'}],
             'letter': request.body['letter'].toLowerCase()
 
         }).toArray(function(err, results) {
