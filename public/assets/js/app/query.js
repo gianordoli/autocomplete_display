@@ -136,7 +136,7 @@ define(['./common', 'd3'], function (common) {
 
 		/*----- LAYOUT -----*/
 		var svgSize = {	width: 600, height: 400	};
-		var margin = { top: 10, right: 10, bottom: 50, left: 80 };
+		var margin = { top: 10, right: 80, bottom: 50, left: 80 };
 		var width  = svgSize.width - margin.left - margin.right;
 		var height = svgSize.height - margin.top - margin.bottom;
 		
