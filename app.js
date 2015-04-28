@@ -120,7 +120,9 @@ app.post('/letter', function(request, response) {
 });
 
 app.post('/query', function(request, response) {
-    console.log(request.body['query']);
+
+    console.log('Query: ' + request.body['query']);
+    console.log('Service: ' + request.body['service']);
 
     MongoClient.connect('mongodb://127.0.0.1:27017/thesis', function(err, db) {
         
@@ -134,10 +136,11 @@ app.post('/query', function(request, response) {
 
         recordsCollection.find({
             query: request.body['query'],
-            '$or': [{'language_code': 'pt-BR'}, {'language_code': 'de'}, {'language_code': 'it'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'fr'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'da'}, {'language_code': 'fi'}, {'language_code': 'hu'}]
+            service: request.body['service'],
+            '$or': [{'language_code': 'da'}, {'language_code': 'de'}, {'language_code': 'en'}, {'language_code': 'es'}, {'language_code': 'fi'}, {'language_code': 'fr'}, {'language_code': 'hu'}, {'language_code': 'id'}, {'language_code': 'is'}, {'language_code': 'it'}, {'language_code': 'nl'}, {'language_code': 'nl'}, {'language_code': 'pt-BR'}]
 
         }).toArray(function(err, results) {
-            // console.dir(results);
+            console.dir(results);
             console.log('Found ' + results.length + ' results.');
 
             console.log('Sending back results.');
@@ -161,6 +164,9 @@ var getUrls = function(data){
 
     // Getting youtube and images url from the other DBs
     for(var i = 0; i < data.length; i++){
+        
+        console.log(data[i]['service']);
+
         if(data[i]['service'] == 'images'){
             // console.log(data[i]['query']);
             var record = _.find(imagesInDB, function(item, index, list){

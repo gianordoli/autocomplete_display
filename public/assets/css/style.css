@@ -27,7 +27,7 @@ html { -webkit-font-smoothing: antialiased; }
 	color: #2073f0;
 }
 
-	.web .description{
+	.description.web{
 		background-color: #2073f0;
 		color: white;
 	}
@@ -37,7 +37,7 @@ html { -webkit-font-smoothing: antialiased; }
 	color: #ffba0f;
 }
 
-	.images .description{
+	.description.images{
 		background-color: #ffba0f;
 		color: white;
 	}
@@ -47,7 +47,7 @@ html { -webkit-font-smoothing: antialiased; }
     color: #db503d;	
 }
 
-	.youtube .description{
+	.description.youtube{
 		background-color: #db503d;
 		color: white;
 	}
@@ -144,27 +144,28 @@ body{
 			border: none;
 		}			
 
-/*			#container .item.web .description{
-				background-color: #2073f0;
-			}*/
+			#container .item .description.web{
+				min-width: 10vw;
+				max-width: 20vw;				
+			}
 
-			#container .item.images .description{
+			#container .item .description.images{
 				/*background-color: #ffba0f;*/
 				max-width: calc(15vw + 16px);
 			}
 
-			#container .item.youtube .description{
+			#container .item .description.youtube{
 				/*background-color: #db503d;*/
 				max-width: 300px;
 			}
 
 			#container .item .description h2{
-				font-size: 2em;
+				font-size: 1.5em;
 				margin-bottom: 0.2em;
 			}
 
-			#container .item .description h2{
-				font-size: 1.5em;
+			#container .item .description h3{
+				font-size: 1.2em;
 			}
 
 			#container .item .description p{
@@ -179,22 +180,24 @@ body{
 
 
 		/*----------- Content ------------*/
-		/*#container .item div.content{
-			border-width: 8px;
-			border-style: solid;
-			display: block;
-		}*/
+		#container .item div.content{
+			display: inline-block;
+			vertical-align: bottom;
+		}
 
 			/*---------- Google Web ----------*/
 			/*#container .item.web div.content{
 				border-color: #2073f0;
 			}*/
-				#container .item.web div.content h1{
+				#container .item div.content.web h1{
 					margin: 0;
 					display: block;
 					padding: 10px;
 					text-align: center;					
 					text-transform: uppercase;
+					min-width: 10vw;
+					max-width: 20vw;
+					/*word-break: break-all;*/
 				}
 
 			/*-------- Google Images ---------*/
@@ -203,19 +206,21 @@ body{
 			}*/		
 
 				/* Restraining the size of the images */
-				#container .item.images div.content img{
+				#container .item div.content.images img{
 					/*max-width: 300px;*/
 					/*max-height: 300px;*/
 					display: block;
 					max-width: 15vw;
+					/*min-width: 10vw;*/
 					/*width: 15vw;*/
 					/*max-width: 25%;*/
+					/*width: 300px;*/
 				}
 
 			/*----------- Youtube ------------*/
 			/* Thumbs for videos are loaded as background images,
 			so we need to set a size for the parent div */
-			#container .item.youtube div.content{
+			#container .item div.content.youtube{
 				width: 300px;
 				height: 168px;
 			    background-repeat: no-repeat;
@@ -226,7 +231,7 @@ body{
 			}
 
 				/* Play Button */
-				#container .item.youtube div.content img{
+				#container .item div.content.youtube img{
 					position: relative;
 					top: calc(50% - 20px);
 					width: 40px;
@@ -234,7 +239,7 @@ body{
 				} 
 
 				/* youtube embed */
-				#container .item.youtube div.content iframe{
+				#container .item div.content.youtube iframe{
 					width: 300px;
 					height: 168px;
 					/*position: relative;

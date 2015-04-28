@@ -1,14 +1,15 @@
 define(['./common', 'd3'], function (common) {
 
-	var loadData = function(query){
+	var loadData = function(query, service){
 
 		console.log('Calling loadData.')
-		console.log('Requesting: ' + query + '.');
+		console.log('Requesting: ' + query + ' at ' + service + '.');
 
 		common.appendLoader(container);
 
 		$.post('/query', {
-			query: query
+			query: query,
+			service: service
 		}, function(response) {
 	        // console.log(response);
 	        if(response.error){
@@ -75,7 +76,7 @@ define(['./common', 'd3'], function (common) {
 			// Query
 			$(header).append('<h1>' + main['query'].toUpperCase() + '</h1>');
 			// Service
-			$(header).append('<h2 class="description">' + servicesAlias[main['service']] + '</h2>');			
+			$(header).append('<h2 class="description ' + main['service'] + '">' + servicesAlias[main['service']] + '</h2>');			
 		$('#container').append(header);	
 		$('#container').append('<br/>');		
 				
@@ -112,7 +113,7 @@ define(['./common', 'd3'], function (common) {
 		console.log('Called attachEvents.');
 
 		// Play video
-		$('.main.youtube').children('.content').off('click').on('click', function(){
+		$('.content.youtube').off('click').on('click', function(){
 			console.log($(this).attr('videoid'));
 			$(this).html(embedYoutube($(this).attr('videoid')));
 		});
@@ -287,7 +288,8 @@ define(['./common', 'd3'], function (common) {
 		images: 'Google Images',
 		youtube: 'Youtube'
 	}
-
-	loadData(location.hash.substring(1, location.hash.length));	
+	var query = decodeURIComponent(location.hash.substring(1, location.hash.indexOf('?')));
+	var service = location.hash.substring(location.hash.indexOf('?') + 1, location.hash.length);
+	loadData(query, service);	
 
 });

@@ -126,7 +126,7 @@ define(['./common'], function (common) {
 
 		for(var index in data){
 				
-			var itemContainer = $('<div class="item ' + data[index]['service'] + '"></div>');				
+			var itemContainer = $('<div class="item"></div>');				
 
 			// YOUTUBE
 			if(data[index]['service'] == 'youtube'){
@@ -147,6 +147,7 @@ define(['./common'], function (common) {
 
 				var itemContent = $('<div class="content"><h1>' + data[index]['query'] + '</h1></div>');
 			}
+			$(itemContent).addClass(data[index]['service']);
 
 			// DESCRIPTION
 			var itemDescription = $('<div class="description" style="display:none"></div>');
@@ -186,7 +187,9 @@ define(['./common'], function (common) {
 				$(itemDescription).append('<p>' + datesText + '</p>');
 
 				// More info
-				$(itemDescription).append('<a href="query.html#' + data[index]['query'] + '">More Info</a>');
+				$(itemDescription).append('<a href="query.html#' + encodeURIComponent(data[index]['query']) + '?' + data[index]['service'] + '">More Info</a>');
+			
+			$(itemDescription).addClass(data[index]['service']);
 
 			$(container).append(itemContainer);
 			$(itemContainer).append(itemContent)
