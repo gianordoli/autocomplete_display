@@ -186,17 +186,17 @@ body{
 		}
 
 			/*---------- Google Web ----------*/
-			/*#container .item.web div.content{
+			#container .item div.content.web{
 				border-color: #2073f0;
-			}*/
+				min-width: 10vw;
+				max-width: 20vw;				
+			}
 				#container .item div.content.web h1{
 					margin: 0;
 					display: block;
 					padding: 10px;
 					text-align: center;					
 					text-transform: uppercase;
-					min-width: 10vw;
-					max-width: 20vw;
 					/*word-break: break-all;*/
 				}
 
