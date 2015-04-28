@@ -220,7 +220,7 @@ define(['./common'], function (common) {
 
 	var attachEvents = function(){
 		// Play video
-		$('.item.youtube').children('.content').off('click').on('click', function(){
+		$('.content.youtube').off('click').on('click', function(){
 			console.log($(this).attr('videoid'));
 			$(this).html(embedYoutube($(this).attr('videoid')));
 		});
