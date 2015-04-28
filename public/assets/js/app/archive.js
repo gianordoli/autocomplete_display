@@ -149,7 +149,7 @@ define(['./common'], function (common) {
 			}
 
 			// DESCRIPTION
-			var itemDescription = $('<div class="description" style="display:none"><div>');
+			var itemDescription = $('<div class="description" style="display:none"></div>');
 
 				// Query
 				if(data[index]['service'] != 'web'){
@@ -157,7 +157,8 @@ define(['./common'], function (common) {
 				}
 
 				// Service
-				$(itemDescription).append('<h3>' + servicesAlias[data[index]['service']] + '</h3>');
+				$(itemDescription).append('<h3>' + servicesAlias[data[index]['service']] + '</h3>')
+								  .append('<hr/>');
 
 				// Languages
 				var languagesText = 'Appears in ';
@@ -173,15 +174,15 @@ define(['./common'], function (common) {
 		    				languagesText += 'and ';
 		    			}						
 					}
-	    			languagesText += data[index]['languages'][i];
+	    			languagesText += '<b>' + data[index]['languages'][i] + '</b>';
 				}
 				$(itemDescription).append('<p>' + languagesText + '</p>');
 
 				// Dates
-				var datesText = 'From ' +
+				var datesText = 'From <b>' +
 									common.formatDateMMDDYYY(data[index]['dates'][0]) +
-									' to ' +
-									common.formatDateMMDDYYY(data[index]['dates'][data[index]['dates'].length - 1]);
+									'</b> to <b>' +
+									common.formatDateMMDDYYY(data[index]['dates'][data[index]['dates'].length - 1])  + '</b>';
 				$(itemDescription).append('<p>' + datesText + '</p>');
 
 				// More info

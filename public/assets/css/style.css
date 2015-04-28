@@ -20,11 +20,6 @@ body, select, input, textarea {	color: #333 }
 /* maxvoltar.com/archive/-webkit-font-smoothing */
 html { -webkit-font-smoothing: antialiased; }
 
-a:link,
-a:visited{ outline: 0; color: #333; }
-a:active,
-a:hover{ outline: 0; color: #3939bf; }
-
 
 /*-------------------- COLORS --------------------*/
 .web{
@@ -120,10 +115,34 @@ body{
 
 		/*---------- Description ---------*/
 		#container .item .description{
-			padding: 10px;
-			color: white;
+			padding: 8px;
 			word-wrap: break-word;
+			font-size: 1.2em;
+			line-height: 1.6em;		
+			/*text-align: left;
+			color: white;*/
 		}
+
+		#container .item .description hr{
+			height: 4px;
+			background: white;
+			border: none;
+		}
+
+		#container .item .description a:link,
+		#container .item .description a:visited,
+		#container .item .description a:active,
+		#container .item .description a:hover{
+			outline: 0;
+			color: white;
+			font-weight: bold;
+		}
+
+		#container .item .description hr{
+			height: 4px;
+			background: white;
+			border: none;
+		}			
 
 /*			#container .item.web .description{
 				background-color: #2073f0;
@@ -140,12 +159,22 @@ body{
 			}
 
 			#container .item .description h2{
-				text-align: left;
+				font-size: 2em;
+				margin-bottom: 0.2em;
+			}
+
+			#container .item .description h2{
+				font-size: 1.5em;
+			}
+
+			#container .item .description p{
+				margin: 0;
 			}
 
 			#container .item .description ul{
 				padding: 0;
 				list-style-type: none;
+				margin: 0;
 			}
 
 
