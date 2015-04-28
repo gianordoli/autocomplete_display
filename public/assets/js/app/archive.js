@@ -187,7 +187,8 @@ define(['./common'], function (common) {
 				$(itemDescription).append('<p>' + datesText + '</p>');
 
 				// More info
-				$(itemDescription).append('<a href="query.html#' + encodeURIComponent(data[index]['query']) + '?' + data[index]['service'] + '">More Info</a>');
+				// $(itemDescription).append('<a href="query.html#' + encodeURIComponent(data[index]['query']) + '?' + data[index]['service'] + '">More Info</a>');
+				$(itemDescription).append('<a href="query.html?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '">More Info</a>');
 			
 			$(itemDescription).addClass(data[index]['service']);
 

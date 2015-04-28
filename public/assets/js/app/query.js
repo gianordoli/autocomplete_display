@@ -1,5 +1,6 @@
 define(['./common', 'd3'], function (common) {
 
+	/*-------------------- MAIN FUNCTIONS --------------------*/
 	var loadData = function(query, service){
 
 		console.log('Calling loadData.')
@@ -106,29 +107,6 @@ define(['./common', 'd3'], function (common) {
 		// appendDates(data);
 
 		attachEvents();
-	}
-
-	var attachEvents = function(){
-
-		console.log('Called attachEvents.');
-
-		// Play video
-		$('.content.youtube').off('click').on('click', function(){
-			console.log($(this).attr('videoid'));
-			$(this).html(embedYoutube($(this).attr('videoid')));
-		});
-	}
-
-	var embedYoutube = function(id){
-		var iframe = '<iframe src="https://www.youtube.com/embed/' +
-					 id +		
-					 '?autoplay=1" frameborder="0" allowfullscreen></iframe>';
-		return iframe;
-	}
-
-	var parseHsla = function(color){
-		var myHslaColor = 'hsla(' + color.h + ', ' + color.s + '%, ' + color.l + '%, ' + color.a +')';
-		return myHslaColor;
 	}
 
 	var drawChart = function(dataset, dateRange){
@@ -258,38 +236,75 @@ define(['./common', 'd3'], function (common) {
 
 	}
 
-	var appendDates = function(data){
-		// DATES
-		for(var i in data){
-			// console.log(data[i]);
+	/*-------------------- AUX FUNCTIONS ---------------------*/
+	var attachEvents = function(){
 
-			var dateContainer = $('<div class="date-container"></div>');
-			$(dateContainer).append('<h2>' + common.formatDateMMDDYYY(data[i][0]['date']) + '</h2>');
+		console.log('Called attachEvents.');
 
-			// Languages
-			var sortedByRanking = _.sortBy(data[i], function(item, index, list){
-				return item['ranking'];
-			});
-			var languagesList = $('<ul></ul>');
-
-			for(var j in sortedByRanking){
-				// console.log(data[i][j]);
-				$(languagesList).append('<li>' + '#' + (sortedByRanking[j]['ranking'] + 1) + ' in ' + sortedByRanking[j]['language_name'] + '</li>');
-			}
-
-			$('#container').append(dateContainer);
-			$(dateContainer).append(languagesList);
-		}		
+		// Play video
+		$('.content.youtube').off('click').on('click', function(){
+			console.log($(this).attr('videoid'));
+			$(this).html(embedYoutube($(this).attr('videoid')));
+		});
 	}
 
+	var embedYoutube = function(id){
+		var iframe = '<iframe src="https://www.youtube.com/embed/' +
+					 id +		
+					 '?autoplay=1" frameborder="0" allowfullscreen></iframe>';
+		return iframe;
+	}
+
+	var parseHsla = function(color){
+		var myHslaColor = 'hsla(' + color.h + ', ' + color.s + '%, ' + color.l + '%, ' + color.a +')';
+		return myHslaColor;
+	}
+
+	var getParameterByName = function(name) {
+	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	        results = regex.exec(location.search);
+	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}	
+
+	/*-------------------- APP INIT ---------------------*/
 	// GLOBAL VARS
 	var servicesAlias = {
 		web: 'Google Web',
 		images: 'Google Images',
 		youtube: 'Youtube'
 	}
-	var query = decodeURIComponent(location.hash.substring(1, location.hash.indexOf('?')));
-	var service = location.hash.substring(location.hash.indexOf('?') + 1, location.hash.length);
+	// var query = decodeURIComponent(location.hash.substring(1, location.hash.indexOf('?')));
+	// var service = location.hash.substring(location.hash.indexOf('?') + 1, location.hash.length);
+
+	var query = decodeURIComponent(getParameterByName('query'));
+	var service = decodeURIComponent(getParameterByName('service'));
+
 	loadData(query, service);	
 
 });
+
+/* DEPRECATED */
+// var appendDates = function(data){
+// 	// DATES
+// 	for(var i in data){
+// 		// console.log(data[i]);
+
+// 		var dateContainer = $('<div class="date-container"></div>');
+// 		$(dateContainer).append('<h2>' + common.formatDateMMDDYYY(data[i][0]['date']) + '</h2>');
+
+// 		// Languages
+// 		var sortedByRanking = _.sortBy(data[i], function(item, index, list){
+// 			return item['ranking'];
+// 		});
+// 		var languagesList = $('<ul></ul>');
+
+// 		for(var j in sortedByRanking){
+// 			// console.log(data[i][j]);
+// 			$(languagesList).append('<li>' + '#' + (sortedByRanking[j]['ranking'] + 1) + ' in ' + sortedByRanking[j]['language_name'] + '</li>');
+// 		}
+
+// 		$('#container').append(dateContainer);
+// 		$(dateContainer).append(languagesList);
+// 	}		
+// }
