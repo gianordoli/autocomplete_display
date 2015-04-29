@@ -258,13 +258,6 @@ define(['./common', 'd3'], function (common) {
 	var parseHsla = function(color){
 		var myHslaColor = 'hsla(' + color.h + ', ' + color.s + '%, ' + color.l + '%, ' + color.a +')';
 		return myHslaColor;
-	}
-
-	var getParameterByName = function(name) {
-	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-	        results = regex.exec(location.search);
-	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}	
 
 	/*-------------------- APP INIT ---------------------*/
@@ -277,8 +270,8 @@ define(['./common', 'd3'], function (common) {
 	// var query = decodeURIComponent(location.hash.substring(1, location.hash.indexOf('?')));
 	// var service = location.hash.substring(location.hash.indexOf('?') + 1, location.hash.length);
 
-	var query = decodeURIComponent(getParameterByName('query'));
-	var service = decodeURIComponent(getParameterByName('service'));
+	var query = decodeURIComponent(common.getParameterByName('query'));
+	var service = decodeURIComponent(common.getParameterByName('service'));
 
 	loadData(query, service);	
 

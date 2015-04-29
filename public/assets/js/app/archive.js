@@ -294,8 +294,7 @@ define(['./common'], function (common) {
 	}
 
 	appendNavBar();
-	loadData(location.hash.substring(1, location.hash.length));	
-
+	loadData(location.hash.substring(1, location.hash.length));
 });
 
 /*-------------------- DEPRECATED ---------------------*/

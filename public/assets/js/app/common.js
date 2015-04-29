@@ -13,6 +13,13 @@ define(function (require) {
 			$(loaderContainer).append(loader);
 		},
 
+		getParameterByName: function(name) {
+		    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+		        results = regex.exec(location.search);
+		    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+		},	
+
 		// Some milliseconds are messed up!
 		// This function set minutes, seconds and millis to zero
 		refineDates: function(data){
