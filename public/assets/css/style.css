@@ -1,152 +1,357 @@
+/*-------------------- GLOBAL --------------------*/
 * {
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */;
 }
 
+/* www.aestheticallyloyal.com/public/optimize-legibility/ */ 
 h1,h2,h3,h4,h5,h6 {
+	text-rendering: optimizeLegibility;
+	/*font-weight: normal;*/
 	margin: 0;
 	padding: 0;
+	border: 0;
 }
+
+/* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */ 
+body, select, input, textarea {	color: #333 }
+
+/* maxvoltar.com/archive/-webkit-font-smoothing */
+html { -webkit-font-smoothing: antialiased; }
+
+
+/*-------------------- COLORS --------------------*/
+.web{
+	border: 8px solid #2073f0;
+	color: #2073f0;
+}
+
+	.description.web{
+		background-color: #2073f0;
+		color: white;
+	}
+
+.images{
+	border: 8px solid #ffba0f;
+	color: #ffba0f;
+}
+
+	.description.images{
+		background-color: #ffba0f;
+		color: white;
+	}
+
+.youtube{
+    border: 8px solid #db503d;
+    color: #db503d;	
+}
+
+	.description.youtube{
+		background-color: #db503d;
+		color: white;
+	}
+
+/*-------------------- STYLES --------------------*/
 
 body{
 	font-size: 11px;
 }
 
+	/* Nav Bar */
+
 	nav{
 		text-align: center;
-		border-bottom: 8px solid black;
-	}
-
-	nav ul{
-		padding: 0;
-	}
-
-	nav ul li{
-		padding: 0 10px;
-		display: inline-block;
-	}
-
-/* Results */
-#container{
-	width: 100%;
-	height: 100%;
-}
-
-	/* Day Title */
-	#container h2{
-		width: 100%;
-		text-align: center;
-	}
-
-	/* Day Container */
-	#container .day-container{
-		border-top: 8px solid black;
 		padding: 10px;
 	}
 
-		/* Each Result
-		Each repeated query is grouped into one of these */
-		#container .day-container .item{
-			/*display: inline-block;*/
-			margin: 5px;
+	nav h1{
+		text-align: center;
+		display: inline-block;
+		border: 8px solid #333;
+		padding: 10px;
+		font-size: 3em
+	}	
+
+		nav ul{
+			padding: 0;
 		}
 
-
-
-			/*---------- Description ---------*/
-			#container .day-container .item .description{
-				padding: 10px;
-				color: white;
-				word-wrap: break-word;
+			nav ul li{
+				display: inline-block;
 			}
-
-				#container .day-container .item.web .description{
-					background-color: #2073f0;
+				nav ul li a{
+					padding: 10px;
+					font-size: 2em;
+					font-weight: bold;
 				}
 
-				#container .day-container .item.img .description{
-					background-color: #ffba0f;
+				nav ul li a.letter-bt.not-active {
+				   pointer-events: none;
+				   cursor: default;
 				}
 
-				#container .day-container .item.youtube .description{
-					background-color: #db503d;
-				}
-
-				#container .day-container .item .description h2{
-					text-align: left;
-				}
-
-				#container .day-container .item .description ul{
-					padding: 0;
-					list-style-type: none;
-				}
-
-
-			/*----------- Content ------------*/
-			#container .day-container .item div.content{
-				border-width: 8px;
-				border-style: solid;
-			}			
-
-				/*---------- Google Web ----------*/
-				#container .day-container .item.web div.content{
-					border-color: #2073f0;
-				}
-					#container .day-container .item.web div.content h1{
-						margin: 0;
-						display: block;
-						text-align: center;
-						padding: 10px;
-						text-transform: uppercase;
-						color: #2073f0;
-					}
-
-				/*-------- Google Images ---------*/
-				#container .day-container .item.img div.content{
-					border-color: #ffba0f;
+				nav  ul li a.letter-bt.selected {
+				   background-color: #333;
+				   color: white;
 				}		
 
-					/* Restraining the size of the images */
-					#container .day-container .item.img div.content img{
-						max-width: 300px;
-						max-height: 300px;
-						display: block;
-						/*max-width: 15vw;*/
-						/*max-width: 25%;*/
-					}
+/*-------------------- PAGE: INDEX --------------------*/
+#container{
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
 
-				/*----------- Youtube ------------*/
-				/* Thumbs for videos are loaded as background images,
-				so we need to set a size for the parent div */
-				#container .day-container .item.youtube div.content{
-					width: 300px;
-					height: 168px;
-				    background-repeat: no-repeat;
-				    background-size: cover;
-				    background-position: center;
-				    text-align: center;
-				    /*overflow: hidden;*/
-				    border-color: #db503d;
+	/* Each Result
+	Each repeated query is grouped into one of these */
+	#container .item{
+		/*display: inline-block;*/
+		margin: 5px;
+		text-align: left;
+	}
+
+
+
+		/*---------- Description ---------*/
+		#container .item .description{
+			padding: 8px;
+			word-wrap: break-word;
+			font-size: 1.2em;
+			line-height: 1.6em;		
+			/*text-align: left;
+			color: white;*/
+		}
+
+		#container .item .description hr{
+			height: 4px;
+			background: white;
+			border: none;
+		}
+
+		#container .item .description a:link,
+		#container .item .description a:visited,
+		#container .item .description a:active,
+		#container .item .description a:hover{
+			outline: 0;
+			color: white;
+			font-weight: bold;
+		}
+
+		#container .item .description hr{
+			height: 4px;
+			background: white;
+			border: none;
+		}			
+
+			#container .item .description.web{
+				min-width: 10vw;
+				max-width: 20vw;				
+			}
+
+			#container .item .description.images{
+				/*background-color: #ffba0f;*/
+				max-width: calc(15vw + 16px);
+			}
+
+			#container .item .description.youtube{
+				/*background-color: #db503d;*/
+				max-width: 300px;
+			}
+
+			#container .item .description h2{
+				font-size: 1.5em;
+				margin-bottom: 0.2em;
+			}
+
+			#container .item .description h3{
+				font-size: 1.2em;
+			}
+
+			#container .item .description p{
+				margin: 0;
+			}
+
+			#container .item .description ul{
+				padding: 0;
+				list-style-type: none;
+				margin: 0;
+			}
+
+
+		/*----------- Content ------------*/
+		#container .item div.content{
+			display: inline-block;
+			vertical-align: bottom;
+		}
+
+			/*---------- Google Web ----------*/
+			#container .item div.content.web{
+				border-color: #2073f0;
+				min-width: 10vw;
+				max-width: 20vw;				
+			}
+				#container .item div.content.web h1{
+					margin: 0;
+					display: block;
+					padding: 10px;
+					text-align: center;					
+					text-transform: uppercase;
+					/*word-break: break-all;*/
 				}
 
-					/* Play Button */
-					#container .day-container .item.youtube div.content img{
-						position: relative;
-						top: calc(50% - 20px);
-						width: 40px;
-						height: 40px;
-					} 
+			/*-------- Google Images ---------*/
+			/*#container .item.images div.content{
+				border-color: #ffba0f;
+			}*/		
 
-					/* youtube embed */
-					#container .day-container .item.youtube div.content iframe{
-						width: 300px;
-						height: 168px;
-						/*position: relative;
-						top: -25px;*/
-					} 
+				/* Restraining the size of the images */
+				#container .item div.content.images img{
+					/*max-width: 300px;*/
+					/*max-height: 300px;*/
+					display: block;
+					max-width: 15vw;
+					/*min-width: 10vw;*/
+					/*width: 15vw;*/
+					/*max-width: 25%;*/
+					/*width: 300px;*/
+				}
 
-/*----- LOADER -----*/
+			/*----------- Youtube ------------*/
+			/* Thumbs for videos are loaded as background images,
+			so we need to set a size for the parent div */
+			#container .item div.content.youtube{
+				width: 300px;
+				height: 168px;
+			    background-repeat: no-repeat;
+			    background-size: cover;
+			    background-position: center;
+			    text-align: center;
+			    /*overflow: hidden;*/
+			}
+
+				/* Play Button */
+				#container .item div.content.youtube img{
+					position: relative;
+					top: calc(50% - 20px);
+					width: 40px;
+					height: 40px;
+				} 
+
+				/* youtube embed */
+				#container .item div.content.youtube iframe{
+					width: 300px;
+					height: 168px;
+					/*position: relative;
+					top: -25px;*/
+				} 
+
+
+/*-------------------- PAGE: QUERY --------------------*/
+
+#container .query-page-header{
+	margin: 20px;
+	display: inline-block;
+	text-align: center;	
+}
+
+	#container .query-page-header h1{
+		margin: 0;
+		padding: 10px;
+		text-transform: uppercase;
+		font-size: 4em;
+	}
+
+	#container .query-page-header h2{
+		margin: 0;
+		padding: 10px;
+		/*text-transform: uppercase;*/
+		font-size: 3em;
+		height: 100%;
+	}	
+
+	#container .main{
+		/*margin: 5px;*/
+		/*width: 50%;*/
+		text-align: center;
+		display: inline-block;
+		vertical-align: top;
+	}
+
+		/*----------- Content ------------*/
+		#container .main div.content{
+			/*display: block;*/
+			float: right;
+		}			
+
+			/*---------- Google Web ----------*/
+/*			#container .main.web div.content{
+				border-color: #2073f0;
+			}*/
+
+				/*#container .main.web div.content h1{
+					margin: 0;
+					display: block;
+					text-align: center;
+					padding: 10px;
+					text-transform: uppercase;
+					color: #2073f0;
+					font-size: 6em;
+				}*/
+
+			/*-------- Google Images ---------*/
+/*			#container .main.images div.content{
+				border-color: #ffba0f;
+			}	*/	
+
+				#container .main div.content.images img{
+					display: block;
+				}
+
+			/*----------- Youtube ------------*/
+			/* Thumbs for videos are loaded as background images,
+			so we need to set a size for the parent div */
+			#container .main div.content.youtube{
+				width: 496px;
+				height: 376px;
+			    background-repeat: no-repeat;
+			    background-size: cover;
+			    background-position: center;
+			    text-align: center;
+			    /*overflow: hidden;*/
+			    /*border-color: #db503d;*/
+			}
+
+				/* Play Button */
+				#container .main div.content.youtube img{
+					position: relative;
+					top: calc(50% - 20px);
+					width: 40px;
+					height: 40px;
+				} 
+
+				/* youtube embed */
+				#container .main div.content.youtube iframe{
+					width: 496px;
+					height: 376px;
+					/*position: relative;
+					top: -25px;*/
+				} 
+
+	/* Dates */
+	#container .date-container{
+		width: 180px;
+		display: inline-block;
+		vertical-align: top;
+		text-align: left;
+	}
+
+		#container .date-container ul{
+			padding: 0;
+			list-style-type: none;
+		}
+
+/*-------------------- LOADER --------------------*/
 #loader-container{
 	text-align: center;
 /*	top: 50%;
@@ -196,4 +401,75 @@ body{
     to {
     	transform: rotate(90deg);
     }
+}
+
+/*-------------------- CHART --------------------*/
+
+#chart-container{
+	display: inline-block;
+	/*width: 50%;*/
+}
+
+	#chart-container svg{
+		display: block;
+		/*float: left;*/
+	}
+
+	#chart-container ul{
+		padding: 0;
+		display: block;		
+		width: 440px;
+		text-align: left;
+		margin: 0 0 0 80px;
+		/*float: left;*/
+	}
+
+		#chart-container ul li{
+			display: inline-block;
+			font-size: 1em;
+			margin: 5px 10px 5px 0;
+		}
+
+			#chart-container ul li div.language-marker{
+				width: 20px;
+				height: 20px;
+				display: inline-block;
+				margin-right: 5px;
+				padding: 0;
+				border: 0;
+				vertical-align: middle;
+			}
+
+		#chart-container text{
+			fill: #333;
+		}
+
+path.line{
+	fill: none;
+	stroke-width: 8px;
+}
+
+/*----- Axis -----*/
+/* Outer Tick */
+.axis path {
+  display: none;
+}
+
+/* Inner Ticks */
+.axis line {
+  fill: none;
+  stroke: #333;
+  stroke-width: 4px;
+  shape-rendering: crispEdges;
+}
+
+/* Labels */
+.axis text.label{
+	font-size: 1.6em;
+}
+
+/* Numbers */
+.axis text{
+  font-size: 1.2em;
+  font-weight: bold;
 }

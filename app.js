@@ -74,15 +74,14 @@ function loadYoutube(db, callback){
     });
 }
 
-app.post('/start', function(request, response) {
+app.post('/letter', function(request, response) {
     console.log(request.body['letter']);
-    console.log(request.body['date']);
-
-    var date1 = new Date(parseInt(request.body['date']) - 86400000);
-    var date2 = new Date(parseInt(request.body['date']));
-
-    console.log(date1.getFullYear() + '/' + date1.getMonth() + '/' + date1.getDate() + ' - ' + date1.getHours() + ':' + date1.getMinutes() + ':' + date1.getSeconds());
-    console.log(date2.getFullYear() + '/' + date2.getMonth() + '/' + date2.getDate() + ' - ' + date2.getHours() + ':' + date2.getMinutes() + ':' + date2.getSeconds());
+    
+    // console.log(request.body['date']);
+    // var date1 = new Date(parseInt(request.body['date']) - 86400000);
+    // var date2 = new Date(parseInt(request.body['date']));
+    // console.log(date1.getFullYear() + '/' + date1.getMonth() + '/' + date1.getDate() + ' - ' + date1.getHours() + ':' + date1.getMinutes() + ':' + date1.getSeconds());
+    // console.log(date2.getFullYear() + '/' + date2.getMonth() + '/' + date2.getDate() + ' - ' + date2.getHours() + ':' + date2.getMinutes() + ':' + date2.getSeconds());
 
     MongoClient.connect('mongodb://127.0.0.1:27017/thesis', function(err, db) {
         
@@ -95,50 +94,23 @@ app.post('/start', function(request, response) {
         var recordsCollection = db.collection('records');
 
         recordsCollection.find({
-            'date': { '$gt': date1, '$lte': date2 },
+            // 'date': { '$gt': date1, '$lte': date2 },
             // 'service': 'youtube',
             // 'language_code': 'pt-BR',
-            '$or': [{'language_code': 'pt-BR'}, {'language_code': 'de'}, {'language_code': 'it'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'fr'}, {'language_code': 'es'}, {'language_code': 'en'}, {'language_code': 'da'}, {'language_code': 'fi'}, {'language_code': 'hu'}],
+            '$or': [{'language_code': 'da'}, {'language_code': 'de'}, {'language_code': 'en'}, {'language_code': 'es'}, {'language_code': 'fi'}, {'language_code': 'fr'}, {'language_code': 'hu'}, {'language_code': 'id'}, {'language_code': 'is'}, {'language_code': 'it'}, {'language_code': 'nl'}, {'language_code': 'nl'}, {'language_code': 'pt-BR'}, {'language_code': 'no'}],
             'letter': request.body['letter'].toLowerCase()
 
         }).toArray(function(err, results) {
             // console.dir(results);
             console.log('Found ' + results.length + ' results.');
 
-            // Getting youtube and images url from the other DBs
-            for(var i = 0; i < results.length; i++){
-                if(results[i]['service'] == 'images'){
-                    // console.log(results[i]['query']);
-                    var record = _.find(imagesInDB, function(item, index, list){
-                        // console.log(item['query']);
-                        return item['query'] == results[i]['query'];
-                    });
-                    // console.log(results[i]['query']);
-                    // console.log(record);
-                    results[i]['url'] = record['url'];
-                    // console.log(results[i]);
-
-                }else if(results[i]['service'] == 'youtube'){
-                    // console.log(results[i]['query']);
-                    var record = _.find(youtubeInDB, function(item, index, list){
-                        // console.log(item);
-                        // console.log(item['query']);
-                        return item['query'] == results[i]['query'];
-                    });
-                    // console.log(results[i]['query']);
-                    // console.log(record);
-                    results[i]['videoId'] = record['videoId'];
-                    results[i]['thumbnail'] = record['thumbnail'];
-                    // console.log(results[i]);
-                }
-            }
-            console.log('Grabbed image and youtube urls.');
+            results = getUrls(results);
 
             console.log('Sending back results.');
-            console.log(date2);
+            // console.log(date2);
             console.log(results.length);
             response.json({
-                date: date2,
+                // date: date2,
                 results: results
             });
 
@@ -146,6 +118,85 @@ app.post('/start', function(request, response) {
         });         
     });
 });
+
+app.post('/query', function(request, response) {
+
+    console.log('Query: ' + request.body['query']);
+    console.log('Service: ' + request.body['service']);
+
+    MongoClient.connect('mongodb://127.0.0.1:27017/thesis', function(err, db) {
+        
+        console.log('Connecting to DB...');
+        
+        if(err) throw err;
+        
+        console.log('Connected.');
+
+        var recordsCollection = db.collection('records');
+
+        recordsCollection.find({
+            query: request.body['query'],
+            service: request.body['service'],
+            '$or': [{'language_code': 'da'}, {'language_code': 'de'}, {'language_code': 'en'}, {'language_code': 'es'}, {'language_code': 'fi'}, {'language_code': 'fr'}, {'language_code': 'hu'}, {'language_code': 'id'}, {'language_code': 'is'}, {'language_code': 'it'}, {'language_code': 'nl'}, {'language_code': 'nl'}, {'language_code': 'pt-BR'}, {'language_code': 'no'}]
+
+        }).toArray(function(err, results) {
+            console.dir(results);
+            console.log('Found ' + results.length + ' results.');
+
+            console.log('Sending back results.');
+
+            var main = getUrls(results.slice(0, 1))[0];
+            // console.log(main);
+
+            response.json({
+                main: main,
+                results: results
+            });
+
+            db.close(); // Let's close the db 
+        });         
+    });
+});
+
+var getUrls = function(data){
+
+    console.log('Calling getUrls.');
+
+    // Getting youtube and images url from the other DBs
+    for(var i = 0; i < data.length; i++){
+        
+        console.log(data[i]['service']);
+
+        if(data[i]['service'] == 'images'){
+            // console.log(data[i]['query']);
+            var record = _.find(imagesInDB, function(item, index, list){
+                // console.log(item['query']);
+                return item['query'] == data[i]['query'];
+            });
+            // console.log(data[i]['query']);
+            // console.log(record);
+            data[i]['url'] = record['url'];
+            // console.log(data[i]);
+
+        }else if(data[i]['service'] == 'youtube'){
+            // console.log(data[i]['query']);
+            var record = _.find(youtubeInDB, function(item, index, list){
+                // console.log(item);
+                // console.log(item['query']);
+                return item['query'] == data[i]['query'];
+            });
+            // console.log(data[i]['query']);
+            // console.log(record);
+            data[i]['videoId'] = record['videoId'];
+            data[i]['thumbnail'] = record['thumbnail'];
+            // console.log(results[i]);
+        }
+    }
+
+    console.log('Grabbed image and youtube urls.');
+
+    return data;
+}
 
 /*----------------- INIT SERVER -----------------*/
 var PORT = 3000; //the port you want to use
