@@ -154,9 +154,10 @@ define(['./common'], function (common) {
 									'</div>');
 			}
 
-			for(var i in data[index]['languages']){
+			// Language count
+			for(var i = 0; i < data[index]['languages'].length - 1; i++){
 				$(itemContent).prepend('<hr/>');
-			}			
+			}
 
 			$(itemContent).addClass(data[index]['service'])
 			$(itemContent).children().addClass(data[index]['service']);
