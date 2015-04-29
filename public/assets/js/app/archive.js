@@ -113,7 +113,7 @@ define(['./common'], function (common) {
     		thisQuery['dates'] = _.sortBy(thisQuery['dates'], function(item, index, array){
     			return item;
     		});
-    		console.log(thisQuery);
+    		// console.log(thisQuery);
     		// console.log(thisQuery['languages']);
     		groupedQueries.push(thisQuery);
     	}
@@ -127,10 +127,12 @@ define(['./common'], function (common) {
 		console.log('Appending results...');
 
 		for(var index in data){
-				
-			var itemContainer = $('<div class="item"></div>');				
+			
+			/*---------- CONTAINER ----------*/
+			var itemContainer = $('<div class="item"></div>').appendTo(container);				
 
-			// YOUTUBE
+			/*----- Content -----*/
+			// Youtube
 			if(data[index]['service'] == 'youtube'){
 
 				var itemContent = $('<div class="content" ' +
@@ -138,65 +140,64 @@ define(['./common'], function (common) {
 									'videoid="' + data[index]['videoId'] + '">' +
 									'<img src="/assets/img/play.png"/>' +
 									'</div>');
-			// GOOGLE IMAGES
+			// Google Images
 			}else if(data[index]['service'] == 'images'){
 
 				var itemContent = $('<div class="content">' +
 									'<img src="' + data[index]['url'] + '" />' +
 									'</div>');
-			// GOOGLE WEB
+			// Google Web
 			}else{
 
 				var itemContent = $('<div class="content"><h1>' + data[index]['query'] + '</h1></div>');
 			}
-			$(itemContent).addClass(data[index]['service']);
 
-			// DESCRIPTION
+			$(itemContent).addClass(data[index]['service'])
+						  .appendTo(itemContainer);
+
+
+			/*----- Description -----*/
 			var itemDescription = $('<div class="description" style="display:none"></div>');
 
-				// Query
-				if(data[index]['service'] != 'web'){
-					$(itemDescription).append('<h2>' + data[index]['query'].toUpperCase() + '</h2>');
-				}
+			// Query
+			if(data[index]['service'] != 'web'){
+				$(itemDescription).append('<h2>' + data[index]['query'].toUpperCase() + '</h2>');
+			}
 
-				// Service
-				$(itemDescription).append('<h3>' + servicesAlias[data[index]['service']] + '</h3>')
-								  .append('<hr/>');
+			// Service
+			$(itemDescription).append('<h3>' + servicesAlias[data[index]['service']] + '</h3>')
+							  .append('<hr/>');
 
-				// Languages
-				var languagesText = 'Appears in ';
-				for(var i in data[index]['languages']){
-					if(i > 0){
-						if(data[index]['languages'].length > 2){
-							languagesText += ', ';
-						}
-		    			if(i == data[index]['languages'].length - 1){
-		    				if(data[index]['languages'].length == 2){
-		    					languagesText += ' ';
-		    				}
-		    				languagesText += 'and ';
-		    			}						
+			// Languages
+			var languagesText = 'Appears in ';
+			for(var i in data[index]['languages']){
+				if(i > 0){
+					if(data[index]['languages'].length > 2){
+						languagesText += ', ';
 					}
-	    			languagesText += '<b>' + data[index]['languages'][i] + '</b>';
+	    			if(i == data[index]['languages'].length - 1){
+	    				if(data[index]['languages'].length == 2){
+	    					languagesText += ' ';
+	    				}
+	    				languagesText += 'and ';
+	    			}						
 				}
-				$(itemDescription).append('<p>' + languagesText + '</p>');
+    			languagesText += '<b>' + data[index]['languages'][i] + '</b>';
+			}
+			$(itemDescription).append('<p>' + languagesText + '</p>');
 
-				// Dates
-				var datesText = 'From <b>' +
-									common.formatDateMMDDYYY(data[index]['dates'][0]) +
-									'</b> to <b>' +
-									common.formatDateMMDDYYY(data[index]['dates'][data[index]['dates'].length - 1])  + '</b>';
-				$(itemDescription).append('<p>' + datesText + '</p>');
+			// Dates
+			var datesText = 'From <b>' +
+								common.formatDateMMDDYYY(data[index]['dates'][0]) +
+								'</b> to <b>' +
+								common.formatDateMMDDYYY(data[index]['dates'][data[index]['dates'].length - 1])  + '</b>';
+			$(itemDescription).append('<p>' + datesText + '</p>');
 
-				// More info
-				// $(itemDescription).append('<a href="query.html#' + encodeURIComponent(data[index]['query']) + '?' + data[index]['service'] + '">More Info</a>');
-				$(itemDescription).append('<a href="query.html?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '">More Info</a>');
+			// More info
+			$(itemDescription).append('<a href="query.html?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '">More Info</a>');
 			
-			$(itemDescription).addClass(data[index]['service']);
-
-			$(container).append(itemContainer);
-			$(itemContainer).append(itemContent)
-							.append(itemDescription);
+			$(itemDescription).addClass(data[index]['service'])
+							  .appendTo(itemContainer);
 		}
 
 		drawLayout(container);		
