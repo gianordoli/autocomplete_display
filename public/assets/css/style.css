@@ -15,7 +15,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 /* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */ 
-body, select, input, textarea {	color: #333 }
+body, select, input, textarea {	color: #333; }
 
 /* maxvoltar.com/archive/-webkit-font-smoothing */
 html { -webkit-font-smoothing: antialiased; }
@@ -38,6 +38,10 @@ html { -webkit-font-smoothing: antialiased; }
 		background-color: #2073f0;
 	}
 
+	td.web.true{
+		background-color: #2073f0;
+	}		
+
 .images{
 	border: 8px solid #ffba0f;
 	color: #ffba0f;
@@ -51,6 +55,10 @@ html { -webkit-font-smoothing: antialiased; }
 	hr.images{
 		border: none;
 		height: 8px;
+		background-color: #ffba0f;
+	}	
+
+	td.images.true{
 		background-color: #ffba0f;
 	}	
 
@@ -68,28 +76,34 @@ html { -webkit-font-smoothing: antialiased; }
 		border: none;
 		height: 8px;
 		background-color: #db503d;
-	}	
+	}
+
+	td.youtube.true{
+		background-color: #db503d;
+	}
 
 /*-------------------- STYLES --------------------*/
 
 body{
-	font-size: 11px;
+	font-size: 15px;
+	line-height: 20px;
 }
+
+/*	nav h1{
+		text-align: center;
+		display: inline-block;
+		border: 8px solid #333;
+		padding: 10px;
+		font-size: 3em;
+	}*/	
 
 	/* Nav Bar */
 
 	nav{
 		text-align: center;
 		padding: 10px;
+		border-bottom: 8px solid #333;
 	}
-
-	nav h1{
-		text-align: center;
-		display: inline-block;
-		border: 8px solid #333;
-		padding: 10px;
-		font-size: 3em
-	}	
 
 		nav ul{
 			padding: 0;
@@ -134,9 +148,7 @@ body{
 		/*---------- Description ---------*/
 		#container .item .description{
 			padding: 8px;
-			word-wrap: break-word;
-			font-size: 1.2em;
-			line-height: 1.6em;		
+			word-wrap: break-word;		
 			/*text-align: left;
 			color: white;*/
 		}
@@ -178,12 +190,12 @@ body{
 			}
 
 			#container .item .description h2{
-				font-size: 1.5em;
-				margin-bottom: 0.2em;
+				font-size: 20px;
+				margin-bottom: 4px;
 			}
 
 			#container .item .description h3{
-				font-size: 1.2em;
+				font-size: 15px;
 			}
 
 			#container .item .description p{
@@ -216,6 +228,7 @@ body{
 					padding: 10px;
 					text-align: center;					
 					text-transform: uppercase;
+					font-size: 22px;
 					/*word-break: break-all;*/
 				}
 
@@ -369,6 +382,32 @@ body{
 			padding: 0;
 			list-style-type: none;
 		}
+
+/*-------------------- PAGE: ABOUT --------------------*/
+
+#about-container{
+	width: 800px;
+	text-align: left;
+	display: inline-block;
+}
+
+	#about-container img{
+		width: 800px;
+	}
+
+	#about-container table{
+	  	border-collapse: separate;
+	  	text-align: center;
+	}
+
+		#about-container table tr{
+			height: 40px;
+		}
+
+			#about-container table td{
+				width: 80px;
+				border: 4px solid #333; 
+			}
 
 /*-------------------- LOADER --------------------*/
 #loader-container{
