@@ -284,7 +284,7 @@ define(['./common', 'd3'], function (common) {
 
 });
 
-/* DEPRECATED */
+/*-------------------- DEPRECATED ---------------------*/
 // var appendDates = function(data){
 // 	// DATES
 // 	for(var i in data){

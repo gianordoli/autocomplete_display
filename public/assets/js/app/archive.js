@@ -1,5 +1,7 @@
 define(['./common'], function (common) {
 
+	/*-------------------- MAIN FUNCTIONS --------------------*/
+
 	var appendNavBar = function(){
 		var ul = $('<ul></ul>');
 		for(var i = 65; i <= 90; i++){
@@ -218,6 +220,8 @@ define(['./common'], function (common) {
 		});
 	}
 
+	/*-------------------- AUX FUNCTIONS ---------------------*/
+
 	var attachEvents = function(){
 		// Play video
 		$('.content.youtube').off('click').on('click', function(){
@@ -229,13 +233,6 @@ define(['./common'], function (common) {
 	    $(window).off('hashchange').on('hashchange', function() {
 	        loadData(location.hash.substring(1, location.hash.length));
 	    });
-
-		// Infinite scroll
-		// $(window).scroll(function()	{
-		//     if($(window).scrollTop() == $(document).height() - $(window).height()) {
-		//         loadData(location.hash.substring(1, location.hash.length));
-		//     }
-		// });
 
 		// Show description
 		$('.item').off('mouseenter').on('mouseenter', function(){
@@ -287,6 +284,8 @@ define(['./common'], function (common) {
 		return iframe;
 	}
 
+	/*-------------------- APP INIT ---------------------*/
+
 	// GLOBAL VARS
 	var servicesAlias = {
 		web: 'Google Web',
@@ -298,3 +297,12 @@ define(['./common'], function (common) {
 	loadData(location.hash.substring(1, location.hash.length));	
 
 });
+
+/*-------------------- DEPRECATED ---------------------*/
+
+// Infinite scroll
+// $(window).scroll(function()	{
+//     if($(window).scrollTop() == $(document).height() - $(window).height()) {
+//         loadData(location.hash.substring(1, location.hash.length));
+//     }
+// });
