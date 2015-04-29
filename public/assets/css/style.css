@@ -187,7 +187,7 @@ body{
 
 			/*---------- Google Web ----------*/
 			#container .item div.content.web{
-				border-color: #2073f0;
+				border: none;
 				min-width: 10vw;
 				max-width: 20vw;				
 			}
@@ -201,12 +201,12 @@ body{
 				}
 
 			/*-------- Google Images ---------*/
-			/*#container .item.images div.content{
-				border-color: #ffba0f;
-			}*/		
+			#container .item div.content.images{
+				border: none;	
+			}	
 
 				/* Restraining the size of the images */
-				#container .item div.content.images img{
+				#container .item div.content img.images{
 					/*max-width: 300px;*/
 					/*max-height: 300px;*/
 					display: block;
@@ -220,7 +220,8 @@ body{
 			/*----------- Youtube ------------*/
 			/* Thumbs for videos are loaded as background images,
 			so we need to set a size for the parent div */
-			#container .item div.content.youtube{
+			#container .item div.content div.youtube{
+				/*border: none;*/
 				width: 300px;
 				height: 168px;
 			    background-repeat: no-repeat;
@@ -231,7 +232,7 @@ body{
 			}
 
 				/* Play Button */
-				#container .item div.content.youtube img{
+				#container .item div.content div.youtube img{
 					position: relative;
 					top: calc(50% - 20px);
 					width: 40px;
@@ -239,7 +240,7 @@ body{
 				} 
 
 				/* youtube embed */
-				#container .item div.content.youtube iframe{
+				#container .item div.content div.youtube iframe{
 					width: 300px;
 					height: 168px;
 					/*position: relative;

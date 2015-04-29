@@ -135,25 +135,32 @@ define(['./common'], function (common) {
 			// Youtube
 			if(data[index]['service'] == 'youtube'){
 
-				var itemContent = $('<div class="content" ' +
-									'style="background-image: url(' + data[index]['thumbnail'] + ')" ' +
-									'videoid="' + data[index]['videoId'] + '">' +
-									'<img src="/assets/img/play.png"/>' +
+				var itemContent = $('<div class="content">' +
+										'<div style="background-image: url(' + data[index]['thumbnail'] + ')" videoid="' + data[index]['videoId'] + '">' +
+											'<img src="/assets/img/play.png"/>' +
+										'</div>' +
 									'</div>');
 			// Google Images
 			}else if(data[index]['service'] == 'images'){
 
 				var itemContent = $('<div class="content">' +
-									'<img src="' + data[index]['url'] + '" />' +
+										'<img src="' + data[index]['url'] + '" />' +
 									'</div>');
 			// Google Web
 			}else{
 
-				var itemContent = $('<div class="content"><h1>' + data[index]['query'] + '</h1></div>');
+				var itemContent = $('<div class="content">' +
+										'<h1>' + data[index]['query'] + '</h1>' +
+									'</div>');
 			}
 
+			for(var i in data[index]['languages']){
+				$(itemContent).prepend('<hr/>');
+			}			
+
 			$(itemContent).addClass(data[index]['service'])
-						  .appendTo(itemContainer);
+			$(itemContent).children().addClass(data[index]['service']);
+			$(itemContent).appendTo(itemContainer);
 
 
 			/*----- Description -----*/
