@@ -139,7 +139,7 @@ body{
 				display: inline-block;
 				border: none;
 				font-weight: bold;
-				font-size: 16px;
+				font-size: 15px;
 				vertical-align: middle;
 				margin-right: 20px;
 			}
@@ -185,7 +185,7 @@ body{
 					/*border-color: rgba(110, 40, 230, 0.7);*/
 					border-color: #6e2ae7;				
 					text-transform: uppercase;
-					font-size: 16px;
+					font-size: 15px;
 					font-weight: bold;
 					background-color: white;
 				}
@@ -223,21 +223,35 @@ body{
 			border-color: #ff6600;
 			background-color: #ff6600;				
 			text-transform: uppercase;
-			font-size: 16px;
+			font-size: 15px;
 			font-weight: bold;
 			text-align: center;
 			opacity: 0.7;
+			cursor: pointer;
+			color: white;
 		}				
-			nav #about a:link,
-			nav #about a:visited,
-			nav #about a:active,
-			nav #about a:hover{
+
+		nav ul#pages-links{
+			border-color: #ff6600;
+			background-color: #ff6600;		
+			opacity: 0.7;
+			font-size: 15px;
+			font-weight: bold;
+			margin: 0;
+			float: right;
+			padding: 10px;
+			line-height: 20px;
+			display: none;
+		}
+
+			nav ul#pages-links a:link,
+			nav ul#pages-links a:visited,
+			nav ul#pages-links a:active,
+			nav ul#pages-links a:hover{
 				color: white;
 				text-decoration: none;
 				outline: none;
-			}
-
-					
+			}		
 
 /*-------------------- PAGE: INDEX --------------------*/
 #container{
@@ -503,7 +517,7 @@ body{
 	width: 900px;
 	text-align: left;
 	display: inline-block;
-	line-height: 21px;
+	line-height: 20px;
 }
 
 	#container #about-container a:link,
@@ -527,17 +541,17 @@ body{
 	#container #about-container h1{	
 		color: #6e2ae7;
 		opacity: 0.7;
-		font-size: 21px;
+		font-size: 20px;
 	}
 
 	#container #about-container p{
-		font-size: 16px;
-		margin: 5px 0 21px 0;
+		font-size: 15px;
+		margin: 5px 0 20px 0;
 	}
 
 	#container #about-container ul{
 		list-style: square;
-		padding: 21px;
+		padding: 20px;
 	}
 
 

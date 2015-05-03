@@ -244,6 +244,41 @@ define(['./common'], function (common) {
 	        loadData(location.hash.substring(1, location.hash.length));
 	    });
 
+	    /*-------------------- PAGES MENU --------------------*/
+	    var rollover;
+	    var toggleMenu = function(display){
+	    	if(display){
+	    		$('#pages-links').css('display', 'block');
+	    	}else{
+				$('#pages-links').css('display', 'none');
+	    	}
+    	}
+
+		// About
+	    $('#about').off('mouseenter').on('mouseenter', function() {
+	    	clearTimeout(rollover);
+	        toggleMenu(true);
+	    });
+	    $('#about').off('mouseleave').on('mouseleave', function() {
+	    	clearTimeout(rollover);
+	    	rollover = setTimeout(function(){
+	    		toggleMenu(false);
+	    	}, 2000);
+	    });
+
+		// ABOUT links
+	    $('#pages-links').off('mouseenter').on('mouseenter', function() {
+	    	clearTimeout(rollover);
+	        toggleMenu(true);
+	    });		
+	    $('#pages-links').off('mouseleave').on('mouseleave', function() {
+	    	clearTimeout(rollover);
+	    	rollover = setTimeout(function(){
+	    		toggleMenu(false);
+	    	}, 2000);
+	    });
+	    /*----------------------------------------------------*/
+
 		// Show description
 		$('.item').off('mouseenter').on('mouseenter', function(){
 			$(this).css({
