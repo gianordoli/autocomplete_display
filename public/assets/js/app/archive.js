@@ -2,19 +2,6 @@ define(['./common'], function (common) {
 
 	/*-------------------- MAIN FUNCTIONS --------------------*/
 
-	var appendNavBar = function(){
-		// var ul = $('<ul id="letters"></ul>');
-		var ul = $('#letters');
-		for(var i = 65; i <= 90; i++){
-			var letter = String.fromCharCode(i);
-			var li = $('<li><a class="letter-bt" href="#' + letter + '">' + letter  +'</a></li>');
-			$(ul).append(li);
-		}
-		// $('nav').append(ul);
-
-		attachEvents();
-	}
-
 	var loadData = function(letter){
 
 		console.log('Calling loadData.');
@@ -244,41 +231,6 @@ define(['./common'], function (common) {
 	        loadData(location.hash.substring(1, location.hash.length));
 	    });
 
-	    /*-------------------- PAGES MENU --------------------*/
-	    var rollover;
-	    var toggleMenu = function(display){
-	    	if(display){
-	    		$('#pages-links').css('display', 'block');
-	    	}else{
-				$('#pages-links').css('display', 'none');
-	    	}
-    	}
-
-		// About
-	    $('#about').off('mouseenter').on('mouseenter', function() {
-	    	clearTimeout(rollover);
-	        toggleMenu(true);
-	    });
-	    $('#about').off('mouseleave').on('mouseleave', function() {
-	    	clearTimeout(rollover);
-	    	rollover = setTimeout(function(){
-	    		toggleMenu(false);
-	    	}, 2000);
-	    });
-
-		// ABOUT links
-	    $('#pages-links').off('mouseenter').on('mouseenter', function() {
-	    	clearTimeout(rollover);
-	        toggleMenu(true);
-	    });		
-	    $('#pages-links').off('mouseleave').on('mouseleave', function() {
-	    	clearTimeout(rollover);
-	    	rollover = setTimeout(function(){
-	    		toggleMenu(false);
-	    	}, 2000);
-	    });
-	    /*----------------------------------------------------*/
-
 		// Show description
 		$('.item').off('mouseenter').on('mouseenter', function(){
 			$(this).css({
@@ -295,7 +247,7 @@ define(['./common'], function (common) {
 			$(this).children('.description').css({
 				'display': 'none'
 			});
-		});		
+		});	
 	}
 
 	var removeSelectedLetter = function(){
@@ -338,7 +290,9 @@ define(['./common'], function (common) {
 		youtube: 'Youtube'
 	}
 
-	appendNavBar();
+	common.appendNavBar(true, function(){
+		common.attachNavBarEvents();
+	});
 	loadData(location.hash.substring(1, location.hash.length));
 });
 

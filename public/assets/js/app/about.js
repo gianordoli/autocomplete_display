@@ -52,8 +52,7 @@ define(['./common'], function (common) {
 		console.log('Appending results...');
 
 		animationData = data;
-		console.log(animationData);
-		
+		// console.log(animationData);	
 
 		setInterval(function(){
 			for(var key in data){
@@ -81,12 +80,6 @@ define(['./common'], function (common) {
 			}
 
 		}, 2000);
-
-	}
-
-	var attachEvents = function(){
-
-		
 	}
 
 	/*-------------------- APP INIT ---------------------*/
@@ -99,7 +92,10 @@ define(['./common'], function (common) {
 
 	var animationData;
 	var animationFrame = 0;
-
-	loadData();	
+	
+	common.appendNavBar(false, function(){
+		common.attachNavBarEvents();
+	});
+	loadData();
 
 });
