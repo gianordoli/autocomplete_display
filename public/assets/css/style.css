@@ -391,6 +391,19 @@ body{
 	display: inline-block;
 }
 
+	#about-container .animation{
+		margin: 10px;
+		width: calc((800px - 60px)/3);
+		text-align: left;
+		display: inline-block;
+	}
+
+/*#about-container{
+	width: 800px;
+	text-align: left;
+	display: inline-block;
+}
+
 	#about-container img{
 		width: 800px;
 	}

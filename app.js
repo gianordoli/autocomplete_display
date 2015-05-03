@@ -198,6 +198,41 @@ var getUrls = function(data){
     return data;
 }
 
+app.post('/about', function(request, response) {
+
+    var date1 = new Date(1424476800000);
+    var date2 = new Date(1424476800000 + 86400000);
+
+    MongoClient.connect('mongodb://127.0.0.1:27017/thesis', function(err, db) {
+        
+        console.log('Connecting to DB...');
+        
+        if(err) throw err;
+        
+        console.log('Connected.');
+
+        var recordsCollection = db.collection('records');
+
+        recordsCollection.find({
+            'date': { '$gt': date1, '$lte': date2 },
+            'language_code': 'en'
+
+        }).toArray(function(err, results) {
+            // console.dir(results);
+            console.log('Found ' + results.length + ' results.');
+
+            console.log('Sending back results.');
+            response.json({
+                results: results
+            });
+
+            db.close(); // Let's close the db 
+        });         
+    });
+
+
+});
+
 /*----------------- INIT SERVER -----------------*/
 var PORT = 3000; //the port you want to use
 app.listen(PORT, function() {
