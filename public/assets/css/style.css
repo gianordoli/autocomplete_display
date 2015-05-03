@@ -556,16 +556,20 @@ body{
 		color: #6e2ae7;
 		opacity: 0.7;
 		font-size: 20px;
+		line-height: 24px;
+		margin: 20px 0 0 0;
 	}
 
 	#container #about-container p{
 		font-size: 15px;
-		margin: 5px 0 20px 0;
+		margin: 0;
 	}
 
 	#container #about-container ul{
 		list-style: square;
-		padding: 20px;
+		font-size: 15px;
+		padding: 0 20px;
+		margin: 0;
 	}
 
 

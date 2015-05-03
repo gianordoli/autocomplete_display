@@ -51,34 +51,36 @@ define(['./common'], function (common) {
 
 		console.log('Appending results...');
 
-		animationData = data;
-		// console.log(animationData);	
+		showPredictions(data, 0);	
+	}
 
-		setInterval(function(){
-			for(var key in data){
-				// Letter
-				var letter = animationData[key][animationFrame][0].substring(0, 1);
-				$('.animation#' + key + ' > .search-box').html(letter);
-				
-				// Predictions
-				var predictions = animationData[key][animationFrame];
-				$('.animation#' + key + ' > .predictions').empty();
-				var predictionsList = $('<ul></ul>');
-				for(var i in predictions){
-					$(predictionsList).append('<li>' + predictions[i] + '</li>');
-				}
-				$('.animation#' + key + ' > .predictions').append(predictionsList);
-			}
+	var showPredictions = function(data, i){
+		for(var key in data){
+			// Letter
+			var letter = data[key][i][0].substring(0, 1);
+			$('.animation#' + key + ' > .search-box').html(letter);
 			
-			$('.animation > .search-box').css('visibility', 'visible');
-			$('.animation > .predictions').css('visibility', 'visible');
-			
-			// Net iteration
-			animationFrame ++;
-			if(animationFrame >= animationData['web'].length){
-				animationFrame = 0;
+			// Predictions
+			var predictions = data[key][i];
+			$('.animation#' + key + ' > .predictions').empty();
+			var predictionsList = $('<ul></ul>');
+			for(var j in predictions){
+				$(predictionsList).append('<li>' + predictions[j] + '</li>');
 			}
+			$('.animation#' + key + ' > .predictions').append(predictionsList);
+		}
+		
+		$('.animation > .search-box').css('visibility', 'visible');
+		$('.animation > .predictions').css('visibility', 'visible');
+		
+		// Net iteration
+		i ++;
+		if(i >= data['web'].length){
+			i = 0;
+		}
 
+		setTimeout(function(){
+			showPredictions(data, i);
 		}, 2000);
 	}
 
@@ -89,9 +91,6 @@ define(['./common'], function (common) {
 		images: 'Google Images',
 		youtube: 'Youtube'
 	}
-
-	var animationData;
-	var animationFrame = 0;
 	
 	common.appendNavBar(false, function(){
 		common.attachNavBarEvents();
