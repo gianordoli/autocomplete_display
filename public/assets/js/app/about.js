@@ -54,21 +54,21 @@ define(['./common'], function (common) {
 		animationData = data;
 		console.log(animationData);
 
-		// for(var key in data){
-		// 	$('#container').append('<div class="animation" id="' + key + '"></div>');
-		// }
-		setInterval(function(){
 
-			// Letter
-			var letter = animationData['web'][animationFrame][0].substring(0, 1);
-			$('.animation#web > .search-box').html(letter);
-			
-			// Predictions
-			var predictions = animationData['web'][animationFrame];
-			$('.animation#web > .predictions').empty();
-			var predictionsList = $('.animation#web > .predictions').append('<ul></ul>');
-			for(var i in predictions){
-				$(predictionsList).append('<li>' + predictions[i] + '</li>');
+		setInterval(function(){
+			for(var key in data){
+				// Letter
+				var letter = animationData[key][animationFrame][0].substring(0, 1);
+				$('.animation#' + key + ' > .search-box').html(letter);
+				
+				// Predictions
+				var predictions = animationData[key][animationFrame];
+				$('.animation#' + key + ' > .predictions').empty();
+				var predictionsList = $('<ul></ul>');
+				for(var i in predictions){
+					$(predictionsList).append('<li>' + predictions[i] + '</li>');
+				}
+				$('.animation#' + key + ' > .predictions').append(predictionsList);
 			}
 			
 			// Net iteration

@@ -385,18 +385,45 @@ body{
 
 /*-------------------- PAGE: ABOUT --------------------*/
 
-#about-container{
-	width: 800px;
-	text-align: left;
+#container #about-container{
+	width: 900px;
+	text-align: center;
 	display: inline-block;
 }
 
-	#about-container .animation{
+	#container #about-container .animation{
 		margin: 10px;
-		width: calc((800px - 60px)/3);
-		text-align: left;
+		width: 270px;
+		text-align: center;
 		display: inline-block;
+		vertical-align: top;
 	}
+
+		#container #about-container .animation img{
+			width: 200px;
+			height: auto;
+		}	
+
+		#container #about-container .animation .search-box,
+		#container #about-container .animation .predictions{
+			width: 80%;
+			display: inline-block;
+			text-align: left;
+			padding: 2px 5px;
+			border: 1px solid #2073f0;
+		}
+
+			#container #about-container .animation .predictions ul{
+				list-style: none;
+				padding: 10px;
+				margin: 0;
+			}
+
+				#container #about-container .animation .predictions ul li{
+					padding: 0;
+					margin: 0;
+					font-weight: bold;
+			}
 
 /*#about-container{
 	width: 800px;
