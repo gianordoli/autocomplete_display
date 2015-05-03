@@ -3,13 +3,14 @@ define(['./common'], function (common) {
 	/*-------------------- MAIN FUNCTIONS --------------------*/
 
 	var appendNavBar = function(){
-		var ul = $('<ul></ul>');
+		// var ul = $('<ul id="letters"></ul>');
+		var ul = $('#letters');
 		for(var i = 65; i <= 90; i++){
 			var letter = String.fromCharCode(i);
 			var li = $('<li><a class="letter-bt" href="#' + letter + '">' + letter  +'</a></li>');
 			$(ul).append(li);
 		}
-		$('nav').append(ul);
+		// $('nav').append(ul);
 
 		attachEvents();
 	}

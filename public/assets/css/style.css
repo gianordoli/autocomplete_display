@@ -85,54 +85,166 @@ html { -webkit-font-smoothing: antialiased; }
 /*-------------------- STYLES --------------------*/
 
 body{
-	font-size: 15px;
-	line-height: 20px;
-}
 
-/*	nav h1{
-		text-align: center;
-		display: inline-block;
-		border: 8px solid #333;
-		padding: 10px;
-		font-size: 3em;
-	}*/	
+}	
 
 	/* Nav Bar */
 
 	nav{
-		text-align: center;
+		/*text-align: center;
 		padding: 10px;
-		border-bottom: 8px solid #333;
+		border-bottom: 8px solid #333;*/
+		position: fixed;
+		left: 0;
+		top: 0;
+		z-index: 1000;
+		width: 100%;
 	}
-
-		nav ul{
+		/* TITLE */
+		nav h1{
+			display: inline-block;
+			vertical-align: text-bottom;
+			font-size: 36px;
+			opacity: 0.7;
+			margin: 10px 40px 10px 20px;
+			border: 0;
 			padding: 0;
 		}
 
-			nav ul li{
-				display: inline-block;
+			nav h1 span{
+				color: #ff6600;
 			}
-				nav ul li a{
-					padding: 10px;
-					font-size: 2em;
-					font-weight: bold;
+
+			nav h1 a:link,
+			nav h1 a:visited,
+			nav h1 a:active,
+			nav h1 a:hover{
+				outline: none;
+				color: #6e2ae7;
+				text-decoration: none;
+			}
+
+		/* SERVICES */
+		nav ul#services{
+			list-style: none;
+			display: inline-block;
+			vertical-align: text-bottom;
+			line-height: 36px;
+			margin: 10px 0;
+			border: 0;
+			padding: 0;	
+		}
+
+			nav ul#services li{
+				display: inline-block;
+				border: none;
+				font-weight: bold;
+				font-size: 16px;
+				vertical-align: middle;
+				margin-right: 20px;
+			}
+
+			nav ul#services li.web		{	color: #2073f0;	}
+			nav ul#services li.images	{	color: #ffba0f;	}
+			nav ul#services li.youtube	{	color: #db503d;	}
+
+				nav ul#services li div{
+					display: inline-block;
+					vertical-align: middle;
+					width: 20px;
+					height: 20px;
+					margin-right: 10px;
 				}
 
-				nav ul li a.letter-bt.not-active {
+				nav ul#services li.web div		{ background-color: #2073f0; }
+				nav ul#services li.images div	{ background-color: #ffba0f; }
+				nav ul#services li.youtube div	{ background-color: #db503d; }
+
+		/* LETTERS */
+		nav ul#letters{
+			display: inline-block;
+			width: calc(100% - 32px);
+			opacity: 0.7;
+			background-color: #6e2ae7;
+			margin: 0;
+			border: 0;
+			padding: 0 0 0 20px;
+		}
+
+			nav ul#letters li{
+				display: inline-block;
+				text-align: center;
+			}		
+
+				nav ul#letters li a{
+					display: block;
+					width: 32px;
+					padding: 5px 0;
+					border-width: 8px 0 8px 8px;
+					border-style: solid;
+					/*border-color: rgba(110, 40, 230, 0.7);*/
+					border-color: #6e2ae7;				
+					text-transform: uppercase;
+					font-size: 16px;
+					font-weight: bold;
+					background-color: white;
+				}
+
+				nav ul#letters li a:link,
+				nav ul#letters li a:visited,
+				nav ul#letters li a:active,
+				nav ul#letters li a:hover{
+					outline: 0;
+					text-decoration: none;
+					/*color: rgba(110, 40, 230, 0.7);*/
+					color: #6e2ae7;
+				}
+
+				nav ul#letters li a.letter-bt.not-active {
 				   pointer-events: none;
 				   cursor: default;
 				}
 
-				nav  ul li a.letter-bt.selected {
-				   background-color: #333;
+				nav  ul#letters li a.letter-bt.selected {
+				   /*background-color: rgba(110, 40, 230, 0.7);*/
+				   background-color: #6e2ae7;
 				   color: white;
-				}		
+				}
+
+		/* ABOUT */
+		nav #about{
+			display: inline-block;
+			width: 32px;
+			float: right;
+			padding: 5px 0;
+			border-width: 8px;
+			border-style: solid;
+			/*border-color: rgba(110, 40, 230, 0.7);*/
+			border-color: #ff6600;
+			background-color: #ff6600;				
+			text-transform: uppercase;
+			font-size: 16px;
+			font-weight: bold;
+			text-align: center;
+			opacity: 0.7;
+		}				
+			nav #about a:link,
+			nav #about a:visited,
+			nav #about a:active,
+			nav #about a:hover{
+				color: white;
+				text-decoration: none;
+				outline: none;
+			}
+
+					
 
 /*-------------------- PAGE: INDEX --------------------*/
 #container{
 	width: 100%;
 	height: 100%;
 	text-align: center;
+	padding-top: 150px;
 }
 
 	/* Each Result
@@ -148,7 +260,9 @@ body{
 		/*---------- Description ---------*/
 		#container .item .description{
 			padding: 8px;
-			word-wrap: break-word;		
+			word-wrap: break-word;
+			font-size: 15px;
+			line-height: 20px;			
 			/*text-align: left;
 			color: white;*/
 		}
@@ -411,6 +525,7 @@ body{
 			text-align: left;
 			padding: 2px 5px;
 			border: 1px solid #2073f0;
+			visibility: hidden;
 		}
 
 			#container #about-container .animation .predictions ul{
@@ -423,30 +538,6 @@ body{
 					padding: 0;
 					margin: 0;
 					font-weight: bold;
-			}
-
-/*#about-container{
-	width: 800px;
-	text-align: left;
-	display: inline-block;
-}
-
-	#about-container img{
-		width: 800px;
-	}
-
-	#about-container table{
-	  	border-collapse: separate;
-	  	text-align: center;
-	}
-
-		#about-container table tr{
-			height: 40px;
-		}
-
-			#about-container table td{
-				width: 80px;
-				border: 4px solid #333; 
 			}
 
 /*-------------------- LOADER --------------------*/

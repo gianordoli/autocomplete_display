@@ -53,7 +53,7 @@ define(['./common'], function (common) {
 
 		animationData = data;
 		console.log(animationData);
-
+		
 
 		setInterval(function(){
 			for(var key in data){
@@ -70,6 +70,9 @@ define(['./common'], function (common) {
 				}
 				$('.animation#' + key + ' > .predictions').append(predictionsList);
 			}
+			
+			$('.animation > .search-box').css('visibility', 'visible');
+			$('.animation > .predictions').css('visibility', 'visible');
 			
 			// Net iteration
 			animationFrame ++;
