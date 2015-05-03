@@ -15,7 +15,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 /* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */ 
-body, select, input, textarea {	color: #333; }
+body, select, input, textarea {	color: #444; }
 
 /* maxvoltar.com/archive/-webkit-font-smoothing */
 html { -webkit-font-smoothing: antialiased; }
@@ -93,7 +93,7 @@ body{
 	nav{
 		/*text-align: center;
 		padding: 10px;
-		border-bottom: 8px solid #333;*/
+		border-bottom: 8px solid #444;*/
 		position: fixed;
 		left: 0;
 		top: 0;
@@ -243,8 +243,8 @@ body{
 #container{
 	width: 100%;
 	height: 100%;
+	padding: 120px 20px 20px 20px;
 	text-align: center;
-	padding-top: 150px;
 }
 
 	/* Each Result
@@ -501,13 +501,51 @@ body{
 
 #container #about-container{
 	width: 900px;
-	text-align: center;
+	text-align: left;
 	display: inline-block;
+	line-height: 21px;
 }
 
+	#container #about-container a:link,
+	#container #about-container a:visited,
+	#container #about-container a:active,
+	#container #about-container a:hover{
+		color: #ff6600;
+		opacity: 0.7;
+		font-weight: bold;
+		outline: none;
+	}
+
+	/* TEXT */
+	#container #about-container h1,
+	#container #about-container p,
+	#container #about-container ul{
+		width: 600px;
+		display: block;
+	}
+
+	#container #about-container h1{	
+		color: #6e2ae7;
+		opacity: 0.7;
+		font-size: 21px;
+	}
+
+	#container #about-container p{
+		font-size: 16px;
+		margin: 5px 0 21px 0;
+	}
+
+	#container #about-container ul{
+		list-style: square;
+		padding: 21px;
+	}
+
+
+	/* ANIMATIONS */
 	#container #about-container .animation{
 		margin: 10px;
 		width: 270px;
+		height: 450px;		
 		text-align: center;
 		display: inline-block;
 		vertical-align: top;
@@ -520,18 +558,21 @@ body{
 
 		#container #about-container .animation .search-box,
 		#container #about-container .animation .predictions{
-			width: 80%;
+			width: 90%;
 			display: inline-block;
 			text-align: left;
 			padding: 2px 5px;
 			border: 1px solid #2073f0;
 			visibility: hidden;
+			word-wrap: break-word;
 		}
 
 			#container #about-container .animation .predictions ul{
+				width: 90%;
 				list-style: none;
-				padding: 10px;
+				padding: 10px 20px;
 				margin: 0;
+				text-indent: -10px;
 			}
 
 				#container #about-container .animation .predictions ul li{
@@ -630,7 +671,7 @@ body{
 			}
 
 		#chart-container text{
-			fill: #333;
+			fill: #444;
 		}
 
 path.line{
@@ -647,7 +688,7 @@ path.line{
 /* Inner Ticks */
 .axis line {
   fill: none;
-  stroke: #333;
+  stroke: #444;
   stroke-width: 4px;
   shape-rendering: crispEdges;
 }
