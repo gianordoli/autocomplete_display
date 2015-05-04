@@ -97,7 +97,7 @@ body{
 		position: fixed;
 		left: 0;
 		top: 0;
-		z-index: 1000;
+		z-index: 2000;
 		width: 100%;
 	}
 		/* TITLE */
@@ -278,7 +278,8 @@ body{
 	/* Each Result
 	Each repeated query is grouped into one of these */
 	#container .item{
-		/*display: inline-block;*/
+		display: inline-block;
+		vertical-align: middle;
 		margin: 5px;
 		text-align: left;
 	}
@@ -546,13 +547,27 @@ body{
 
 	/* TEXT */
 	#container #about-container h1,
+	#container #about-container h2,
 	#container #about-container p,
 	#container #about-container ul{
 		width: 600px;
 		display: block;
 	}
 
+	#container #about-container img{
+		max-width: 900px;
+	}	
+
 	#container #about-container h1{	
+		color: #6e2ae7;
+		opacity: 0.7;
+		font-size: 28px;
+		line-height: 40px;
+		margin: 20px 0 10px 0;
+		border-bottom: 4px solid #6e2ae7;
+	}
+
+	#container #about-container h2{	
 		color: #6e2ae7;
 		opacity: 0.7;
 		font-size: 20px;
@@ -568,7 +583,7 @@ body{
 	#container #about-container ul{
 		list-style: square;
 		font-size: 15px;
-		padding: 0 20px;
+		padding: 0 17px;
 		margin: 0;
 	}
 

@@ -37,7 +37,7 @@ require(['config'], function () {
 			    });
 			});
 
-		}else if(filename != 'faq' && filename != 'technology'){
+		}else{
 			loadMainScript(filename);
 		}
 	});
