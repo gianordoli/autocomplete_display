@@ -49,7 +49,7 @@ define(function (require) {
 
 			console.log('Attaching events to NavBar');
 
-		    var rollover;
+		    var aboutRollover;
 		    var toggleMenu = function(display){
 		    	if(display){
 		    		$('#pages-links').css('display', 'inline-block');
@@ -60,24 +60,24 @@ define(function (require) {
 
 			// About
 		    $('#about').off('mouseenter').on('mouseenter', function() {
-		    	clearTimeout(rollover);
+		    	clearTimeout(aboutRollover);
 		        toggleMenu(true);
 		    });
 		    $('#about').off('mouseleave').on('mouseleave', function() {
-		    	clearTimeout(rollover);
-		    	rollover = setTimeout(function(){
+		    	clearTimeout(aboutRollover);
+		    	aboutRollover = setTimeout(function(){
 		    		toggleMenu(false);
-		    	}, 2000);
+		    	}, 1000);
 		    });
 
 			// ABOUT links
 		    $('#pages-links').off('mouseenter').on('mouseenter', function() {
-		    	clearTimeout(rollover);
+		    	clearTimeout(aboutRollover);
 		        toggleMenu(true);
 		    });		
 		    $('#pages-links').off('mouseleave').on('mouseleave', function() {
-		    	clearTimeout(rollover);
-		    	rollover = setTimeout(function(){
+		    	clearTimeout(aboutRollover);
+		    	aboutRollover = setTimeout(function(){
 		    		toggleMenu(false);
 		    	}, 2000);
 		    });

@@ -289,7 +289,7 @@ define(['./common', 'd3'], function (common) {
 
 		// Header
 		$('#lightbox').append('<div id="close-bt"><img src="/assets/img/close_bt.png" /></div>');
-		$('#lightbox').append('<h1>' + main['query'] + '</h1>');
+		$('#lightbox').append('<h1>' + main['query'] + '</h1>')
 		$('#lightbox').append('<h2>' + servicesAlias[main['service']]['name'] + '</h2>');
 
 		/*----- LAYOUT -----*/
@@ -406,9 +406,9 @@ define(['./common', 'd3'], function (common) {
 
 		var languagesList = $('<ul></ul>');
 		for(var i in languagesPalette){
-			$(languagesList).append('<li>' +
+			$(languagesList).append('<li class="language-bt">' +
 										'<div class="language-marker" style="background-color:' + languagesPalette[i]['color'] + '"></div>' +
-										'<a href="' + servicesAlias[main['service']]['search_address'] + encodeURI(main['query']) + '&hl=' + languagesPalette[i]['language_code'] + '" target="_blank">' + languagesPalette[i]['language_name'] + '</a>' +
+										'<a href="" query="' + encodeURI(main['query']) + '" service="' + main['service'] + '" language="' + languagesPalette[i]['language_code'] + '">' + languagesPalette[i]['language_name'] + '</a>' +
 									'</li>');
 		}
 		$('#lightbox').append(languagesList);
@@ -441,7 +441,53 @@ define(['./common', 'd3'], function (common) {
 			$('#lightbox').empty()
 						  .hide();
 			$('#lightbox-shadow').hide();
-		});		
+		});
+
+		var languageRollover;
+
+		$('.language-bt').off('mouseenter').on('mouseenter', function() {
+			clearTimeout(languageRollover);
+			tooltip($(this));
+		});				
+
+		$('.language-bt').off('mouseleave').on('mouseleave', function() {
+	    	clearTimeout(languageRollover);
+	    	languageRollover = setTimeout(function(){
+	    		$('.language-tooltip').remove();
+	    	}, 1000);
+		});
+
+		var tooltip = function(obj){
+
+			$('.language-tooltip').remove();
+
+			var linkColor = $(obj).children('.language-marker').css('background-color');
+			var linkPosition = $(obj).offset();
+			var linkWidth = $(obj).width();
+			var query = $(obj).children('a').attr('query');
+			var service = $(obj).children('a').attr('service');
+			var language = $(obj).children('a').attr('language');
+			// console.log(query + ', ' + service + ', ' + language);
+
+			$('<div class="language-tooltip">' +				
+				'<a href="' + servicesAlias[service]['search_address'] + query + '&hl=' + language + '" target="_blank">Search</a>' + 
+				'<br />' +
+				'<a href="https://translate.google.com/?ie=UTF-8&hl=en#' + language + '/en/' + query + '" target="_blank">Translate</a>' + 				
+			  '</div>')
+			  .css({
+			  	'bottom': (window.innerHeight - linkPosition.top - 1) + 'px',
+			  	'left': (linkPosition.left) + 'px',
+			  	'min-width': linkWidth + 'px',
+			  	'border-color': linkColor
+			  })
+			  .off('mouseenter').on('mouseenter', function(){
+			  	clearTimeout(languageRollover);
+			  })
+			  .off('mouseleave').on('mouseleave', function(){
+			  	$('.language-tooltip').remove();
+			  })
+			  .appendTo('body');
+		}
 
 		// Play video
 		$('.content.youtube').children('.youtube').off('click').on('click', function(){

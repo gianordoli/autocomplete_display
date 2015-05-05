@@ -709,6 +709,27 @@ div#lightbox{
 	padding: 0;
 }
 
+	div.language-tooltip{
+		position: absolute;
+		z-index: 3002;
+		background-color: white;
+		color: white;
+		padding: 10px;		
+		font-size: 15px;
+		line-height: 20px;
+		text-align: left;
+		border-style: solid;
+		border-width: 8px;
+	}
+
+	div.language-tooltip a:link,
+	div.language-tooltip a:visited,
+	div.language-tooltip a:active,
+	div.language-tooltip a:hover{
+		color: #444;
+		outline: none;
+	}	
+
 	div#lightbox #close-bt{
 		float: right;
 		width: 32px;
