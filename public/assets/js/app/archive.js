@@ -467,12 +467,13 @@ define(['./common', 'd3'], function (common) {
 			var query = $(obj).children('a').attr('query');
 			var service = $(obj).children('a').attr('service');
 			var language = $(obj).children('a').attr('language');
+			var translateLanguage = (language == 'pt-BR') ? ('pt') : (language);
 			// console.log(query + ', ' + service + ', ' + language);
 
 			$('<div class="language-tooltip">' +				
 				'<a href="' + servicesAlias[service]['search_address'] + query + '&hl=' + language + '" target="_blank">Search</a>' + 
 				'<br />' +
-				'<a href="https://translate.google.com/?ie=UTF-8&hl=en#' + language + '/en/' + query + '" target="_blank">Translate</a>' + 				
+				'<a href="https://translate.google.com/?ie=UTF-8&hl=en#' + translateLanguage + '/en/' + query + '" target="_blank">Translate</a>' + 				
 			  '</div>')
 			  .css({
 			  	'bottom': (window.innerHeight - linkPosition.top - 1) + 'px',
