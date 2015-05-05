@@ -728,6 +728,8 @@ div#lightbox{
 	div.language-tooltip a:hover{
 		color: #444;
 		outline: none;
+		text-decoration: none;
+		font-weight: bold;
 	}	
 
 	div#lightbox #close-bt{
