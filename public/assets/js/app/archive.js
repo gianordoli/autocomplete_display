@@ -1,4 +1,4 @@
-define(['./common'], function (common) {
+define(['./common', 'd3'], function (common) {
 
 	/*-------------------- MAIN FUNCTIONS --------------------*/
 
@@ -161,7 +161,7 @@ define(['./common'], function (common) {
 			}
 
 			// Service
-			$(itemDescription).append('<h3>' + servicesAlias[data[index]['service']] + '</h3>')
+			$(itemDescription).append('<h3>' + servicesAlias[data[index]['service']]['name'] + '</h3>')
 							  .append('<hr/>');
 
 			// Languages
@@ -190,7 +190,8 @@ define(['./common'], function (common) {
 			$(itemDescription).append('<p>' + datesText + '</p>');
 
 			// More info
-			$(itemDescription).append('<a href="query.html?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '">More Info</a>');
+			// $(itemDescription).append('<a href="query.html?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '">More Info</a>');
+			$(itemDescription).append('<p class="more-info" name="' + data[index]['query'] + '#' + data[index]['service'] + '">More Info</p>');
 			
 			$(itemDescription).addClass(data[index]['service'])
 							  .appendTo(itemContainer);
@@ -217,9 +218,222 @@ define(['./common'], function (common) {
 		});
 	}
 
+	/*-------------------- MORE INFO ---------------------*/
+
+	var loadMoreInfo = function(query, service){
+
+		console.log('Calling loadMoreInfo.')
+		console.log('Requesting: ' + query + ' at ' + service + '.');
+
+		common.appendLoader('#lightbox');
+
+		$.post('/query', {
+			query: query,
+			service: service
+		}, function(response) {
+	        // console.log(response);
+	        if(response.error){
+	        	throw response.error
+
+	        // Loaded results
+	        }else{
+	        	console.log('Got response from server.');
+	        	console.log(response);
+
+	        	$('#lightbox').empty();
+	        	processMoreInfo(response);
+	        }
+	    });
+	}
+
+	var processMoreInfo = function(data){
+
+		console.log('Called processMoreInfo.')
+
+		data['results'] = common.refineDates(data['results']);
+
+		/*---------- Dates Tables ----------*/
+		var groupedByDate = _.groupBy(data['results'], function(item, index, array){
+			// console.log(item['date']);
+			return item['date'];
+		});
+		// console.log(groupedByDate);
+
+		var sortedByDate = _.sortBy(groupedByDate, function(value, key, collection){
+			return key;
+		});
+		// console.log(sortedByDate);
+
+		/*---------- D3 Chart ----------*/
+		var groupedByLanguage = _.groupBy(data['results'], function(item, index, array){
+			return item['language_name'];
+		});
+		// console.log(groupedByLanguage);
+
+		// Let's make things easier for D3... Passing the min and max dates
+		var dateRange = [sortedByDate[0][0]['date'], sortedByDate[sortedByDate.length - 1][0]['date']];
+        // D3 needs an Array! You can't pass the languages as keys
+        groupedByLanguage = _.toArray(groupedByLanguage);
+        for(var i in groupedByLanguage){
+        	groupedByLanguage[i] = _.sortBy(groupedByLanguage[i], function(item, index, array){
+        		return item['date'];
+        	});
+        }
+
+		drawChart(data['main'], groupedByLanguage, dateRange);
+	}
+
+	var drawChart = function(main, dataset, dateRange){
+
+		console.log('Called drawChart');
+
+		// Header
+		$('#lightbox').append('<h1>' + main['query'] + '</h1>');
+		$('#lightbox').append('<h2>' + servicesAlias[main['service']]['name'] + '</h2>');
+
+		/*----- LAYOUT -----*/
+		var svgSize = {	width: 560, height: 400	};
+		var margin = { top: 50, right: 50, bottom: 50, left: 80 };
+		var width  = svgSize.width - margin.left - margin.right;
+		var height = svgSize.height - margin.top - margin.bottom;
+		
+		var languagesPalette = [];
+		for(var i in dataset){
+			var hue = i * 360 / dataset.length;
+			languagesPalette.push({
+				language_name: dataset[i][0]['language_name'],
+				language_code: dataset[i][0]['language_code'],
+				color: parseHsla({h: hue, s: 100, l: 50, a: 0.5})	
+			});
+		}
+		// console.log(languagesPalette);
+
+		// Canvas
+		var svg = d3.select('#lightbox')
+					.append('svg')
+					.attr('id', 'chart')
+					.attr('width', width + margin.left + margin.right)
+				    .attr('height', height + margin.top + margin.bottom);		
+
+        // Now the whole chart will be inside a group
+        var chart = svg.append("g")
+                       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");				    
+
+		var xScale = d3.time.scale()
+						.domain(d3.extent(dateRange, function(d, i){
+							return d;
+						}))
+						.range([0, width]);
+
+		var yScale = d3.scale.linear()
+					   .domain([1, 10])
+					   .range([0, height]);
+
+		var line = d3.svg.line()
+					    .x(function(d, i) {
+					    	return xScale(d['date']);
+					    })
+					    .y(function(d) {
+					    	return yScale(d['ranking'] + 1);
+					    });
+
+
+		// X Scale
+		var xAxis = d3.svg.axis()
+							.ticks(5)
+							.innerTickSize(20)
+						    .scale(xScale)
+						    .orient("bottom");
+
+		// Y Scale
+		var yAxis = d3.svg.axis()
+						    .innerTickSize(20)
+						    .scale(yScale)
+						    .orient("left");
+
+        // Now appending the axes
+        chart.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .attr("class", "x axis")
+            .call(xAxis);
+
+        chart.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text") // Label
+            .attr("transform", "rotate(-90)")
+            .attr("y", -55)
+            .attr("x", -55)
+            .attr("class", "label")
+            .style("text-anchor", "end")
+            .text("Position on Autocomplete");
+
+		// d3.selectAll("g.y.axis g.tick line")
+		//     .attr("x2", function(d){
+		//            return width;
+		//     });
+
+	  	// Lines
+		var language = chart.selectAll(".line")
+				      		.data(dataset)
+						    .enter()
+							.append("path")
+							.attr("class", "line")
+							// .attr('stroke', parseHsla(categoriesColors[parseInt(cat) - 1], 1))
+							.attr('stroke', function(d, i){
+								return languagesPalette[i]['color'];
+							})
+							.attr('d', function(d, i){
+								// console.log(d);
+								// Shrinking lines to 0
+								var emptyHistory = [];
+								for(var j in d){
+									var emptyRecord = {
+										ranking: 9,
+										date: d[j]['date']
+									};
+									emptyHistory.push(emptyRecord);
+								}
+								return line(emptyHistory);
+							})
+							.transition()
+							.duration(1000)
+							.attr("d", function(d, i) {
+								return line(d);
+							});
+							
+
+		var languagesList = $('<ul></ul>');
+		for(var i in languagesPalette){
+			$(languagesList).append('<li>' +
+										'<div class="language-marker" style="background-color:' + languagesPalette[i]['color'] + '"></div>' +
+										'<a href="' + servicesAlias[main['service']]['search_address'] + encodeURI(main['query']) + '&hl=' + languagesPalette[i]['language_code'] + '" target="_blank">' + languagesPalette[i]['language_name'] + '</a>' +
+									'</li>');
+		}
+		$('#lightbox').append(languagesList);
+	}	
+
 	/*-------------------- AUX FUNCTIONS ---------------------*/
 
 	var attachEvents = function(){
+
+		// More info
+		$('.more-info').off('click').on('click', function(){
+			var query = $(this).attr('name').substring(0, $(this).attr('name').indexOf('#'));
+			var service = $(this).attr('name').substring($(this).attr('name').indexOf('#') + 1, $(this).attr('name').length);
+			console.log(query + ', ' + service);
+			$('#lightbox-shadow').css('display', 'block');
+			$('#lightbox').css('display', 'block');
+			loadMoreInfo(query, service);
+		});
+
+		// Lightbox
+		$('#lightbox-shadow').off('click').on('click', function() {
+			$('#lightbox').empty()
+						  .css('display', 'none');
+			$(this).css('display', 'none');
+		});		
+
 		// Play video
 		$('.content.youtube').children('.youtube').off('click').on('click', function(){
 			console.log($(this).attr('videoid'));
@@ -281,13 +495,27 @@ define(['./common'], function (common) {
 		return iframe;
 	}
 
+	var parseHsla = function(color){
+		var myHslaColor = 'hsla(' + color.h + ', ' + color.s + '%, ' + color.l + '%, ' + color.a +')';
+		return myHslaColor;
+	}	
+
 	/*-------------------- APP INIT ---------------------*/
 
 	// GLOBAL VARS
 	var servicesAlias = {
-		web: 'Google Web',
-		images: 'Google Images',
-		youtube: 'Youtube'
+		web: {
+			name: 'Google Web',
+			search_address: 'https://www.google.com/#q='
+		},
+		images: {
+			name: 'Google Images',
+			search_address: 'https://www.google.com/search?site=imghp&tbm=isch&q='
+		},
+		youtube: {
+			name: 'Youtube',
+			search_address: 'https://www.youtube.com/results?search_query='
+		}
 	}
 
 	common.appendNavBar(true, function(){

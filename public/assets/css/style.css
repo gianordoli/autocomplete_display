@@ -265,7 +265,7 @@ body{
 				color: white;
 				text-decoration: none;
 				outline: none;
-			}		
+			}
 
 /*-------------------- PAGE: INDEX --------------------*/
 #container{
@@ -283,8 +283,6 @@ body{
 		margin: 5px;
 		text-align: left;
 	}
-
-
 
 		/*---------- Description ---------*/
 		#container .item .description{
@@ -639,7 +637,7 @@ body{
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);	*/
 	width: 100%;
-	height: 100px;
+	height: 100%;
 }
 
 #loader-container .loader {
@@ -682,17 +680,78 @@ body{
 
 /*-------------------- CHART --------------------*/
 
-#chart-container{
-	display: inline-block;
-	/*width: 50%;*/
+/* LIGHTBOX */
+div#lightbox-shadow{
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(227, 224, 226, 0.85);
+	z-index: 3000;
+	display: none;
 }
 
-	#chart-container svg{
+div#lightbox{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: 600px;
+	height: 600px;
+	margin-left: -300px;
+	margin-top: -300px;
+	z-index: 3001;
+
+	background-color: white;
+	color: black;
+	text-align: center;
+	overflow-y: scroll;
+	display: none;
+	padding: 20px;
+}
+
+	div#lightbox a:link,
+	div#lightbox a:visited,
+	div#lightbox a:active,
+	div#lightbox a:hover{
+		outline: none;
+		color: #444;
+	}
+
+	div#lightbox h1 {
+		font-size: 28px;
+		line-height: 40px;
+		border-bottom: 4px solid #444;
+		margin: 20px 50px 10px 50px;
+	}
+	
+	div#lightbox h2 {
+		margin: 0 50px;
+		font-size: 20px;
+		line-height: 24px;
+	}
+
+	div#lightbox p {
+		font-size: 15px;
+		line-height: 20px;
+	}
+
+	/* Labels */
+	.axis text.label{
+		font-size: 20px;
+	}
+	/* Numbers */
+	.axis text{
+		font-size: 15px;
+		font-weight: bold;
+	}
+
+	div#lightbox svg{
 		display: block;
 		/*float: left;*/
 	}
 
-	#chart-container ul{
+	div#lightbox ul{
 		padding: 0;
 		display: block;		
 		width: 440px;
@@ -701,13 +760,13 @@ body{
 		/*float: left;*/
 	}
 
-		#chart-container ul li{
+		div#lightbox ul li{
 			display: inline-block;
 			font-size: 1em;
 			margin: 5px 10px 5px 0;
 		}
 
-			#chart-container ul li div.language-marker{
+			div#lightbox ul li div.language-marker{
 				width: 20px;
 				height: 20px;
 				display: inline-block;
@@ -717,36 +776,25 @@ body{
 				vertical-align: middle;
 			}
 
-		#chart-container text{
+		div#lightbox text{
 			fill: #444;
 		}
 
-path.line{
-	fill: none;
-	stroke-width: 8px;
-}
+	path.line{
+		fill: none;
+		stroke-width: 8px;
+	}
 
-/*----- Axis -----*/
-/* Outer Tick */
-.axis path {
-  display: none;
-}
+	/*----- Axis -----*/
+	/* Outer Tick */
+	.axis path {
+	  display: none;
+	}
 
-/* Inner Ticks */
-.axis line {
-  fill: none;
-  stroke: #444;
-  stroke-width: 4px;
-  shape-rendering: crispEdges;
-}
-
-/* Labels */
-.axis text.label{
-	font-size: 1.6em;
-}
-
-/* Numbers */
-.axis text{
-  font-size: 1.2em;
-  font-weight: bold;
-}
+	/* Inner Ticks */
+	.axis line {
+	  fill: none;
+	  stroke: #444;
+	  stroke-width: 4px;
+	  shape-rendering: crispEdges;
+	}
