@@ -288,12 +288,13 @@ define(['./common', 'd3'], function (common) {
 		console.log('Called drawChart');
 
 		// Header
+		$('#lightbox').append('<div id="close-bt">X</div>');
 		$('#lightbox').append('<h1>' + main['query'] + '</h1>');
 		$('#lightbox').append('<h2>' + servicesAlias[main['service']]['name'] + '</h2>');
 
 		/*----- LAYOUT -----*/
-		var svgSize = {	width: 560, height: 400	};
-		var margin = { top: 50, right: 50, bottom: 50, left: 80 };
+		var svgSize = {	width: 600, height: 400	};
+		var margin = { top: 50, right: 70, bottom: 50, left: 100 };
 		var width  = svgSize.width - margin.left - margin.right;
 		var height = svgSize.height - margin.top - margin.bottom;
 		
@@ -411,6 +412,8 @@ define(['./common', 'd3'], function (common) {
 									'</li>');
 		}
 		$('#lightbox').append(languagesList);
+
+		attachEvents();
 	}	
 
 	/*-------------------- AUX FUNCTIONS ---------------------*/
@@ -422,16 +425,22 @@ define(['./common', 'd3'], function (common) {
 			var query = $(this).attr('name').substring(0, $(this).attr('name').indexOf('#'));
 			var service = $(this).attr('name').substring($(this).attr('name').indexOf('#') + 1, $(this).attr('name').length);
 			console.log(query + ', ' + service);
-			$('#lightbox-shadow').css('display', 'block');
-			$('#lightbox').css('display', 'block');
+			$('#lightbox-shadow').show();
+			$('#lightbox').show();
 			loadMoreInfo(query, service);
 		});
 
 		// Lightbox
 		$('#lightbox-shadow').off('click').on('click', function() {
 			$('#lightbox').empty()
-						  .css('display', 'none');
-			$(this).css('display', 'none');
+						  .hide();
+			$(this).hide();
+		});
+
+		$('#close-bt').off('click').on('click', function() {
+			$('#lightbox').empty()
+						  .hide();
+			$('#lightbox-shadow').hide();
 		});		
 
 		// Play video
