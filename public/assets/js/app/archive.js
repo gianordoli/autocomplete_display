@@ -288,7 +288,7 @@ define(['./common', 'd3'], function (common) {
 		console.log('Called drawChart');
 
 		// Header
-		$('#lightbox').append('<div id="close-bt">X</div>');
+		$('#lightbox').append('<div id="close-bt"><img src="/assets/img/close_bt.png" /></div>');
 		$('#lightbox').append('<h1>' + main['query'] + '</h1>');
 		$('#lightbox').append('<h2>' + servicesAlias[main['service']]['name'] + '</h2>');
 
