@@ -191,7 +191,10 @@ define(['./common', 'd3'], function (common) {
 
 			// More info
 			// $(itemDescription).append('<a href="query.html?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '">More Info</a>');
-			$(itemDescription).append('<p class="more-info" name="' + data[index]['query'] + '#' + data[index]['service'] + '">More Info</p>');
+			var currentHref = window.location.href;
+			var newHref = currentHref + '?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '&lightbox=true';
+			// $(itemDescription).append('<p class="more-info" name="' + data[index]['query'] + '#' + data[index]['service'] + '"><a href="' + newHash + '">More Info</a></p>');
+			$(itemDescription).append('<p><a href="' + newHref + '">More Info</a></p>');
 			
 			$(itemDescription).addClass(data[index]['service'])
 							  .appendTo(itemContainer);
@@ -413,6 +416,7 @@ define(['./common', 'd3'], function (common) {
 		}
 		$('#lightbox').append(languagesList);
 
+		addTwitterShareBt();
 		attachEvents();
 	}	
 
@@ -420,75 +424,35 @@ define(['./common', 'd3'], function (common) {
 
 	var attachEvents = function(){
 
-		// More info
-		$('.more-info').off('click').on('click', function(){
-			var query = $(this).attr('name').substring(0, $(this).attr('name').indexOf('#'));
-			var service = $(this).attr('name').substring($(this).attr('name').indexOf('#') + 1, $(this).attr('name').length);
-			console.log(query + ', ' + service);
-			$('#lightbox-shadow').show();
-			$('#lightbox').show();
-			loadMoreInfo(query, service);
-		});
-
 		// Lightbox
 		$('#lightbox-shadow').off('click').on('click', function() {
-			$('#lightbox').empty()
-						  .hide();
-			$(this).hide();
+			removeLightbox();
 		});
 
 		$('#close-bt').off('click').on('click', function() {
-			$('#lightbox').empty()
-						  .hide();
-			$('#lightbox-shadow').hide();
+			removeLightbox();
 		});
 
 		var languageRollover;
 
 		$('.language-bt').off('mouseenter').on('mouseenter', function() {
 			clearTimeout(languageRollover);
-			tooltip($(this));
-		});				
-
-		$('.language-bt').off('mouseleave').on('mouseleave', function() {
+			createTooltip($(this));
+		})				
+		.off('mouseleave').on('mouseleave', function() {
 	    	clearTimeout(languageRollover);
 	    	languageRollover = setTimeout(function(){
 	    		$('.language-tooltip').remove();
 	    	}, 1000);
 		});
 
-		var tooltip = function(obj){
-
+		$('.language-tooltip').off('mouseenter').on('mouseenter', function(){
+			clearTimeout(languageRollover);
+		})
+		.off('mouseleave').on('mouseleave', function(){
 			$('.language-tooltip').remove();
+		});
 
-			var linkColor = $(obj).children('.language-marker').css('background-color');
-			var linkPosition = $(obj).offset();
-			var linkWidth = $(obj).width();
-			var query = $(obj).children('a').attr('query');
-			var service = $(obj).children('a').attr('service');
-			var language = $(obj).children('a').attr('language');
-			var translateLanguage = (language == 'pt-BR') ? ('pt') : (language);
-			// console.log(query + ', ' + service + ', ' + language);
-
-			$('<div class="language-tooltip">' +				
-				'<a href="' + servicesAlias[service]['search_address'] + query + '&hl=' + language + '" target="_blank">Search</a>' + 
-				'<br />' +
-				'<a href="https://translate.google.com/?ie=UTF-8&hl=en#' + translateLanguage + '/en/' + query + '" target="_blank">Translate</a>' + 				
-			  '</div>')
-			  .css({
-			  	'bottom': (window.innerHeight - linkPosition.top - 1) + 'px',
-			  	'left': (linkPosition.left) + 'px',
-			  	'min-width': linkWidth + 'px',
-			  	'border-color': linkColor
-			  })
-			  .off('mouseenter').on('mouseenter', function(){
-			  	clearTimeout(languageRollover);
-			  })
-			  .off('mouseleave').on('mouseleave', function(){
-			  	$('.language-tooltip').remove();
-			  })
-			  .appendTo('body');
-		}
 
 		// Play video
 		$('.content.youtube').children('.youtube').off('click').on('click', function(){
@@ -498,7 +462,16 @@ define(['./common', 'd3'], function (common) {
 
 		// Hash router
 	    $(window).off('hashchange').on('hashchange', function() {
-	        loadData(location.hash.substring(1, location.hash.length));
+	    	console.log('Hash router');
+	    	var newHash = getHash();
+	    	console.log('New hash: ' + newHash);
+	    	console.log('Current hash: ' + currentHash);
+	    	if(newHash != currentHash){
+	    		loadData(newHash);
+	    		currentHash = newHash;	
+	    	}else if(common.getParameterByName('lightbox') != null){
+	    		createLightbox();
+	    	}	        
 	    });
 
 		// Show description
@@ -519,6 +492,65 @@ define(['./common', 'd3'], function (common) {
 			});
 		});	
 	}
+
+	var addTwitterShareBt = function(){
+		$('#lightbox').append('<a href="https://twitter.com/share" class="twitter-share-button" data-via="gianordoli" data-count="none" data-hashtags="autocompletearchive">Tweet</a>');			
+		!function(d,s,id){
+			var js,fjs=d.getElementsByTagName(s)[0],
+			p=/^http:/.test(d.location)?'http':'https';
+			if(!d.getElementById(id)){
+				js=d.createElement(s);
+				js.id=id;
+				js.src=p+'://platform.twitter.com/widgets.js';
+				fjs.parentNode.insertBefore(js,fjs);
+			}
+		}(document, 'script', 'twitter-wjs');		
+	}
+
+	var createLightbox = function(){
+		// console.log('query:' + common.getParameterByName('query'));
+		// console.log('service:' + common.getParameterByName('service'));
+		$('#lightbox-shadow').show();
+		$('#lightbox').show();
+		loadMoreInfo(common.getParameterByName('query'), common.getParameterByName('service'));		
+	}
+
+	var removeLightbox = function(){
+		clearHash();		
+		$('#lightbox').empty()
+					  .hide();
+		$('#lightbox-shadow').hide();
+		$('#twitter-wjs').remove();
+	}
+
+	var createTooltip = function(obj){
+
+		$('.language-tooltip').remove();
+
+		var linkColor = $(obj).children('.language-marker').css('background-color');
+		var linkPosition = $(obj).offset();
+		var linkWidth = $(obj).width();
+		var query = $(obj).children('a').attr('query');
+		var service = $(obj).children('a').attr('service');
+		var language = $(obj).children('a').attr('language');
+		var translateLanguage = (language == 'pt-BR') ? ('pt') : (language);
+		// console.log(query + ', ' + service + ', ' + language);
+
+		$('<div class="language-tooltip">' +				
+			'<a href="' + servicesAlias[service]['search_address'] + query + '&hl=' + language + '" target="_blank">Search</a>' + 
+			'<br />' +
+			'<a href="https://translate.google.com/?ie=UTF-8&hl=en#' + translateLanguage + '/en/' + query + '" target="_blank">Translate</a>' + 				
+		  '</div>')
+		  .css({
+		  	'bottom': (window.innerHeight - linkPosition.top - 1) + 'px',
+		  	'left': (linkPosition.left) + 'px',
+		  	'min-width': linkWidth + 'px',
+		  	'border-color': linkColor
+		  })
+		  .appendTo('body');
+
+		  attachEvents();
+	}	
 
 	var removeSelectedLetter = function(){
 		console.log('Called removeSelectedLetter.');
@@ -554,6 +586,21 @@ define(['./common', 'd3'], function (common) {
 	var parseHsla = function(color){
 		var myHslaColor = 'hsla(' + color.h + ', ' + color.s + '%, ' + color.l + '%, ' + color.a +')';
 		return myHslaColor;
+	}
+
+	var getHash = function(){
+		if(location.hash.indexOf('?') > -1){
+			return location.hash.substring(1, location.hash.indexOf('?'));
+		}else{
+			return location.hash.substring(1, location.hash.length);
+		}	
+	}
+
+	var clearHash = function(){
+		console.log('Calling clearHash');
+		if(location.hash.indexOf('?') > -1){
+			location.hash = location.hash.substring(0, location.hash.indexOf('?'));
+		}
 	}	
 
 	/*-------------------- APP INIT ---------------------*/
@@ -574,10 +621,15 @@ define(['./common', 'd3'], function (common) {
 		}
 	}
 
+	// Init
 	common.appendNavBar(true, function(){
 		common.attachNavBarEvents();
 	});
-	loadData(location.hash.substring(1, location.hash.length));
+	var currentHash = getHash();
+	loadData(currentHash);
+	if(common.getParameterByName('lightbox') != null){
+		createLightbox();
+	}
 });
 
 /*-------------------- DEPRECATED ---------------------*/

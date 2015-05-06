@@ -92,10 +92,33 @@ define(function (require) {
 		},
 
 		getParameterByName: function(name) {
-		    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-		    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-		        results = regex.exec(location.search);
-		    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+			// console.log('Calling getParameterByName');
+			var paramsString = window.location.href.substring(window.location.href.indexOf('?') + 1, window.location.href.length);
+			// console.log(params);
+			var paramsArray = paramsString.split('&');
+			console.log(paramsArray);
+			var params = {};
+			paramsArray.forEach(function(item, index, array){
+				var key = item.substring(0, item.indexOf('='));
+				var value = decodeURIComponent(item.substring(item.indexOf('=') + 1, item.length));
+				params[key] = value;
+			});
+			console.log(params);
+
+			return (params[name] === undefined) ? (null) : (params[name]);
+
+			// if(params.indexOf(name) > -1){
+			// 	var start = params.indexOf(name) + name.length + 1;
+			// 	var end = (params.indexOf('&') > start) ? (params.indexOf('&')) : (params.length);
+			// 	return decodeURIComponent(params.substring(start, end));				
+			// }else{
+			// 	return null;
+			// }
+
+		    // name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		    // var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+		    //     results = regex.exec(location.search);
+		    // return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 		},	
 
 		// Some milliseconds are messed up!
