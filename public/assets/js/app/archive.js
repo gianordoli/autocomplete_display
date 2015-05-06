@@ -548,10 +548,12 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 				// FACEBOOK
 				$('<img id="fb-share" src="/assets/img/fb.png" />')
 				.on('click', function(){
+					var url = window.location.href.substring(0, window.location.href.indexOf('#'));
+					console.log(url)
 					FB.ui({
 						method: 'share',
 						// href: response
-						href: window.location.href
+						href: url
 					},
 					// callback
 					function(response) {
