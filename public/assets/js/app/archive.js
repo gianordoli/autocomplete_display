@@ -532,7 +532,14 @@ define(['./common', 'd3'], function (common) {
 	        	console.log('Got response from server.');
 	        	console.log(response);
 
-				$('#lightbox').append('<a data-url="' + response + '" href="https://twitter.com/share" class="twitter-share-button" data-via="gianordoli" data-count="none">Tweet</a>');
+
+
+				$('#lightbox').append('<a data-url="' + response + '"' + 
+										  'data-text="' + common.getParameterByName('query') + ' on Autocomplete Archive"' + 
+										  'href="https://twitter.com/share"' +
+										  'class="twitter-share-button"' +
+										  'data-via="gianordoli"' + 
+										  'data-count="none">Tweet</a>');
 
 				!function(d,s,id){
 					var js,fjs=d.getElementsByTagName(s)[0],
