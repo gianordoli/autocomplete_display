@@ -3,8 +3,7 @@ var		express = require('express'),			  // Run server
 	 bodyParser = require('body-parser'),		  // Parse requests
 	MongoClient = require('mongodb').MongoClient, // Access database
 			  _ = require('underscore'),  		  // Filtering/sorting
-         google = require('googleapis');          // Url shortener             
-        // request = require('request');
+         google = require('googleapis');          // Url shortener
 
 /*-------------------- SETUP --------------------*/
 var app = express();
