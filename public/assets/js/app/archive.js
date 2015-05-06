@@ -189,7 +189,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			$(itemDescription).append('<p>' + datesText + '</p>');
 
 			// More info
-			var newHref = 'archive.html#' + getHash() + '?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '&lightbox=true';
+			var newHref = 'archive.html#' + getHash() +'?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '&lightbox=true';
 			$(itemDescription).append('<p><a href="' + newHref + '">More Info</a></p>');
 			
 			$(itemDescription).addClass(data[index]['service'])
@@ -580,7 +580,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 	}
 
 	var removeLightbox = function(){
-		clearHash();
+		clearParameters();
 		$('#lightbox').empty()
 					  .hide()
 					  .removeClass();
@@ -662,17 +662,28 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 	}
 
 	var getHash = function(){
-		if(location.hash.indexOf('?') > -1){
-			return location.hash.substring(1, location.hash.indexOf('?'));
-		}else{
-			return location.hash.substring(1, location.hash.length);
-		}	
+		// console.log('Current hash is: ' + location.hash)
+		return location.hash.substring(1, 2);
 	}
 
-	var clearHash = function(){
-		console.log('Calling clearHash');
-		if(location.hash.indexOf('?') > -1){
-			location.hash = location.hash.substring(0, location.hash.indexOf('?'));
+	var fixHash = function(){
+		if (location.hash.indexOf('#') < 0) {
+			var letter = common.getParameterByName('query').substring(0, 1).toUpperCase();
+			var newUrl = window.location.href.substring(0, window.location.href.indexOf('?')) +
+						 '#' + letter +
+						 window.location.href.substring(window.location.href.indexOf('?'), window.location.href.length);
+			console.log('New url is: ' + newUrl);
+			window.location.href = newUrl;
+		};
+	}
+
+	var clearParameters = function(){
+		console.log('Calling clearParameters');
+		if(window.location.href.indexOf('?') > -1){
+			var newUrl = window.location.href.substring(0, window.location.href.indexOf('?'));
+			console.log('Cleaned up url parameters: ' + newUrl);
+			window.location.href = newUrl;
+			// location.hash = location.hash.substring(0, location.hash.indexOf('?'));
 		}
 	}	
 
@@ -695,6 +706,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 	}
 
 	// Init
+	fixHash();
 	common.appendNavBar(true, function(){
 		common.attachNavBarEvents();
 	});
@@ -702,7 +714,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 	loadData(currentHash);
 	if(common.getParameterByName('lightbox') != null){
 		createLightbox();
-	}	
+	}		
 });
 
 /*-------------------- DEPRECATED ---------------------*/
