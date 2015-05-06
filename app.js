@@ -237,7 +237,7 @@ app.post('/shorten', function(request, response) {
     console.log(request['body']['url']);
 
     var urlshortener = google.urlshortener('v1');
-    var API_KEY = 'AIzaSyB9D0EtnMKVsZJJrpdE2Yw-8dcV0e3OpPE';
+    var API_KEY = 'AIzaSyCytN8Wkya7jLiPDVAQV2mFa_UEU0DXG34';
 
     var params = {
         auth: API_KEY,
