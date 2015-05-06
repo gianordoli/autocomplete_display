@@ -550,7 +550,8 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 				.on('click', function(){
 					FB.ui({
 						method: 'share',
-						href: response
+						// href: response
+						href: window.location.href
 					},
 					// callback
 					function(response) {
