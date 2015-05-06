@@ -2,7 +2,9 @@
 var		express = require('express'),			  // Run server
 	 bodyParser = require('body-parser'),		  // Parse requests
 	MongoClient = require('mongodb').MongoClient, // Access database
-			  _ = require('underscore');		  // Filtering/sorting
+			  _ = require('underscore'),  		  // Filtering/sorting
+         google = require('googleapis');          // Url shortener             
+        // request = require('request');
 
 /*-------------------- SETUP --------------------*/
 var app = express();
@@ -140,7 +142,7 @@ app.post('/query', function(request, response) {
             '$or': [{'language_code': 'da'}, {'language_code': 'de'}, {'language_code': 'en'}, {'language_code': 'es'}, {'language_code': 'fi'}, {'language_code': 'fr'}, {'language_code': 'hu'}, {'language_code': 'id'}, {'language_code': 'is'}, {'language_code': 'it'}, {'language_code': 'nl'}, {'language_code': 'nl'}, {'language_code': 'pt-BR'}, {'language_code': 'no'}]
 
         }).toArray(function(err, results) {
-            console.dir(results);
+            // console.dir(results);
             console.log('Found ' + results.length + ' results.');
 
             console.log('Sending back results.');
@@ -165,7 +167,7 @@ var getUrls = function(data){
     // Getting youtube and images url from the other DBs
     for(var i = 0; i < data.length; i++){
         
-        console.log(data[i]['service']);
+        // console.log(data[i]['service']);
 
         if(data[i]['service'] == 'images'){
             // console.log(data[i]['query']);
@@ -229,6 +231,30 @@ app.post('/about', function(request, response) {
             db.close(); // Let's close the db 
         });         
     });
+});
+
+app.post('/shorten', function(request, response) {
+    console.log('Calling url shortener.');
+    console.log(request['body']['url']);
+
+    var urlshortener = google.urlshortener('v1');
+    var API_KEY = 'AIzaSyB9D0EtnMKVsZJJrpdE2Yw-8dcV0e3OpPE';
+
+    var params = {
+        auth: API_KEY,
+        resource: {
+            longUrl: request['body']['url']
+        }
+    };
+
+    urlshortener.url.insert(params, function (err, response) {
+        if (err) {
+            console.log('Encountered error', err);
+        } else {
+            console.log(response);
+            console.log('Short url is', response.id);
+        }
+    });    
 
 
 });

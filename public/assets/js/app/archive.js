@@ -540,7 +540,19 @@ define(['./common', 'd3'], function (common) {
 		$('#lightbox-shadow').show();
 		$('#lightbox').addClass(common.getParameterByName('service'))
 					  .show();
-		loadMoreInfo(common.getParameterByName('query'), common.getParameterByName('service'));		
+		loadMoreInfo(common.getParameterByName('query'), common.getParameterByName('service'));
+
+		$.post('/shorten', {
+			url: window.location.href
+		}, function(response) {
+	        if(response.error){
+	        	throw response.error
+
+	        }else{
+	        	console.log('Got response from server.');
+	        	console.log(response);
+	        }
+	    });		
 	}
 
 	var removeLightbox = function(){
