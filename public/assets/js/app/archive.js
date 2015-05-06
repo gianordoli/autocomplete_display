@@ -1,4 +1,4 @@
-define(['./common', 'd3'], function (common) {
+define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 	/*-------------------- MAIN FUNCTIONS --------------------*/
 
@@ -442,7 +442,7 @@ define(['./common', 'd3'], function (common) {
 		}
 		$('#lightbox').append(languagesList);
 
-		addTwitterShareBt();
+		setTimeout(addShareButtons, 1000);
 		attachEvents();
 	}	
 
@@ -520,7 +520,7 @@ define(['./common', 'd3'], function (common) {
 		});	
 	}
 
-	var addTwitterShareBt = function(){
+	var addShareButtons = function(){
 
 		$.post('/shorten', {
 			url: window.location.href
@@ -532,25 +532,36 @@ define(['./common', 'd3'], function (common) {
 	        	console.log('Got response from server.');
 	        	console.log(response);
 
+				// TWITTER
+				$('#lightbox').append('<a id="twitter-share"></a>')
+				twttr.widgets.createShareButton(
+					response,
+					document.getElementById('twitter-share'),
+					{
+						count: 'none',
+						text: common.getParameterByName('query') + ' on Autocomplete Archive'
+					})
+					.then(function (el) {
+						console.log("Twitter button created.")
+					});
 
-
-				$('#lightbox').append('<a data-url="' + response + '"' + 
-										  'data-text="' + common.getParameterByName('query') + ' on Autocomplete Archive"' + 
-										  'href="https://twitter.com/share"' +
-										  'class="twitter-share-button"' +
-										  'data-via="gianordoli"' + 
-										  'data-count="none">Tweet</a>');
-
-				!function(d,s,id){
-					var js,fjs=d.getElementsByTagName(s)[0],
-					p=/^http:/.test(d.location)?'http':'https';
-					if(!d.getElementById(id)){
-						js=d.createElement(s);
-						js.id=id;
-						js.src=p+'://platform.twitter.com/widgets.js';
-						fjs.parentNode.insertBefore(js,fjs);
-					}
-				}(document, 'script', 'twitter-wjs');	        	
+				// FACEBOOK
+				$('<img id="fb-share" src="/assets/img/fb.png" />')
+				.on('click', function(){
+					FB.ui({
+						method: 'share',
+						href: response
+					},
+					// callback
+					function(response) {
+						if (response && !response.error_code) {
+						  console.log('Posting completed.');
+						} else {
+						  console.log('Error while posting.');
+						}
+					});
+				})
+				.appendTo('#lightbox');
 	        }
 	    });			
 	}
@@ -572,7 +583,8 @@ define(['./common', 'd3'], function (common) {
 		$('#lightbox-detail').empty()
 							 .hide();					  
 		$('#lightbox-shadow').hide();
-		$('#twitter-wjs').remove();
+		// $('#twitter-widget-0').remove();
+		// $('.fb-share-button.fb_iframe_widget').remove();
 	}
 
 	var createTooltip = function(obj){
@@ -686,7 +698,7 @@ define(['./common', 'd3'], function (common) {
 	loadData(currentHash);
 	if(common.getParameterByName('lightbox') != null){
 		createLightbox();
-	}
+	}	
 });
 
 /*-------------------- DEPRECATED ---------------------*/

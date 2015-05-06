@@ -737,6 +737,16 @@ div#lightbox.web{
 	}
 
 /*-------------------- LIGHBOX-DETAIL --------------------*/
+img#fb-share,
+a#twitter-share{
+	display: inline-block;
+	vertical-align: top;
+	margin: 0 10px 10px 0;
+}
+img#fb-share{
+	height: 20px;
+}
+
 div#lightbox-detail{
 	position: fixed;
 	top: 50%;
