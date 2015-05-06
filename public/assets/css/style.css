@@ -697,20 +697,21 @@ div#lightbox-detail{
 	top: 50%;
 	left: 50%;
 	width: 300px;
-	min-height: 150px;
 	margin-left: -450px;
 	margin-top: -250px;
 	background-color: white;
 	border-width: 8px 0 8px 8px;
 	border-style: solid;
+	text-align: center;
+	text-transform: uppercase;
 	border-color: #444;	
 	z-index: 3002;
 	display: none;
 }
-	div#lightbox-detail img{
+	/*div#lightbox-detail img{
 		width: 292px;
 		display: block;
-	}
+	}*/
 
 div#lightbox{
 	position: fixed;

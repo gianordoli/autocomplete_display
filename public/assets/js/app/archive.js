@@ -151,7 +151,6 @@ define(['./common', 'd3'], function (common) {
 			$(itemContent).children().addClass(data[index]['service']);
 			$(itemContent).appendTo(itemContainer);
 
-
 			/*----- Description -----*/
 			var itemDescription = $('<div class="description" style="display:none"></div>');
 
@@ -287,7 +286,31 @@ define(['./common', 'd3'], function (common) {
 
 		console.log('Called appendDetail');
 
-		$('#lightbox-detail').append('<img src="' + data['url'] + '" />');
+		$('#lightbox-detail').show();
+
+		if(data['service'] == 'youtube'){
+			var itemContent = $('<div class="content">' +
+									'<div style="background-image: url(' + data['thumbnail'] + ')" videoid="' + data['videoId'] + '">' +
+										'<img src="/assets/img/play.png"/>' +
+									'</div>' +
+								'</div>');
+
+		}else if(data['service'] == 'images'){
+			var itemContent = $('<div class="content">' +
+									'<img src="' + data['url'] + '" />' +
+								'</div>');
+		
+		}else{
+			var itemContent = $('<div class="content">' +
+									'<h1>' + data['query'] + '</h1>' +
+								'</div>');
+		}
+
+		$(itemContent).addClass(data['service'])
+		$(itemContent).children().addClass(data['service']);
+		$(itemContent).appendTo('#lightbox-detail');
+
+		attachEvents();
 	}
 
 	var drawChart = function(main, dataset, dateRange){
@@ -515,7 +538,6 @@ define(['./common', 'd3'], function (common) {
 		// console.log('query:' + common.getParameterByName('query'));
 		// console.log('service:' + common.getParameterByName('service'));
 		$('#lightbox-shadow').show();
-		$('#lightbox-detail').show();
 		$('#lightbox').show();
 		loadMoreInfo(common.getParameterByName('query'), common.getParameterByName('service'));		
 	}
