@@ -247,12 +247,13 @@ app.post('/shorten', function(request, response) {
         }
     };
 
-    urlshortener.url.insert(params, function (err, response) {
+    urlshortener.url.insert(params, function (err, resp) {
         if (err) {
             console.log('Encountered error', err);
         } else {
-            console.log(response);
-            console.log('Short url is', response.id);
+            console.log(resp);
+            console.log('Short url is', resp.id);
+            response.json(resp.id);
         }
     });    
 

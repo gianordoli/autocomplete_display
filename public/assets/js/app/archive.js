@@ -521,26 +521,6 @@ define(['./common', 'd3'], function (common) {
 	}
 
 	var addTwitterShareBt = function(){
-		$('#lightbox').append('<a href="https://twitter.com/share" class="twitter-share-button" data-via="gianordoli" data-count="none" data-hashtags="autocompletearchive">Tweet</a>');			
-		!function(d,s,id){
-			var js,fjs=d.getElementsByTagName(s)[0],
-			p=/^http:/.test(d.location)?'http':'https';
-			if(!d.getElementById(id)){
-				js=d.createElement(s);
-				js.id=id;
-				js.src=p+'://platform.twitter.com/widgets.js';
-				fjs.parentNode.insertBefore(js,fjs);
-			}
-		}(document, 'script', 'twitter-wjs');		
-	}
-
-	var createLightbox = function(){
-		// console.log('query:' + common.getParameterByName('query'));
-		// console.log('service:' + common.getParameterByName('service'));
-		$('#lightbox-shadow').show();
-		$('#lightbox').addClass(common.getParameterByName('service'))
-					  .show();
-		loadMoreInfo(common.getParameterByName('query'), common.getParameterByName('service'));
 
 		$.post('/shorten', {
 			url: window.location.href
@@ -551,8 +531,30 @@ define(['./common', 'd3'], function (common) {
 	        }else{
 	        	console.log('Got response from server.');
 	        	console.log(response);
+
+				$('#lightbox').append('<a data-url="' + response + '" href="https://twitter.com/share" class="twitter-share-button" data-via="gianordoli" data-count="none">Tweet</a>');
+
+				!function(d,s,id){
+					var js,fjs=d.getElementsByTagName(s)[0],
+					p=/^http:/.test(d.location)?'http':'https';
+					if(!d.getElementById(id)){
+						js=d.createElement(s);
+						js.id=id;
+						js.src=p+'://platform.twitter.com/widgets.js';
+						fjs.parentNode.insertBefore(js,fjs);
+					}
+				}(document, 'script', 'twitter-wjs');	        	
 	        }
-	    });		
+	    });			
+	}
+
+	var createLightbox = function(){
+		// console.log('query:' + common.getParameterByName('query'));
+		// console.log('service:' + common.getParameterByName('service'));
+		$('#lightbox-shadow').show();
+		$('#lightbox').addClass(common.getParameterByName('service'))
+					  .show();
+		loadMoreInfo(common.getParameterByName('query'), common.getParameterByName('service'));	
 	}
 
 	var removeLightbox = function(){
