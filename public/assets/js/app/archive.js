@@ -190,10 +190,7 @@ define(['./common', 'd3'], function (common) {
 			$(itemDescription).append('<p>' + datesText + '</p>');
 
 			// More info
-			// $(itemDescription).append('<a href="query.html?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '">More Info</a>');
-			var currentHref = window.location.href;
-			var newHref = currentHref + '?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '&lightbox=true';
-			// $(itemDescription).append('<p class="more-info" name="' + data[index]['query'] + '#' + data[index]['service'] + '"><a href="' + newHash + '">More Info</a></p>');
+			var newHref = 'archive.html#' + getHash() + '?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '&lightbox=true';
 			$(itemDescription).append('<p><a href="' + newHref + '">More Info</a></p>');
 			
 			$(itemDescription).addClass(data[index]['service'])
@@ -282,8 +279,15 @@ define(['./common', 'd3'], function (common) {
         		return item['date'];
         	});
         }
-
+        appendDetail(data['main']);
 		drawChart(data['main'], groupedByLanguage, dateRange);
+	}
+
+	var appendDetail = function(data){
+
+		console.log('Called appendDetail');
+
+		$('#lightbox-detail').append('<img src="' + data['url'] + '" />');
 	}
 
 	var drawChart = function(main, dataset, dateRange){
@@ -296,7 +300,7 @@ define(['./common', 'd3'], function (common) {
 		$('#lightbox').append('<h2>' + servicesAlias[main['service']]['name'] + '</h2>');
 
 		/*----- LAYOUT -----*/
-		var svgSize = {	width: 600, height: 400	};
+		var svgSize = {	width: 600, height: 300	};
 		var margin = { top: 50, right: 70, bottom: 50, left: 100 };
 		var width  = svgSize.width - margin.left - margin.right;
 		var height = svgSize.height - margin.top - margin.bottom;
@@ -511,14 +515,17 @@ define(['./common', 'd3'], function (common) {
 		// console.log('query:' + common.getParameterByName('query'));
 		// console.log('service:' + common.getParameterByName('service'));
 		$('#lightbox-shadow').show();
+		$('#lightbox-detail').show();
 		$('#lightbox').show();
 		loadMoreInfo(common.getParameterByName('query'), common.getParameterByName('service'));		
 	}
 
 	var removeLightbox = function(){
-		clearHash();		
+		clearHash();
 		$('#lightbox').empty()
 					  .hide();
+		$('#lightbox-detail').empty()
+							 .hide();					  
 		$('#lightbox-shadow').hide();
 		$('#twitter-wjs').remove();
 	}
@@ -529,6 +536,10 @@ define(['./common', 'd3'], function (common) {
 
 		var linkColor = $(obj).children('.language-marker').css('background-color');
 		var linkPosition = $(obj).offset();
+		var linkSize = {
+			width: $(obj).width(),
+			height: $(obj).height()
+		}
 		var linkWidth = $(obj).width();
 		var query = $(obj).children('a').attr('query');
 		var service = $(obj).children('a').attr('service');
@@ -542,7 +553,7 @@ define(['./common', 'd3'], function (common) {
 			'<a href="https://translate.google.com/?ie=UTF-8&hl=en#' + translateLanguage + '/en/' + query + '" target="_blank">Translate</a>' + 				
 		  '</div>')
 		  .css({
-		  	'bottom': (window.innerHeight - linkPosition.top - 1) + 'px',
+		  	'top': (linkPosition.top + linkSize.height) + 'px',
 		  	'left': (linkPosition.left) + 'px',
 		  	'min-width': linkWidth + 'px',
 		  	'border-color': linkColor

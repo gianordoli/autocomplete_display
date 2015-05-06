@@ -635,7 +635,7 @@ body{
 }
 
 div#lightbox #loader-container{
-	top: calc((600px - 40px)/2);
+	top: calc((500px - 40px)/2);
 }
 
 #loader-container .loader {
@@ -685,33 +685,54 @@ div#lightbox-shadow{
 	position: fixed;
 	top: 0;
 	left: 0;
+	/*background-color: #444;
+	opacity: 0.7;*/
 	background-color: rgba(227, 224, 226, 0.85);
 	z-index: 3000;
 	display: none;
 }
+
+div#lightbox-detail{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: 300px;
+	min-height: 150px;
+	margin-left: -450px;
+	margin-top: -250px;
+	background-color: white;
+	border-width: 8px 0 8px 8px;
+	border-style: solid;
+	border-color: #444;	
+	z-index: 3002;
+	display: none;
+}
+	div#lightbox-detail img{
+		width: 292px;
+		display: block;
+	}
 
 div#lightbox{
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	width: 600px;
-	min-height: 600px;
-	margin-left: -300px;
-	margin-top: -300px;
+	min-height: 500px;
+	margin-left: -150px;
+	margin-top: -250px;
 	z-index: 3001;
 
 	background-color: white;
 	border: 8px solid #444;
 	color: black;
 	text-align: center;
-	overflow: auto;
 	display: none;
 	padding: 0;
 }
 
 	div.language-tooltip{
 		position: absolute;
-		z-index: 3002;
+		z-index: 3003;
 		background-color: white;
 		color: white;
 		padding: 10px;		
