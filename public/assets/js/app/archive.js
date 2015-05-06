@@ -124,7 +124,7 @@ define(['./common', 'd3'], function (common) {
 			if(data[index]['service'] == 'youtube'){
 
 				var itemContent = $('<div class="content">' +
-										'<div style="background-image: url(' + data[index]['thumbnail'] + ')" videoid="' + data[index]['videoId'] + '">' +
+										'<div detail="0" style="background-image: url(' + data[index]['thumbnail'] + ')" videoid="' + data[index]['videoId'] + '">' +
 											'<img src="/assets/img/play.png"/>' +
 										'</div>' +
 									'</div>');
@@ -150,7 +150,6 @@ define(['./common', 'd3'], function (common) {
 			$(itemContent).addClass(data[index]['service'])
 			$(itemContent).children().addClass(data[index]['service']);
 			$(itemContent).appendTo(itemContainer);
-
 
 			/*----- Description -----*/
 			var itemDescription = $('<div class="description" style="display:none"></div>');
@@ -190,10 +189,7 @@ define(['./common', 'd3'], function (common) {
 			$(itemDescription).append('<p>' + datesText + '</p>');
 
 			// More info
-			// $(itemDescription).append('<a href="query.html?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '">More Info</a>');
-			var currentHref = window.location.href;
-			var newHref = currentHref + '?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '&lightbox=true';
-			// $(itemDescription).append('<p class="more-info" name="' + data[index]['query'] + '#' + data[index]['service'] + '"><a href="' + newHash + '">More Info</a></p>');
+			var newHref = 'archive.html#' + getHash() + '?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '&lightbox=true';
 			$(itemDescription).append('<p><a href="' + newHref + '">More Info</a></p>');
 			
 			$(itemDescription).addClass(data[index]['service'])
@@ -282,8 +278,37 @@ define(['./common', 'd3'], function (common) {
         		return item['date'];
         	});
         }
-
+        appendDetail(data['main']);
 		drawChart(data['main'], groupedByLanguage, dateRange);
+	}
+
+	var appendDetail = function(data){
+
+		console.log('Called appendDetail');
+
+		if(data['service'] != 'web'){
+			$('#lightbox-detail').show();
+		}
+
+		if(data['service'] == 'youtube'){
+			var itemContent = $('<div class="content">' +
+									'<div detail="1" style="background-image: url(' + data['thumbnail'] + ')" videoid="' + data['videoId'] + '">' +
+										'<img src="/assets/img/play.png"/>' +
+									'</div>' +
+								'</div>');
+
+		}else if(data['service'] == 'images'){
+			var itemContent = $('<div class="content">' +
+									'<img src="' + data['url'] + '" />' +
+								'</div>');
+		
+		}
+
+		$(itemContent).addClass(data['service'])
+		$(itemContent).children().addClass(data['service']);
+		$(itemContent).appendTo('#lightbox-detail');
+
+		attachEvents();
 	}
 
 	var drawChart = function(main, dataset, dateRange){
@@ -291,12 +316,13 @@ define(['./common', 'd3'], function (common) {
 		console.log('Called drawChart');
 
 		// Header
+		// $('#lightbox').addClass(main['service']);
 		$('#lightbox').append('<div id="close-bt"><img src="/assets/img/close_bt.png" /></div>');
 		$('#lightbox').append('<h1>' + main['query'] + '</h1>')
 		$('#lightbox').append('<h2>' + servicesAlias[main['service']]['name'] + '</h2>');
 
 		/*----- LAYOUT -----*/
-		var svgSize = {	width: 600, height: 400	};
+		var svgSize = {	width: 600, height: 300	};
 		var margin = { top: 50, right: 70, bottom: 50, left: 100 };
 		var width  = svgSize.width - margin.left - margin.right;
 		var height = svgSize.height - margin.top - margin.bottom;
@@ -367,7 +393,7 @@ define(['./common', 'd3'], function (common) {
             .append("text") // Label
             .attr("transform", "rotate(-90)")
             .attr("y", -55)
-            .attr("x", -55)
+            .attr("x", 25)
             .attr("class", "label")
             .style("text-anchor", "end")
             .text("Position on Autocomplete");
@@ -456,8 +482,9 @@ define(['./common', 'd3'], function (common) {
 
 		// Play video
 		$('.content.youtube').children('.youtube').off('click').on('click', function(){
-			console.log($(this).attr('videoid'));
-			$(this).html(embedYoutube($(this).attr('videoid')));
+			// console.log($(this).attr('videoid'));
+			// console.log($(this).attr('detail'));
+			$(this).html(embedYoutube($(this).attr('videoid'), $(this).attr('detail')));
 		});
 
 		// Hash router
@@ -511,14 +538,18 @@ define(['./common', 'd3'], function (common) {
 		// console.log('query:' + common.getParameterByName('query'));
 		// console.log('service:' + common.getParameterByName('service'));
 		$('#lightbox-shadow').show();
-		$('#lightbox').show();
+		$('#lightbox').addClass(common.getParameterByName('service'))
+					  .show();
 		loadMoreInfo(common.getParameterByName('query'), common.getParameterByName('service'));		
 	}
 
 	var removeLightbox = function(){
-		clearHash();		
+		clearHash();
 		$('#lightbox').empty()
-					  .hide();
+					  .hide()
+					  .removeClass();
+		$('#lightbox-detail').empty()
+							 .hide();					  
 		$('#lightbox-shadow').hide();
 		$('#twitter-wjs').remove();
 	}
@@ -529,6 +560,10 @@ define(['./common', 'd3'], function (common) {
 
 		var linkColor = $(obj).children('.language-marker').css('background-color');
 		var linkPosition = $(obj).offset();
+		var linkSize = {
+			width: $(obj).width(),
+			height: $(obj).height()
+		}
 		var linkWidth = $(obj).width();
 		var query = $(obj).children('a').attr('query');
 		var service = $(obj).children('a').attr('service');
@@ -542,7 +577,7 @@ define(['./common', 'd3'], function (common) {
 			'<a href="https://translate.google.com/?ie=UTF-8&hl=en#' + translateLanguage + '/en/' + query + '" target="_blank">Translate</a>' + 				
 		  '</div>')
 		  .css({
-		  	'bottom': (window.innerHeight - linkPosition.top - 1) + 'px',
+		  	'top': (linkPosition.top + linkSize.height) + 'px',
 		  	'left': (linkPosition.left) + 'px',
 		  	'min-width': linkWidth + 'px',
 		  	'border-color': linkColor
@@ -576,10 +611,11 @@ define(['./common', 'd3'], function (common) {
 		$('nav').find('a.letter-bt').removeClass('not-active');
 	}
 
-	var embedYoutube = function(id){
+	var embedYoutube = function(id, controls){
+		// console.log(controls);
 		var iframe = '<iframe src="https://www.youtube.com/embed/' +
 					 id +		
-					 '?autoplay=1&controls=0" frameborder="0" allowfullscreen></iframe>';
+					 '?autoplay=1&controls=' + controls + '" frameborder="0" allowfullscreen></iframe>';
 		return iframe;
 	}
 

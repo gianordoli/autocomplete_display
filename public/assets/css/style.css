@@ -263,7 +263,7 @@ body{
 			nav#header ul#pages-links li a:active,
 			nav#header ul#pages-links li a:hover{
 				color: white;
-				text-decoration: none;
+				/*text-decoration: none;*/
 				outline: none;
 			}
 
@@ -420,111 +420,6 @@ body{
 					top: -25px;*/
 				} 
 
-
-/*-------------------- PAGE: QUERY --------------------*/
-
-#container .query-page-header{
-	margin: 20px;
-	display: inline-block;
-	text-align: center;	
-}
-
-	#container .query-page-header h1{
-		margin: 0;
-		padding: 10px;
-		text-transform: uppercase;
-		font-size: 4em;
-	}
-
-	#container .query-page-header h2{
-		margin: 0;
-		padding: 10px;
-		/*text-transform: uppercase;*/
-		font-size: 3em;
-		height: 100%;
-	}	
-
-	#container .main{
-		/*margin: 5px;*/
-		/*width: 50%;*/
-		text-align: center;
-		display: inline-block;
-		vertical-align: top;
-	}
-
-		/*----------- Content ------------*/
-		#container .main div.content{
-			/*display: block;*/
-			float: right;
-		}			
-
-			/*---------- Google Web ----------*/
-/*			#container .main.web div.content{
-				border-color: #2073f0;
-			}*/
-
-				/*#container .main.web div.content h1{
-					margin: 0;
-					display: block;
-					text-align: center;
-					padding: 10px;
-					text-transform: uppercase;
-					color: #2073f0;
-					font-size: 6em;
-				}*/
-
-			/*-------- Google Images ---------*/
-/*			#container .main.images div.content{
-				border-color: #ffba0f;
-			}	*/	
-
-				#container .main div.content.images img{
-					display: block;
-				}
-
-			/*----------- Youtube ------------*/
-			/* Thumbs for videos are loaded as background images,
-			so we need to set a size for the parent div */
-			#container .main div.content.youtube{
-				width: 496px;
-				height: 376px;
-			    background-repeat: no-repeat;
-			    background-size: cover;
-			    background-position: center;
-			    text-align: center;
-			    /*overflow: hidden;*/
-			    /*border-color: #db503d;*/
-			}
-
-				/* Play Button */
-				#container .main div.content.youtube img{
-					position: relative;
-					top: calc(50% - 20px);
-					width: 40px;
-					height: 40px;
-				} 
-
-				/* youtube embed */
-				#container .main div.content.youtube iframe{
-					width: 496px;
-					height: 376px;
-					/*position: relative;
-					top: -25px;*/
-				} 
-
-	/* Dates */
-	#container .date-container{
-		width: 180px;
-		display: inline-block;
-		vertical-align: top;
-		text-align: left;
-	}
-
-		#container .date-container ul{
-			padding: 0;
-			list-style-type: none;
-		}
-
 /*-------------------- PAGE: ABOUT --------------------*/
 
 #container #about-container{
@@ -635,7 +530,7 @@ body{
 }
 
 div#lightbox #loader-container{
-	top: calc((600px - 40px)/2);
+	top: calc((500px - 40px)/2);
 }
 
 #loader-container .loader {
@@ -685,6 +580,8 @@ div#lightbox-shadow{
 	position: fixed;
 	top: 0;
 	left: 0;
+	/*background-color: #444;
+	opacity: 0.7;*/
 	background-color: rgba(227, 224, 226, 0.85);
 	z-index: 3000;
 	display: none;
@@ -694,24 +591,31 @@ div#lightbox{
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	width: 600px;
-	min-height: 600px;
-	margin-left: -300px;
-	margin-top: -300px;
+	width: 600px;	
+	min-height: 500px;
+	margin-top: -250px;	
 	z-index: 3001;
 
 	background-color: white;
 	border: 8px solid #444;
 	color: black;
 	text-align: center;
-	overflow: auto;
 	display: none;
 	padding: 0;
 }
 
+div#lightbox.images,
+div#lightbox.youtube{
+	margin-left: -150px;
+}
+
+div#lightbox.web{
+	margin-left: -300px;
+}
+
 	div.language-tooltip{
 		position: absolute;
-		z-index: 3002;
+		z-index: 3003;
 		background-color: white;
 		color: white;
 		padding: 10px;		
@@ -728,7 +632,7 @@ div#lightbox{
 	div.language-tooltip a:hover{
 		color: #444;
 		outline: none;
-		text-decoration: none;
+		/*text-decoration: none;*/
 		font-weight: bold;
 	}	
 
@@ -831,3 +735,59 @@ div#lightbox{
 	  stroke-width: 4px;
 	  shape-rendering: crispEdges;
 	}
+
+/*-------------------- LIGHBOX-DETAIL --------------------*/
+div#lightbox-detail{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: 300px;
+	margin-left: -442px;
+	margin-top: -250px;
+	background-color: white;
+	border-width: 8px;
+	border-style: solid;
+	text-align: center;
+	text-transform: uppercase;
+	border-color: #444;	
+	z-index: 3002;
+	display: none;
+}
+		/*----------- Content ------------*/
+		div#lightbox-detail div.content,
+		div#lightbox-detail div.content div{
+			display: inline-block;
+			vertical-align: bottom;
+			border: none;
+		}
+
+			/*-------- Google Images ---------*/
+				div#lightbox-detail div.content img.images{
+					display: block;
+					width: 286px;
+					border: none;
+				}
+
+			/*----------- Youtube ------------*/
+			div#lightbox-detail div.content div.youtube{
+				width: 284px;
+				height: 160px;
+			    background-repeat: no-repeat;
+			    background-size: cover;
+			    background-position: center;
+			    text-align: center;
+			}
+
+				/* Play Button */
+				div#lightbox-detail div.content div.youtube img{
+					position: relative;
+					top: calc(50% - 20px);
+					width: 40px;
+					height: 40px;
+				} 
+
+				/* youtube embed */
+				div#lightbox-detail div.content div.youtube iframe{
+					width: 284px;
+					height: 160px;
+				} 
