@@ -124,7 +124,7 @@ define(['./common', 'd3'], function (common) {
 			if(data[index]['service'] == 'youtube'){
 
 				var itemContent = $('<div class="content">' +
-										'<div style="background-image: url(' + data[index]['thumbnail'] + ')" videoid="' + data[index]['videoId'] + '">' +
+										'<div detail="0" style="background-image: url(' + data[index]['thumbnail'] + ')" videoid="' + data[index]['videoId'] + '">' +
 											'<img src="/assets/img/play.png"/>' +
 										'</div>' +
 									'</div>');
@@ -286,11 +286,13 @@ define(['./common', 'd3'], function (common) {
 
 		console.log('Called appendDetail');
 
-		$('#lightbox-detail').show();
+		if(data['service'] != 'web'){
+			$('#lightbox-detail').show();
+		}
 
 		if(data['service'] == 'youtube'){
 			var itemContent = $('<div class="content">' +
-									'<div style="background-image: url(' + data['thumbnail'] + ')" videoid="' + data['videoId'] + '">' +
+									'<div detail="1" style="background-image: url(' + data['thumbnail'] + ')" videoid="' + data['videoId'] + '">' +
 										'<img src="/assets/img/play.png"/>' +
 									'</div>' +
 								'</div>');
@@ -300,10 +302,6 @@ define(['./common', 'd3'], function (common) {
 									'<img src="' + data['url'] + '" />' +
 								'</div>');
 		
-		}else{
-			var itemContent = $('<div class="content">' +
-									'<h1>' + data['query'] + '</h1>' +
-								'</div>');
 		}
 
 		$(itemContent).addClass(data['service'])
@@ -318,6 +316,7 @@ define(['./common', 'd3'], function (common) {
 		console.log('Called drawChart');
 
 		// Header
+		// $('#lightbox').addClass(main['service']);
 		$('#lightbox').append('<div id="close-bt"><img src="/assets/img/close_bt.png" /></div>');
 		$('#lightbox').append('<h1>' + main['query'] + '</h1>')
 		$('#lightbox').append('<h2>' + servicesAlias[main['service']]['name'] + '</h2>');
@@ -394,7 +393,7 @@ define(['./common', 'd3'], function (common) {
             .append("text") // Label
             .attr("transform", "rotate(-90)")
             .attr("y", -55)
-            .attr("x", -55)
+            .attr("x", 25)
             .attr("class", "label")
             .style("text-anchor", "end")
             .text("Position on Autocomplete");
@@ -483,8 +482,9 @@ define(['./common', 'd3'], function (common) {
 
 		// Play video
 		$('.content.youtube').children('.youtube').off('click').on('click', function(){
-			console.log($(this).attr('videoid'));
-			$(this).html(embedYoutube($(this).attr('videoid')));
+			// console.log($(this).attr('videoid'));
+			// console.log($(this).attr('detail'));
+			$(this).html(embedYoutube($(this).attr('videoid'), $(this).attr('detail')));
 		});
 
 		// Hash router
@@ -538,14 +538,16 @@ define(['./common', 'd3'], function (common) {
 		// console.log('query:' + common.getParameterByName('query'));
 		// console.log('service:' + common.getParameterByName('service'));
 		$('#lightbox-shadow').show();
-		$('#lightbox').show();
+		$('#lightbox').addClass(common.getParameterByName('service'))
+					  .show();
 		loadMoreInfo(common.getParameterByName('query'), common.getParameterByName('service'));		
 	}
 
 	var removeLightbox = function(){
 		clearHash();
 		$('#lightbox').empty()
-					  .hide();
+					  .hide()
+					  .removeClass();
 		$('#lightbox-detail').empty()
 							 .hide();					  
 		$('#lightbox-shadow').hide();
@@ -609,10 +611,11 @@ define(['./common', 'd3'], function (common) {
 		$('nav').find('a.letter-bt').removeClass('not-active');
 	}
 
-	var embedYoutube = function(id){
+	var embedYoutube = function(id, controls){
+		// console.log(controls);
 		var iframe = '<iframe src="https://www.youtube.com/embed/' +
 					 id +		
-					 '?autoplay=1&controls=0" frameborder="0" allowfullscreen></iframe>';
+					 '?autoplay=1&controls=' + controls + '" frameborder="0" allowfullscreen></iframe>';
 		return iframe;
 	}
 
