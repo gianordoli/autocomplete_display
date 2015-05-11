@@ -86,7 +86,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
     			// Storing images and youtube videos
     			if(sortedData[i][j]['service'] == 'images'){
-    				thisQuery['url'] = sortedData[i][j]['url'];	
+    				thisQuery['url'] = sortedData[i][j]['url'];
     			}else if(sortedData[i][j]['service'] == 'youtube'){
 					thisQuery['videoId'] = sortedData[i][j]['videoId'];
 	    			thisQuery['thumbnail'] = sortedData[i][j]['thumbnail'];

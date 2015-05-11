@@ -177,7 +177,6 @@ var getUrls = function(data){
             // console.log(data[i]['query']);
             // console.log(record);
             data[i]['url'] = record['url'];
-            // console.log(data[i]);
 
         }else if(data[i]['service'] == 'youtube'){
             // console.log(data[i]['query']);
