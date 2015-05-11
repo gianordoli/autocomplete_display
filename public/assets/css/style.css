@@ -285,6 +285,32 @@ body{
 		text-align: left;
 	}
 
+	/*#container .item*/
+	.hover{
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: block;
+		cursor: zoom-in;
+		background: -webkit-linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.2)); /* For Safari 5.1 to 6.0 */
+		background: -o-linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.2)); /* For Opera 11.1 to 12.0 */
+		background: -moz-linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.2)); /* For Firefox 3.6 to 15 */
+		background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.2)); /* Standard syntax */		
+		z-index: 1001;
+		/*background-color: rgba(0, 0, 0, 0.2);*/
+	}	
+
+	/*#container .item*/
+	.hover-icon{
+		position: absolute;
+		display: block;
+		width: 40px;
+		height: 40px;
+		background-color: #FACADA;
+		z-index: 1002;
+		cursor: zoom-in;	
+	}
+
 		/*---------- Description ---------*/
 		#container .item .description{
 			padding: 8px;

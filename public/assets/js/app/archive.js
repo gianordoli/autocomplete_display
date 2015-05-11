@@ -509,6 +509,31 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			$(this).children('.description').css({
 				'display': 'block'
 			});
+
+			// console.log('Width: ' + hover.width + ', ' + 'Height: ' + hover.height);
+			var hover = {
+				width: $(this).children('.content').width(),
+				height: $(this).children('.content').height()
+			}
+
+			// console.log($(this).children('.content').attr('class'));
+			var service = $(this).children('.content').attr('class').split(' ')[1];
+			// console.log(service);
+			
+			var hoverDiv = $('<div class="hover"></div>')
+							.css({
+								width: hover.width,
+								height: hover.height
+							});
+
+			var hoverIcon = $('<div class="hover-icon"></div>')
+							.css({
+								top: (hover.height/2 - 20),
+								left: (hover.width/2 - 20)
+							});
+
+			$(this).append(hoverDiv)
+				   .append(hoverIcon);
 		});
 		$('.item').off('mouseleave').on('mouseleave', function(){
 			$(this).css({
