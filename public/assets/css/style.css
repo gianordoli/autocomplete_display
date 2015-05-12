@@ -23,8 +23,8 @@ html { -webkit-font-smoothing: antialiased; }
 
 /*-------------------- COLORS --------------------*/
 .web{
-	border: 8px solid #2073f0;
-	color: #2073f0;
+	border: 8px solid hsl(216, 86%, 55%);
+	color: hsl(216, 86%, 55%);
 }
 
 	.core.web{
@@ -32,14 +32,14 @@ html { -webkit-font-smoothing: antialiased; }
 	}
 
 	.description.web{
-		background-color: #2073f0;
+		background-color: hsl(216, 86%, 55%);
 		color: white;
 	}
 
 /*	hr.web{
 		border: none;
 		height: 8px;
-		background-color: #2073f0;
+		background-color: hsl(216, 86%, 55%);
 	}*/	
 
 .images{
@@ -64,8 +64,7 @@ html { -webkit-font-smoothing: antialiased; }
 
 .youtube{
     border: 8px solid hsl(7, 72%, 55%);
-    color: hsl(7, 72%, 55%);	
-    
+    color: hsl(7, 72%, 55%);
 }
 	.core.youtube{
 		background-color: white;
@@ -144,7 +143,7 @@ body{
 				margin-right: 20px;
 			}
 
-			nav#header ul#services li.web		{	color: #2073f0;	}
+			nav#header ul#services li.web		{	color: hsl(216, 86%, 55%);	}
 			nav#header ul#services li.images	{	color: hsl(42, 100%, 55%);	}
 			nav#header ul#services li.youtube	{	color: hsl(7, 72%, 55%);	}
 
@@ -156,7 +155,7 @@ body{
 					margin-right: 10px;
 				}
 
-				nav#header ul#services li.web div		{ background-color: #2073f0; }
+				nav#header ul#services li.web div		{ background-color: hsl(216, 86%, 55%); }
 				nav#header ul#services li.images div	{ background-color: hsl(42, 100%, 55%); }
 				nav#header ul#services li.youtube div	{ background-color: hsl(7, 72%, 55%); }
 
@@ -281,7 +280,7 @@ body{
 	#container .item{
 		display: inline-block;
 		vertical-align: middle;
-		margin: 5px;
+		margin: 8px;
 		text-align: left;
 	}
 
@@ -316,8 +315,8 @@ body{
 			position: relative;
 			padding: 8px;
 			word-wrap: break-word;
-			font-size: 15px;
-			line-height: 20px;			
+			font-size: 13px;
+			line-height: 18px;		
 			/*text-align: left;
 			color: white;*/
 		}
@@ -345,7 +344,7 @@ body{
 
 			#container .item .description.web{
 				min-width: 10vw;
-				/*max-width: 20vw;				*/
+				max-width: 30vw;				
 			}
 
 			#container .item .description.images{
@@ -544,7 +543,7 @@ body{
 			display: inline-block;
 			text-align: left;
 			padding: 2px 5px;
-			border: 1px solid #2073f0;
+			border: 1px solid hsl(216, 86%, 55%);
 			visibility: hidden;
 			word-wrap: break-word;
 		}

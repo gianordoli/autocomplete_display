@@ -130,7 +130,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 							'</div>')
 							.appendTo(itemContent);
 				
-				createStack(data[index]['languages'].length - 1, itemContent, data[index]['service']);
+				createStack(data[index]['languages'].length, itemContent, data[index]['service']);
 
 			// Google Images
 			}else if(data[index]['service'] == 'images'){
@@ -140,7 +140,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 				var core = $('<img class="core" src="' + data[index]['url'] + '" />')
 							.appendTo(itemContent)
 							.load({
-								n: data[index]['languages'].length - 1,
+								n: data[index]['languages'].length,
 								container: itemContent,
 								service: data[index]['service']
 							}, function(response){
@@ -158,22 +158,8 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 							.addClass('core')
 							.appendTo(itemContent);
 
-				createStack(data[index]['languages'].length - 1, itemContent, data[index]['service'], el);
+				createStack(data[index]['languages'].length, itemContent, data[index]['service'], el);
 			}
-
-			// Language count
-			// for(var i = 0; i < data[index]['languages'].length - 1; i++){
-			// 	// $(itemContent).prepend('<hr/>');
-			// 	var stack = $('<div class="stack"></div>')
-			// 				.css({
-			// 					top: i*10,
-			// 					left: i*10,
-			// 					width: $(itemContent).width(),
-			// 					height: $(itemContent).height(),
-			// 					'z-index': i
-			// 				});
-			// 	$(itemContent).prepend(stack);
-			// }
 
 			$(itemContent).addClass(data[index]['service'])
 			$(itemContent).children().addClass(data[index]['service']);
@@ -226,20 +212,24 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 		drawLayout(container);		
 		attachEvents();
-	}	
+	}
 
 	var createStack = function(n, container, service, el){
 
 		// console.log('Called createStack.');
 
 		for(var i = 0; i < n; i++){
-			// $(itemContent).prepend('<hr/>');
-			// var brightness = 
+
+			var proto = $('<div class="' + service + '"></div>')
+						.appendTo('body');
+			var color = rgbToHsl($(proto).css('border-color'));
+			$(proto).remove();
+			
 			var params = {
-							top: - (i + 1) * 7,
-							left: - (i + 1) * 7,
+							top: - (i + 1) * 4,
+							left: - (i + 1) * 4,
 							'z-index': - i - 1,
-							'border-color': 'hsl(42, 100%, ' + (55 + (35/n * (i+1))) + '%)'
+							'border-color': parseHsl(color.h, color.s, (color.l + (90 - color.l)/n * (i+1)) )
 						};
 
 			if(service == 'web'){
@@ -772,6 +762,43 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			window.location.href = newUrl;
 			// location.hash = location.hash.substring(0, location.hash.indexOf('?'));
 		}
+	}
+
+	var rgbToHsl = function(colorString){
+
+		var components = colorString.substring(colorString.indexOf('(') + 1, colorString.indexOf(')')).split(',');
+		var r = components[0];
+		var g = components[1];
+		var b = components[2];
+
+	    r /= 255, g /= 255, b /= 255;
+	    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+	    var h, s, l = (max + min) / 2;
+
+	    if(max == min){
+	        h = s = 0; // achromatic
+	    }else{
+	        var d = max - min;
+	        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+	        switch(max){
+	            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+	            case g: h = (b - r) / d + 2; break;
+	            case b: h = (r - g) / d + 4; break;
+	        }
+	        h /= 6;
+	    }
+
+	    return {
+	    	h: Math.floor(h * 360),
+	    	s: Math.floor(s * 100),
+	    	l: Math.floor(l * 100) 
+	    };
+	}
+
+	var parseHsl = function(h, s, l){
+		var myHslColor = 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
+		//console.log('called calculateAngle function');
+		return myHslColor;
 	}	
 
 	/*-------------------- APP INIT ---------------------*/
