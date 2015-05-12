@@ -125,7 +125,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			if(data[index]['service'] == 'youtube'){
 
 				var itemContent = $('<div class="content"></div>');
-				var img = $('<div detail="0" style="background-image: url(' + data[index]['thumbnail'] + ')" videoid="' + data[index]['videoId'] + '">' +
+				var core = $('<div class="core" detail="0" style="background-image: url(' + data[index]['thumbnail'] + ')" videoid="' + data[index]['videoId'] + '">' +
 								'<img src="/assets/img/play.png"/>' +
 							'</div>')
 							.appendTo(itemContent);
@@ -136,28 +136,30 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			}else if(data[index]['service'] == 'images'){
 
 				var itemContent = $('<div class="content"></div>');
-				var img = $('<img src="' + data[index]['url'] + '" />')
+
+				var core = $('<img class="core" src="' + data[index]['url'] + '" />')
 							.appendTo(itemContent)
 							.load({
 								n: data[index]['languages'].length - 1,
 								container: itemContent,
 								service: data[index]['service']
 							}, function(response){
-
 								// console.log('Loaded');
 								// console.log(response.data);
-
 								createStack(response.data.n, response.data.container, response.data.service);
 							});
+
 			// Google Web
 			}else{
 
-				var itemContent = $('<div class="content">' +
-										'<h1>' + data[index]['query'] + '</h1>' +
-									'</div>');
-			}
+				var itemContent = $('<div class="content"></div>');
+				var el = '<h1>' + data[index]['query'] + '</h1>';
+				var core = $(el)
+							.addClass('core')
+							.appendTo(itemContent);
 
-			console.log($(itemContent).width());
+				createStack(data[index]['languages'].length - 1, itemContent, data[index]['service'], el);
+			}
 
 			// Language count
 			// for(var i = 0; i < data[index]['languages'].length - 1; i++){
@@ -224,24 +226,39 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 		drawLayout(container);		
 		attachEvents();
-	}
+	}	
 
-	var createStack = function(n, container, service){
+	var createStack = function(n, container, service, el){
 
 		// console.log('Called createStack.');
 
 		for(var i = 0; i < n; i++){
 			// $(itemContent).prepend('<hr/>');
 			// var brightness = 
-			var stack = $('<div class="stack ' + service + '"></div>')
-						.css({
-							top: - (i + 1) * 8,
-							left: - (i + 1) * 8,
-							width: $(container).width(),
-							height: $(container).height(),
+			var params = {
+							top: - (i + 1) * 7,
+							left: - (i + 1) * 7,
 							'z-index': - i - 1,
-							'border-color': 'hsl(42, 100%, ' + (55 + (45/(n) * i)) + '%)'
-						});
+							'border-color': 'hsl(42, 100%, ' + (55 + (35/n * (i+1))) + '%)'
+						};
+
+			if(service == 'web'){
+				var stack = $(el)
+							.addClass('stack')
+							.addClass(service)
+							.css(params);
+			
+			}else{
+
+				if(service == 'images'){
+					params.width = $(container).width();
+					params.height = $(container).height();
+				}
+
+				var stack = $('<div class="stack ' + service + '"></div>')
+						.css(params);
+			}
+
 			$(container).prepend(stack);
 		}	
 	}

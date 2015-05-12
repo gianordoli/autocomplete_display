@@ -25,8 +25,11 @@ html { -webkit-font-smoothing: antialiased; }
 .web{
 	border: 8px solid #2073f0;
 	color: #2073f0;
-	background-color: white;
 }
+
+	.core.web{
+		background-color: white;
+	}
 
 	.description.web{
 		background-color: #2073f0;
@@ -37,16 +40,16 @@ html { -webkit-font-smoothing: antialiased; }
 		border: none;
 		height: 8px;
 		background-color: #2073f0;
-	}*/
-
-	td.web.true{
-		background-color: #2073f0;
-	}		
+	}*/	
 
 .images{
 	border: 8px solid hsl(42, 100%, 55%);
 	color: hsl(42, 100%, 55%);
+	
 }
+	.core.images{
+		background-color: white;	
+	}
 
 	.description.images{
 		background-color: hsl(42, 100%, 55%);
@@ -59,29 +62,25 @@ html { -webkit-font-smoothing: antialiased; }
 		background-color: hsl(42, 100%, 55%);
 	}	*/
 
-	td.images.true{
-		background-color: hsl(42, 100%, 55%);
-	}	
-
 .youtube{
-    border: 8px solid #db503d;
-    color: #db503d;	
+    border: 8px solid hsl(7, 72%, 55%);
+    color: hsl(7, 72%, 55%);	
+    
 }
+	.core.youtube{
+		background-color: white;
+	}
 
 	.description.youtube{
-		background-color: #db503d;
+		background-color: hsl(7, 72%, 55%);
 		color: white;
 	}
 
 /*	hr.youtube{
 		border: none;
 		height: 8px;
-		background-color: #db503d;
+		background-color: hsl(7, 72%, 55%);
 	}*/
-
-	td.youtube.true{
-		background-color: #db503d;
-	}
 
 /*-------------------- STYLES --------------------*/
 
@@ -147,7 +146,7 @@ body{
 
 			nav#header ul#services li.web		{	color: #2073f0;	}
 			nav#header ul#services li.images	{	color: hsl(42, 100%, 55%);	}
-			nav#header ul#services li.youtube	{	color: #db503d;	}
+			nav#header ul#services li.youtube	{	color: hsl(7, 72%, 55%);	}
 
 				nav#header ul#services li div{
 					display: inline-block;
@@ -159,7 +158,7 @@ body{
 
 				nav#header ul#services li.web div		{ background-color: #2073f0; }
 				nav#header ul#services li.images div	{ background-color: hsl(42, 100%, 55%); }
-				nav#header ul#services li.youtube div	{ background-color: #db503d; }
+				nav#header ul#services li.youtube div	{ background-color: hsl(7, 72%, 55%); }
 
 		/* LETTERS */
 		nav#header div#bar{ 
@@ -355,7 +354,7 @@ body{
 			}
 
 			#container .item .description.youtube{
-				/*background-color: #db503d;*/
+				/*background-color: hsl(7, 72%, 55%);*/
 				max-width: 300px;
 			}
 
@@ -390,28 +389,29 @@ body{
 				position: absolute;
 				display: block;
 				background-color: white;
-				width: 100px;
-				height: 100px;
 			}
 
 			#container .item div.content .stack.youtube{
 				width: 300px;
 				height: 168px;
-			}					
+			}
 
 			/*---------- Google Web ----------*/
-			#container .item div.content.web{
-				/*border: none;*/
+			/*#container .item div.content.web{
+				border: none;
 				min-width: 10vw;
-				max-width: 20vw;				
-			}
-				#container .item div.content.web h1{
+				max-width: 20vw;
+			}*/
+				#container .item div.content.web h1.core.web,
+				#container .item div.content.web h1.stack.web{
 					margin: 0;
 					display: block;
 					padding: 10px;
 					text-align: center;					
 					text-transform: uppercase;
 					font-size: 22px;
+					min-width: 10vw;
+					max-width: 30vw;					
 					/*word-break: break-all;*/
 				}
 
@@ -421,7 +421,7 @@ body{
 			}	*/
 
 				/* Restraining the size of the images */
-				#container .item div.content img.images{
+				#container .item div.content img.core.images{
 					/*max-width: 300px;*/
 					/*max-height: 300px;*/
 					display: block;
@@ -435,7 +435,7 @@ body{
 			/*----------- Youtube ------------*/
 			/* Thumbs for videos are loaded as background images,
 			so we need to set a size for the parent div */
-			#container .item div.content div.youtube{
+			#container .item div.content div.core.youtube{
 				width: 300px;
 				height: 168px;
 			    background-repeat: no-repeat;
@@ -446,7 +446,7 @@ body{
 			}
 
 				/* Play Button */
-				#container .item div.content div.youtube img{
+				#container .item div.content div.core.youtube img{
 					position: relative;
 					top: calc(50% - 20px);
 					width: 40px;
@@ -454,7 +454,7 @@ body{
 				} 
 
 				/* youtube embed */
-				#container .item div.content div.youtube iframe{
+				#container .item div.content div.core.youtube iframe{
 					width: 300px;
 					height: 168px;
 					/*position: relative;
