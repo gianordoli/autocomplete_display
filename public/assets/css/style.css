@@ -167,6 +167,10 @@ body{
 					margin-right: 10px;
 				}
 
+				nav#header ul#services li.data{
+					font-weight: normal;
+				}				
+
 		/* LETTERS */
 		nav#header div#bar{ 
 			display: inline-block;
