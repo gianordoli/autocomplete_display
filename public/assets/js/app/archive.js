@@ -594,8 +594,32 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			});
 			$(this).children('.hover').remove();
 			$(this).children('.hover-icon').remove();
-		});	
+		});
+
+		var debounce;
+		$(window).resize(function() {
+		    clearTimeout(debounce);
+		    debounce = setTimeout(doneResizing, 500); 
+		});
+		
+		function doneResizing(){
+			console.log('Done resizing.');
+			adjustStacks();
+		}		
 	}
+
+	var adjustStacks = function(){
+
+		console.log('Called adjustStacks.');
+
+		var imgStack = $('.stack.images');
+		$.each(imgStack, function(index, item){
+			$(item).css({
+				width: $(item).parent().width(),
+				height: $(item).parent().height()
+			});
+		});
+	}	
 
 	var addShareButtons = function(){
 
