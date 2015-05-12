@@ -29,9 +29,9 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 	        	// console.log(response);
 	        	console.log('Got ' + response['results'].length + ' total objects.');
 
-				// enableNavigation();
-				// $(container).empty();
-	   //      	processData(response, container);
+				enableNavigation();
+				$(container).empty();
+	        	processData(response, container);
 	        }
 	    });
 	}
