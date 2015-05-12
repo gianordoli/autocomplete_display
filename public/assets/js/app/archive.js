@@ -570,7 +570,14 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			var hoverSize = {
 				width: $(this).children('.content').width(),
 				height: $(this).children('.content').height()
-			}
+			};
+
+			// if(service == 'web'){
+				
+			// }
+			// // hoverSize.width = ($(this).children('.content').width() < $(this).children('.content').css('min-width')) ? ($(this).children('.content').css('min-width')) : ($(this).children('.content').width());
+			// hoverSize.width = $(this).children('.content').width();
+			// hoverSize.height = $(this).children('.content').height();
 
 			// console.log($(this).children('.content').attr('class'));
 			var service = $(this).children('.content').attr('class').split(' ')[1];

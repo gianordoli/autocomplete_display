@@ -413,11 +413,11 @@ body{
 			}
 
 			/*---------- Google Web ----------*/
-			/*#container .item div.content.web{
+			#container .item div.content.web{
 				border: none;
 				min-width: 10vw;
-				max-width: 20vw;
-			}*/
+				max-width: 30vw;
+			}
 				#container .item div.content.web h1.core.web,
 				#container .item div.content.web h1.stack.web{
 					margin: 0;
