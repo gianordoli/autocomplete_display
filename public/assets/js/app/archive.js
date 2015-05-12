@@ -167,9 +167,9 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			var itemDescription = $('<div class="description" style="display:none"></div>');
 
 			// Query
-			if(data[index]['service'] != 'web'){
+			// if(data[index]['service'] != 'web'){
 				$(itemDescription).append('<h2>' + data[index]['query'].toUpperCase() + '</h2>');
-			}
+			// }
 
 			// Service
 			$(itemDescription).append('<h3>' + servicesAlias[data[index]['service']]['name'] + '</h3>')
@@ -671,10 +671,15 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 							window.location.href= 'archive.html#' + getHash() +'?query=' + encodeURIComponent(query) + '&service=' + service + '&lightbox=true';
 						});
 
-		var hoverIcon = $('<div class="hover-icon"></div>')
+		var hoverIcon = $('<div class="hover-icon"><img src="/assets/img/chart_' + service + '.png"/></div>')
 						.css({
-							top: (hoverSize.height/2 - 20),
-							left: (hoverSize.width/2 - 20)
+							// top: (hoverSize.height/2 - 20),
+							// left: (hoverSize.width/2 - 20)
+							top: 7,
+							left: (hoverSize.width - 47)
+						})
+						.off('click').on('click', function(){
+							window.location.href= 'archive.html#' + getHash() +'?query=' + encodeURIComponent(query) + '&service=' + service + '&lightbox=true';
 						});
 
 		$(obj).append(hoverDiv)
@@ -842,7 +847,13 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 		var myHslColor = 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
 		//console.log('called calculateAngle function');
 		return myHslColor;
-	}	
+	}
+
+	// var preLoadIcons = function(){
+	// 	var icons = ['']
+	//     var img = new Image();
+	//     img.src=url;
+	// }
 
 	/*-------------------- APP INIT ---------------------*/
 
