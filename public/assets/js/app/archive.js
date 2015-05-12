@@ -121,12 +121,13 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 								.appendTo(container);
 
 			/*----- Content -----*/
+			var itemContent = $('<div class="content" query="' + data[index]['query'] + '"></div>');
+
 			// Youtube
 			if(data[index]['service'] == 'youtube'){
 
-				var itemContent = $('<div class="content"></div>');
 				var core = $('<div class="core" detail="0" style="background-image: url(' + data[index]['thumbnail'] + ')" videoid="' + data[index]['videoId'] + '">' +
-								'<img src="/assets/img/play.png"/>' +
+								// '<img src="/assets/img/play.png"/>' +
 							'</div>')
 							.appendTo(itemContent);
 				
@@ -134,8 +135,6 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 			// Google Images
 			}else if(data[index]['service'] == 'images'){
-
-				var itemContent = $('<div class="content"></div>');
 
 				var core = $('<img class="core" src="' + data[index]['url'] + '" />')
 							.appendTo(itemContent)
@@ -152,7 +151,6 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			// Google Web
 			}else{
 
-				var itemContent = $('<div class="content"></div>');
 				var el = '<h1>' + data[index]['query'] + '</h1>';
 				var core = $(el)
 							.addClass('core')
@@ -202,9 +200,9 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 								common.formatDateMMDDYYY(data[index]['dates'][data[index]['dates'].length - 1])  + '</b>';
 			$(itemDescription).append('<p>' + datesText + '</p>');
 
-			// More info
-			var newHref = 'archive.html#' + getHash() +'?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '&lightbox=true';
-			$(itemDescription).append('<p><a href="' + newHref + '">More Info</a></p>');
+			// // More info
+			// var newHref = 'archive.html#' + getHash() +'?query=' + encodeURIComponent(data[index]['query']) + '&service=' + data[index]['service'] + '&lightbox=true';
+			// $(itemDescription).append('<p><a href="' + newHref + '">More Info</a></p>');
 			
 			$(itemDescription).addClass(data[index]['service'])
 							  .appendTo(itemContainer);
@@ -293,7 +291,12 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 	        	console.log(response);
 
 	        	$('#lightbox').empty();
-	        	processMoreInfo(response);
+	        	$('#lightbox-detail').empty();
+	        	// Only proceed if the lightbox is still active
+	        	// (the user might have closed it before loading)
+	        	if($('#lightbox').css('display') == 'block'){
+	        		processMoreInfo(response);
+	        	}
 	        }
 	    });
 	}
@@ -562,31 +565,37 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 				'z-index': 1000
 			});
 
-			// // HOVER
-			// // console.log('Width: ' + hover.width + ', ' + 'Height: ' + hover.height);
-			// var hover = {
-			// 	width: $(this).children('.content').width(),
-			// 	height: $(this).children('.content').height()
-			// }
+			// HOVER
+			// console.log('Width: ' + hover.width + ', ' + 'Height: ' + hover.height);
+			var hoverSize = {
+				width: $(this).children('.content').width(),
+				height: $(this).children('.content').height()
+			}
 
-			// // console.log($(this).children('.content').attr('class'));
-			// var service = $(this).children('.content').attr('class').split(' ')[1];
-			// // console.log(service);
+			// console.log($(this).children('.content').attr('class'));
+			var service = $(this).children('.content').attr('class').split(' ')[1];
+			var query = $(this).children('.content').attr('query');
+			// console.log(service);
 			
-			// var hoverDiv = $('<div class="hover"></div>')
-			// 				.css({
-			// 					width: hover.width,
-			// 					height: hover.height
-			// 				});
+			var hoverDiv = $('<div></div>')
+							.addClass('hover')
+							.addClass(service)
+							.css({
+								width: hoverSize.width,
+								height: hoverSize.height
+							})
+							.off('click').on('click', function(){
+								window.location.href= 'archive.html#' + getHash() +'?query=' + encodeURIComponent(query) + '&service=' + service + '&lightbox=true';
+							});
 
-			// var hoverIcon = $('<div class="hover-icon"></div>')
-			// 				.css({
-			// 					top: (hover.height/2 - 20),
-			// 					left: (hover.width/2 - 20)
-			// 				});
+			var hoverIcon = $('<div class="hover-icon"></div>')
+							.css({
+								top: (hoverSize.height/2 - 20),
+								left: (hoverSize.width/2 - 20)
+							});
 
-			// $(this).append(hoverDiv)
-			// 	   .append(hoverIcon);
+			$(this).append(hoverDiv)
+				   .append(hoverIcon);
 		});
 
 		$('.item').off('mouseleave').on('mouseleave', function(){
@@ -594,6 +603,8 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 				'display': 'none',
 				'z-index': 'auto'
 			});
+			$(this).children('.hover').remove();
+			$(this).children('.hover-icon').remove();
 		});	
 	}
 
@@ -650,9 +661,14 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 	var createLightbox = function(){
 		// console.log('query:' + common.getParameterByName('query'));
 		// console.log('service:' + common.getParameterByName('service'));
+
 		$('#lightbox-shadow').show();
-		$('#lightbox').addClass(common.getParameterByName('service'))
+		$('#lightbox').empty()
+					  .removeClass()
+					  .addClass(common.getParameterByName('service'))
 					  .show();
+		$('#lightbox-detail').empty()
+							 .removeClass();					  
 		loadMoreInfo(common.getParameterByName('query'), common.getParameterByName('service'));	
 	}
 
@@ -662,7 +678,8 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 					  .hide()
 					  .removeClass();
 		$('#lightbox-detail').empty()
-							 .hide();					  
+							 .hide()
+							 .removeClass();					  
 		$('#lightbox-shadow').hide();
 		// $('#twitter-widget-0').remove();
 		// $('.fb-share-button.fb_iframe_widget').remove();
@@ -727,10 +744,12 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 	var embedYoutube = function(id, controls){
 		// console.log(controls);
-		var iframe = '<iframe src="https://www.youtube.com/embed/' +
-					 id +		
-					 '?autoplay=1&controls=' + controls + '" frameborder="0" allowfullscreen></iframe>';
-		return iframe;
+		if(controls > 0){
+			var iframe = '<iframe src="https://www.youtube.com/embed/' +
+						 id +		
+						 '?autoplay=1&controls=' + controls + '" frameborder="0" allowfullscreen></iframe>';
+			return iframe;			
+		}
 	}
 
 	var parseHsla = function(color){

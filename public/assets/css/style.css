@@ -291,13 +291,30 @@ body{
 		left: 0;
 		display: block;
 		cursor: zoom-in;
-		background: -webkit-linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.2)); /* For Safari 5.1 to 6.0 */
-		background: -o-linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.2)); /* For Opera 11.1 to 12.0 */
-		background: -moz-linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.2)); /* For Firefox 3.6 to 15 */
-		background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.2)); /* Standard syntax */		
 		z-index: 1001;
-		/*background-color: rgba(0, 0, 0, 0.2);*/
-	}	
+		border: none;
+	}
+
+	.hover.web{
+		background: -webkit-linear-gradient(hsla(216, 86%, 55%, 0), hsla(216, 86%, 55%, 0.2)); /* For Safari 5.1 to 6.0 */
+		background: -o-linear-gradient(hsla(216, 86%, 55%, 0), hsla(216, 86%, 55%, 0.2)); /* For Opera 11.1 to 12.0 */
+		background: -moz-linear-gradient(hsla(216, 86%, 55%, 0), hsla(216, 86%, 55%, 0.2)); /* For Firefox 3.6 to 15 */
+		background: linear-gradient(hsla(216, 86%, 55%, 0), hsla(216, 86%, 55%, 0.2)); /* Standard syntax */				
+	}
+
+	.hover.images{
+		background: -webkit-linear-gradient(hsla(42, 100%, 55%, 0), hsla(42, 100%, 55%, 0.2)); /* For Safari 5.1 to 6.0 */
+		background: -o-linear-gradient(hsla(42, 100%, 55%, 0), hsla(42, 100%, 55%, 0.2)); /* For Opera 11.1 to 12.0 */
+		background: -moz-linear-gradient(hsla(42, 100%, 55%, 0), hsla(42, 100%, 55%, 0.2)); /* For Firefox 3.6 to 15 */
+		background: linear-gradient(hsla(42, 100%, 55%, 0), hsla(42, 100%, 55%, 0.2)); /* Standard syntax */				
+	}
+
+	.hover.youtube{
+		background: -webkit-linear-gradient(hsla(7, 72%, 55%, 0), hsla(7, 72%, 55%, 0.3)); /* For Safari 5.1 to 6.0 */
+		background: -o-linear-gradient(hsla(7, 72%, 55%, 0), hsla(7, 72%, 55%, 0.3)); /* For Opera 11.1 to 12.0 */
+		background: -moz-linear-gradient(hsla(7, 72%, 55%, 0), hsla(7, 72%, 55%, 0.3)); /* For Firefox 3.6 to 15 */
+		background: linear-gradient(hsla(7, 72%, 55%, 0), hsla(7, 72%, 55%, 0.3)); /* Standard syntax */				
+	}
 
 	/*#container .item*/
 	.hover-icon{
@@ -793,7 +810,7 @@ div#lightbox-detail{
 	top: 50%;
 	left: 50%;
 	width: 300px;
-	margin-left: -442px;
+	margin-left: -444px;
 	margin-top: -250px;
 	background-color: white;
 	border-width: 8px;
@@ -821,7 +838,7 @@ div#lightbox-detail{
 
 			/*----------- Youtube ------------*/
 			div#lightbox-detail div.content div.youtube{
-				width: 284px;
+				width: 286px;
 				height: 160px;
 			    background-repeat: no-repeat;
 			    background-size: cover;
