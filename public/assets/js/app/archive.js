@@ -565,44 +565,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 				'z-index': 1000
 			});
 
-			// HOVER
-			// console.log('Width: ' + hover.width + ', ' + 'Height: ' + hover.height);
-			var hoverSize = {
-				width: $(this).children('.content').width(),
-				height: $(this).children('.content').height()
-			};
-
-			// if(service == 'web'){
-				
-			// }
-			// // hoverSize.width = ($(this).children('.content').width() < $(this).children('.content').css('min-width')) ? ($(this).children('.content').css('min-width')) : ($(this).children('.content').width());
-			// hoverSize.width = $(this).children('.content').width();
-			// hoverSize.height = $(this).children('.content').height();
-
-			// console.log($(this).children('.content').attr('class'));
-			var service = $(this).children('.content').attr('class').split(' ')[1];
-			var query = $(this).children('.content').attr('query');
-			// console.log(service);
-			
-			var hoverDiv = $('<div></div>')
-							.addClass('hover')
-							.addClass(service)
-							.css({
-								width: hoverSize.width,
-								height: hoverSize.height
-							})
-							.off('click').on('click', function(){
-								window.location.href= 'archive.html#' + getHash() +'?query=' + encodeURIComponent(query) + '&service=' + service + '&lightbox=true';
-							});
-
-			var hoverIcon = $('<div class="hover-icon"></div>')
-							.css({
-								top: (hoverSize.height/2 - 20),
-								left: (hoverSize.width/2 - 20)
-							});
-
-			$(this).append(hoverDiv)
-				   .append(hoverIcon);
+			createHover($(this));
 		});
 
 		$('.item').off('mouseleave').on('mouseleave', function(){
@@ -663,6 +626,40 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 				.appendTo('#lightbox');
 	        }
 	    });			
+	}
+
+	var createHover = function(obj){
+		// HOVER
+		// console.log('Width: ' + hover.width + ', ' + 'Height: ' + hover.height);
+		var hoverSize = {
+			width: $(obj).children('.content').width(),
+			height: $(obj).children('.content').height()
+		};
+
+		// console.log($(obj).children('.content').attr('class'));
+		var service = $(obj).children('.content').attr('class').split(' ')[1];
+		var query = $(obj).children('.content').attr('query');
+		// console.log(service);
+		
+		var hoverDiv = $('<div></div>')
+						.addClass('hover')
+						.addClass(service)
+						.css({
+							width: hoverSize.width,
+							height: hoverSize.height
+						})
+						.off('click').on('click', function(){
+							window.location.href= 'archive.html#' + getHash() +'?query=' + encodeURIComponent(query) + '&service=' + service + '&lightbox=true';
+						});
+
+		var hoverIcon = $('<div class="hover-icon"></div>')
+						.css({
+							top: (hoverSize.height/2 - 20),
+							left: (hoverSize.width/2 - 20)
+						});
+
+		$(obj).append(hoverDiv)
+			   .append(hoverIcon);
 	}
 
 	var createLightbox = function(){
