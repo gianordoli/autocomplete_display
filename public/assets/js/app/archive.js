@@ -443,7 +443,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 		// X Scale
 		var xAxis = d3.svg.axis()
-							.ticks(3)
+							.ticks(4)
 							.innerTickSize(20)
 						    .scale(xScale)
 						    .orient("bottom");
