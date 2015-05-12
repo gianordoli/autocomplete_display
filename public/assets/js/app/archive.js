@@ -255,22 +255,33 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 		console.log('Called drawLayout.');
 		$container = $(parentDiv).masonry();
 		// $('.item').css('visibility', 'hidden');
-		// layout Masonry again after all images have loaded
-		$container.imagesLoaded( function() {
-			console.log('Finished loading images.');
-			console.log('Calling Masonry');
+
+		var fallback = setTimeout(function(){
+			console.log('Images took too long to load.');
+			console.log('Calling Masonry anyway');
 			$container.masonry({
 				// columnWidth: 50,
 				containerStyle: null,
 				itemSelector: '.item'
 			});
-			isMasonry = true;
+		}, 5000);
+
+		// layout Masonry again after all images have loaded
+		$container.imagesLoaded( function() {
+			console.log('Finished loading images.');
+			console.log('Calling Masonry');
+			clearTimeout(fallback);
+			$container.masonry({
+				// columnWidth: 50,
+				containerStyle: null,
+				itemSelector: '.item'
+			});
 		});
 	}
 
 	/*-------------------- MORE INFO ---------------------*/
 
-	var loadMoreInfo = function(query, service){
+	var loadMoreInfo = function(query, service, callback){
 
 		console.log('Calling loadMoreInfo.')
 		console.log('Requesting: ' + query + ' at ' + service + '.');
@@ -289,6 +300,10 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 	        }else{
 	        	console.log('Got response from server.');
 	        	console.log(response);
+
+	        	if(callback !== undefined){
+	        		callback();
+	        	}
 
 	        	$('#lightbox').empty();
 	        	$('#lightbox-detail').empty();
@@ -559,19 +574,21 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 		// Show description
 		$('.item').off('mouseenter').on('mouseenter', function(){
+			$(this).css('z-index',  1000);
 
 			$(this).children('.description').css({
-				'display': 'block',
-				'z-index': 1000
+				'display': 'block'
+				// 'z-index': 1000
 			});
 
 			createHover($(this));
 		});
 
 		$('.item').off('mouseleave').on('mouseleave', function(){
+			$(this).css('z-index',  'auto');
 			$(this).children('.description').css({
-				'display': 'none',
-				'z-index': 'auto'
+				'display': 'none'
+				// 'z-index': 'auto'
 			});
 			$(this).children('.hover').remove();
 			$(this).children('.hover-icon').remove();
@@ -662,7 +679,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			   .append(hoverIcon);
 	}
 
-	var createLightbox = function(){
+	var createLightbox = function(callback){
 		// console.log('query:' + common.getParameterByName('query'));
 		// console.log('service:' + common.getParameterByName('service'));
 
@@ -672,8 +689,9 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 					  .addClass(common.getParameterByName('service'))
 					  .show();
 		$('#lightbox-detail').empty()
-							 .removeClass();					  
-		loadMoreInfo(common.getParameterByName('query'), common.getParameterByName('service'));	
+							 .removeClass();
+
+		loadMoreInfo(common.getParameterByName('query'), common.getParameterByName('service'), callback);
 	}
 
 	var removeLightbox = function(){
@@ -848,10 +866,13 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 		common.attachNavBarEvents();
 	});
 	var currentHash = getHash();
-	loadData(currentHash);
 	if(common.getParameterByName('lightbox') != null){
-		createLightbox();
-	}		
+		createLightbox(function(){
+			loadData(currentHash);				
+		});
+	}else{
+		loadData(currentHash);		
+	}
 });
 
 /*-------------------- DEPRECATED ---------------------*/

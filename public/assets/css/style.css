@@ -96,7 +96,7 @@ body{
 		position: fixed;
 		left: 0;
 		top: 0;
-		z-index: 3000;
+		z-index: 2000;
 		width: 100%;
 	}
 		/* TITLE */
@@ -333,7 +333,8 @@ body{
 			padding: 8px;
 			word-wrap: break-word;
 			font-size: 13px;
-			line-height: 18px;		
+			line-height: 18px;
+			z-index: 1000;
 			/*text-align: left;
 			color: white;*/
 		}
