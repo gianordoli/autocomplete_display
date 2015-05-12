@@ -220,7 +220,9 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 			var proto = $('<div class="' + service + '"></div>')
 						.appendTo('body');
-			var color = rgbToHsl($(proto).css('border-color'));
+			// Firefox is returning border-color as empty, so...
+			var color = ($(proto).css('border-color') != '') ? ($(proto).css('border-color')) : ($(proto).css('color'));
+			color = rgbToHsl(color);
 			$(proto).remove();
 			
 			var params = {
@@ -614,7 +616,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 					document.getElementById('twitter-share'),
 					{
 						count: 'none',
-						text: common.getParameterByName('query') + ' on Autocomplete Archive'
+						text: common.getParameterByName('query') + ' on #AutocompleteArchive'
 					})
 					.then(function (el) {
 						console.log("Twitter button created.")

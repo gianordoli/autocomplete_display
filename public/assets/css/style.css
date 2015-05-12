@@ -153,11 +153,19 @@ body{
 					width: 20px;
 					height: 20px;
 					margin-right: 10px;
+					border-style: solid;
+					border-width: 4px;					
 				}
 
-				nav#header ul#services li.web div		{ background-color: hsl(216, 86%, 55%); }
-				nav#header ul#services li.images div	{ background-color: hsl(42, 100%, 55%); }
-				nav#header ul#services li.youtube div	{ background-color: hsl(7, 72%, 55%); }
+				nav#header ul#services li.web div		{ border-color: hsl(216, 86%, 55%); }
+				nav#header ul#services li.images div	{ border-color: hsl(42, 100%, 55%); }
+				nav#header ul#services li.youtube div	{ border-color: hsl(7, 72%, 55%); }
+
+				nav#header ul#services li img{
+					display: inline-block;
+					vertical-align: middle;
+					margin-right: 10px;
+				}
 
 		/* LETTERS */
 		nav#header div#bar{ 
@@ -696,8 +704,11 @@ div#lightbox.web{
 
 	div#lightbox #close-bt{
 		float: right;
+		display: block;
 		width: 32px;
 		height: 32px;
+		border: none;
+		background-color: #444; 
 		border-color: #444;
 		border-style: solid;
 		border-width: 0 0 8px 8px;
