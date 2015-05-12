@@ -124,11 +124,14 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			// Youtube
 			if(data[index]['service'] == 'youtube'){
 
-				var itemContent = $('<div class="content">' +
-										'<div detail="0" style="background-image: url(' + data[index]['thumbnail'] + ')" videoid="' + data[index]['videoId'] + '">' +
-											'<img src="/assets/img/play.png"/>' +
-										'</div>' +
-									'</div>');
+				var itemContent = $('<div class="content"></div>');
+				var img = $('<div detail="0" style="background-image: url(' + data[index]['thumbnail'] + ')" videoid="' + data[index]['videoId'] + '">' +
+								'<img src="/assets/img/play.png"/>' +
+							'</div>')
+							.appendTo(itemContent);
+				
+				createStack(data[index]['languages'].length - 1, itemContent, data[index]['service']);
+
 			// Google Images
 			}else if(data[index]['service'] == 'images'){
 
@@ -144,7 +147,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 								// console.log('Loaded');
 								// console.log(response.data);
 
-								createStack(response);								
+								createStack(response.data.n, response.data.container, response.data.service);
 							});
 			// Google Web
 			}else{
@@ -223,24 +226,23 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 		attachEvents();
 	}
 
-	var createStack = function(response){
+	var createStack = function(n, container, service){
 
 		// console.log('Called createStack.');
-		
-		for(var i = 0; i < response.data.n; i++){
+
+		for(var i = 0; i < n; i++){
 			// $(itemContent).prepend('<hr/>');
 			// var brightness = 
-			var stack = $('<div class="stack ' + response.data.service + '"></div>')
+			var stack = $('<div class="stack ' + service + '"></div>')
 						.css({
-							top: -i*8,
-							left: -i*8,
-							width: $(response.data.container).width(),
-							height: $(response.data.container).height(),
+							top: - (i + 1) * 8,
+							left: - (i + 1) * 8,
+							width: $(container).width(),
+							height: $(container).height(),
 							'z-index': - i - 1,
-							// opacity: 1 - (1/(response.data.n) * i)
-							'border-color': 'hsl(42, 100%, ' + (55 + (45/(response.data.n) * i)) + '%)'
+							'border-color': 'hsl(42, 100%, ' + (55 + (45/(n) * i)) + '%)'
 						});
-			$(response.data.container).prepend(stack);
+			$(container).prepend(stack);
 		}	
 	}
 

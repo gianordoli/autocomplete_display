@@ -193,7 +193,7 @@ body{
 						line-height: 15px;
 						/*height: 100%;*/
 						padding: 5px 0;
-						border-width: 8px 0 8px 8px;
+						border-width: 8px 4px 8px 4px;
 						border-style: solid;
 						/*border-color: rgba(110, 40, 230, 0.7);*/
 						border-color: #6e2ae7;				
@@ -284,14 +284,6 @@ body{
 		vertical-align: middle;
 		margin: 5px;
 		text-align: left;
-	}
-
-	.stack{
-		position: absolute;
-		display: block;
-		background-color: black;
-		width: 100px;
-		height: 100px;
 	}
 
 	/*#container .item*/
@@ -393,6 +385,19 @@ body{
 			vertical-align: bottom;
 			border: none;
 		}
+
+			#container .item div.content .stack{
+				position: absolute;
+				display: block;
+				background-color: white;
+				width: 100px;
+				height: 100px;
+			}
+
+			#container .item div.content .stack.youtube{
+				width: 300px;
+				height: 168px;
+			}					
 
 			/*---------- Google Web ----------*/
 			#container .item div.content.web{
