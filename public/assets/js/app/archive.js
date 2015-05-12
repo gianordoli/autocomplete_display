@@ -143,22 +143,8 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 								// console.log('Loaded');
 								// console.log(response.data);
-								// // createStack(data[index], itemContent);
-								for(var i = 0; i < response.data.n; i++){
-									// $(itemContent).prepend('<hr/>');
-									// var brightness = 
-									var stack = $('<div class="stack ' + response.data.service + '"></div>')
-												.css({
-													top: -i*8,
-													left: -i*8,
-													width: $(response.data.container).width(),
-													height: $(response.data.container).height(),
-													'z-index': - i - 1,
-													// opacity: 1 - (1/(response.data.n) * i)
-													'border-color': 'hsl(42, 100%, ' + (55 + (45/(response.data.n) * i)) + '%)'
-												});
-									$(response.data.container).prepend(stack);
-								}									
+
+								createStack(response);								
 							});
 			// Google Web
 			}else{
@@ -237,21 +223,25 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 		attachEvents();
 	}
 
-	var createStack = function(data, container){
-		console.log('Called createStack.');
-		// Language count
-		for(var i = 0; i < data['languages'].length - 1; i++){
+	var createStack = function(response){
+
+		// console.log('Called createStack.');
+		
+		for(var i = 0; i < response.data.n; i++){
 			// $(itemContent).prepend('<hr/>');
-			var stack = $('<div class="stack"></div>')
+			// var brightness = 
+			var stack = $('<div class="stack ' + response.data.service + '"></div>')
 						.css({
-							top: i*10,
-							left: i*10,
-							width: $(container).width(),
-							height: $(container).height(),
-							'z-index': i
+							top: -i*8,
+							left: -i*8,
+							width: $(response.data.container).width(),
+							height: $(response.data.container).height(),
+							'z-index': - i - 1,
+							// opacity: 1 - (1/(response.data.n) * i)
+							'border-color': 'hsl(42, 100%, ' + (55 + (45/(response.data.n) * i)) + '%)'
 						});
-			$(container).prepend(stack);
-		}		
+			$(response.data.container).prepend(stack);
+		}	
 	}
 
 	var drawLayout = function(parentDiv){
