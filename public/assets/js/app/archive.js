@@ -873,11 +873,15 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 		return myHslColor;
 	}
 
-	// var preLoadIcons = function(){
-	// 	var icons = ['']
-	//     var img = new Image();
-	//     img.src=url;
-	// }
+	var preLoadIcons = function(){
+		var icons = ['/assets/img/chart_web.png', '/assets/img/chart_images.png', '/assets/img/chart_youtube.png']
+	    var img0 = new Image();
+	    img0.src = icons[0];
+	    var img1 = new Image();
+	    img1.src = icons[1];
+	    var img2 = new Image();
+	    img2.src = icons[2];
+	}
 
 	/*-------------------- APP INIT ---------------------*/
 
@@ -899,6 +903,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 	// Init
 	fixHash();
+	preLoadIcons();
 	common.appendNavBar(true, function(){
 		common.attachNavBarEvents();
 	});
