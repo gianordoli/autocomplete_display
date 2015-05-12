@@ -117,7 +117,8 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 		for(var index in data){
 			
 			/*---------- CONTAINER ----------*/
-			var itemContainer = $('<div class="item"></div>').appendTo(container);				
+			var itemContainer = $('<div class="item"></div>')
+								.appendTo(container);
 
 			/*----- Content -----*/
 			// Youtube
@@ -131,9 +132,34 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			// Google Images
 			}else if(data[index]['service'] == 'images'){
 
-				var itemContent = $('<div class="content">' +
-										'<img src="' + data[index]['url'] + '" />' +
-									'</div>');
+				var itemContent = $('<div class="content"></div>');
+				var img = $('<img src="' + data[index]['url'] + '" />')
+							.appendTo(itemContent)
+							.load({
+								n: data[index]['languages'].length - 1,
+								container: itemContent,
+								service: data[index]['service']
+							}, function(response){
+
+								// console.log('Loaded');
+								// console.log(response.data);
+								// // createStack(data[index], itemContent);
+								for(var i = 0; i < response.data.n; i++){
+									// $(itemContent).prepend('<hr/>');
+									// var brightness = 
+									var stack = $('<div class="stack ' + response.data.service + '"></div>')
+												.css({
+													top: -i*8,
+													left: -i*8,
+													width: $(response.data.container).width(),
+													height: $(response.data.container).height(),
+													'z-index': - i - 1,
+													// opacity: 1 - (1/(response.data.n) * i)
+													'border-color': 'hsl(42, 100%, ' + (55 + (45/(response.data.n) * i)) + '%)'
+												});
+									$(response.data.container).prepend(stack);
+								}									
+							});
 			// Google Web
 			}else{
 
@@ -142,10 +168,21 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 									'</div>');
 			}
 
+			console.log($(itemContent).width());
+
 			// Language count
-			for(var i = 0; i < data[index]['languages'].length - 1; i++){
-				$(itemContent).prepend('<hr/>');
-			}
+			// for(var i = 0; i < data[index]['languages'].length - 1; i++){
+			// 	// $(itemContent).prepend('<hr/>');
+			// 	var stack = $('<div class="stack"></div>')
+			// 				.css({
+			// 					top: i*10,
+			// 					left: i*10,
+			// 					width: $(itemContent).width(),
+			// 					height: $(itemContent).height(),
+			// 					'z-index': i
+			// 				});
+			// 	$(itemContent).prepend(stack);
+			// }
 
 			$(itemContent).addClass(data[index]['service'])
 			$(itemContent).children().addClass(data[index]['service']);
@@ -198,6 +235,23 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 		drawLayout(container);		
 		attachEvents();
+	}
+
+	var createStack = function(data, container){
+		console.log('Called createStack.');
+		// Language count
+		for(var i = 0; i < data['languages'].length - 1; i++){
+			// $(itemContent).prepend('<hr/>');
+			var stack = $('<div class="stack"></div>')
+						.css({
+							top: i*10,
+							left: i*10,
+							width: $(container).width(),
+							height: $(container).height(),
+							'z-index': i
+						});
+			$(container).prepend(stack);
+		}		
 	}
 
 	var drawLayout = function(parentDiv){
@@ -503,44 +557,43 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 		// Show description
 		$('.item').off('mouseenter').on('mouseenter', function(){
-			$(this).css({
+
+			$(this).children('.description').css({
+				'display': 'block',
 				'z-index': 1000
 			});
-			$(this).children('.description').css({
-				'display': 'block'
-			});
 
-			// console.log('Width: ' + hover.width + ', ' + 'Height: ' + hover.height);
-			var hover = {
-				width: $(this).children('.content').width(),
-				height: $(this).children('.content').height()
-			}
+			// // HOVER
+			// // console.log('Width: ' + hover.width + ', ' + 'Height: ' + hover.height);
+			// var hover = {
+			// 	width: $(this).children('.content').width(),
+			// 	height: $(this).children('.content').height()
+			// }
 
-			// console.log($(this).children('.content').attr('class'));
-			var service = $(this).children('.content').attr('class').split(' ')[1];
-			// console.log(service);
+			// // console.log($(this).children('.content').attr('class'));
+			// var service = $(this).children('.content').attr('class').split(' ')[1];
+			// // console.log(service);
 			
-			var hoverDiv = $('<div class="hover"></div>')
-							.css({
-								width: hover.width,
-								height: hover.height
-							});
+			// var hoverDiv = $('<div class="hover"></div>')
+			// 				.css({
+			// 					width: hover.width,
+			// 					height: hover.height
+			// 				});
 
-			var hoverIcon = $('<div class="hover-icon"></div>')
-							.css({
-								top: (hover.height/2 - 20),
-								left: (hover.width/2 - 20)
-							});
+			// var hoverIcon = $('<div class="hover-icon"></div>')
+			// 				.css({
+			// 					top: (hover.height/2 - 20),
+			// 					left: (hover.width/2 - 20)
+			// 				});
 
-			$(this).append(hoverDiv)
-				   .append(hoverIcon);
+			// $(this).append(hoverDiv)
+			// 	   .append(hoverIcon);
 		});
+
 		$('.item').off('mouseleave').on('mouseleave', function(){
-			$(this).css({
-				'z-index': 0
-			});			
 			$(this).children('.description').css({
-				'display': 'none'
+				'display': 'none',
+				'z-index': 'auto'
 			});
 		});	
 	}
