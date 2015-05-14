@@ -10,7 +10,7 @@ define(function (require) {
 			console.log('Appending NavBar');
 
 			var servicesUl = $('<ul id="services">' +
-									'<li class="web"><div></div>Google Web</li>' +
+									'<li class="web"><div></div>Google.com</li>' +
 									'<li class="images"><div></div>Google Images</li>' +
 									'<li class="youtube"><div></div>Youtube</li>' +
 									'<li><img src="/assets/img/stack.png" />Number of Languages</li>' +

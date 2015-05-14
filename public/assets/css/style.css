@@ -189,7 +189,7 @@ html, body{
 		}
 
 			nav#header div#bar ul#letters{
-				height: 100%;
+				/*height: 100%;*/
 				margin: 0;
 				border: 0;
 				padding: 0 0 0 20px;

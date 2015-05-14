@@ -176,7 +176,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 							  .append('<hr/>');
 
 			// Languages
-			var languagesText = 'Appears in ';
+			var languagesText = 'Searched in ';
 			for(var i in data[index]['languages']){
 				if(i > 0){
 					if(data[index]['languages'].length > 2){
@@ -466,10 +466,11 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
             .append("text") // Label
             .attr("transform", "rotate(-90)")
             .attr("y", -55)
-            .attr("x", 25)
+            .attr("x", 34)
             .attr("class", "label")
             .style("text-anchor", "end")
-            .text("Position on Autocomplete");
+            // .text("Position on Autocomplete");
+            .text("Most Searched For Order");
 
 		// d3.selectAll("g.y.axis g.tick line")
 		//     .attr("x2", function(d){
@@ -640,7 +641,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 					document.getElementById('twitter-share'),
 					{
 						count: 'none',
-						text: common.getParameterByName('query') + ' on #AutocompleteArchive'
+						text: common.getParameterByName('query') + ' on #AutocompleteArchive http://autocompletearchive.com'
 					})
 					.then(function (el) {
 						console.log("Twitter button created.")
