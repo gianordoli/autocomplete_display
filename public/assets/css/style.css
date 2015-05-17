@@ -197,7 +197,17 @@ html, body{
 		    height: 42px;
 		    overflow: hidden;
 		    background-color: rgba(110, 42, 231, 0.7);			
-		}		
+		}
+
+		nav#header div.right p#back-bt,
+		nav#header div.right p#back-bt img{
+			line-height: 42px;
+			display: inline-block;
+			vertical-align: middle;	
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}
 
 			nav#header ul#letters{
 				float: left;

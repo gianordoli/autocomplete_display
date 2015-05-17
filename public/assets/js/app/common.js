@@ -30,18 +30,22 @@ define(function (require) {
 
 			// Purple bar
 			var bar = $('<div id="bar"></div>')
+					    .append('<div class="left"></div>')
 						.appendTo('nav#header');
 
 			// Letters
 			if(isArchive){
-				$(bar).append('<div class="left"></div>')
-					  .append(lettersUl)
-				var right = $('<div class="right"></div>')
-							.appendTo(bar);
+				$(bar).append(lettersUl)
+			}
+			
+			var right = $('<div class="right"></div>').appendTo(bar);
+
+			// back
+			if(!isArchive){
+				$(right).append('<p id="back-bt"><a href="/archive.html#A"><img src="/assets/img/back_bt.png"/></a></p>');
 			}
 
-			// // About
-			// $(bar).append
+			// About
 			var about = $('<div id="about"><img src="/assets/img/hamburger.png"/><p>More Info</p>' +
 							'<ul id="pages-links">' +
 								'<li><a href="about.html">About</a></li>' +
