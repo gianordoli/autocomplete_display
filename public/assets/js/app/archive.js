@@ -387,11 +387,19 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 	var drawChart = function(main, dataset, dateRange){
 
 		console.log('Called drawChart');
+		// console.log(dataset.length);
+		var service = main['service'];
+		var query = encodeURI(main['query']);
 
 		// Header
 		// $('#lightbox').addClass(main['service']);
 		$('#lightbox').append('<div id="close-bt"><img src="/assets/img/close_bt.png" /></div>');
-		$('#lightbox').append('<h1>' + main['query'] + '</h1>')
+		var title = $('<h1>' + main['query'] + '</h1>').appendTo('#lightbox');
+		if(dataset.length == 1 && dataset[0][0]['language_code'] != 'en'){
+			$(title).append('<a href="https://translate.google.com/?ie=UTF-8&hl=en#' + dataset[0][0]['language_code'] + '/en/' + query + '" target="_blank">' +
+								'<img src="/assets/img/google_translate.png"/></a>' +
+							'</a>');
+		}
 		$('#lightbox').append('<h2>' + servicesAlias[main['service']]['name'] + '</h2>');
 
 		/*----- LAYOUT -----*/
@@ -505,13 +513,13 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 							.attr("d", function(d, i) {
 								return line(d);
 							});
-							
 
 		var languagesList = $('<ul></ul>');
 		for(var i in languagesPalette){
 			$(languagesList).append('<li class="language-bt">' +
 										'<div class="language-marker" style="background-color:' + languagesPalette[i]['color'] + '"></div>' +
-										'<a href="" query="' + encodeURI(main['query']) + '" service="' + main['service'] + '" language="' + languagesPalette[i]['language_code'] + '">' + languagesPalette[i]['language_name'] + '</a>' +
+										// '<a href="" query="' + encodeURI(main['query']) + '" service="' + main['service'] + '" language="' + languagesPalette[i]['language_code'] + '">' + languagesPalette[i]['language_name'] + '</a>' +
+										'<a href="' + servicesAlias[service]['search_address'] + query + '&hl=' + language + '" target="_blank">' + languagesPalette[i]['language_name'] +'</a>' + 
 									'</li>');
 		}
 		$('#lightbox').append(languagesList);
@@ -533,25 +541,25 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			removeLightbox();
 		});
 
-		var languageRollover;
+		// var languageRollover;
 
-		$('.language-bt').off('mouseenter').on('mouseenter', function() {
-			clearTimeout(languageRollover);
-			createTooltip($(this));
-		})				
-		.off('mouseleave').on('mouseleave', function() {
-	    	clearTimeout(languageRollover);
-	    	languageRollover = setTimeout(function(){
-	    		$('.language-tooltip').remove();
-	    	}, 1000);
-		});
+		// $('.language-bt').off('mouseenter').on('mouseenter', function() {
+		// 	clearTimeout(languageRollover);
+		// 	createTooltip($(this));
+		// })				
+		// .off('mouseleave').on('mouseleave', function() {
+	 //    	clearTimeout(languageRollover);
+	 //    	languageRollover = setTimeout(function(){
+	 //    		$('.language-tooltip').remove();
+	 //    	}, 1000);
+		// });
 
-		$('.language-tooltip').off('mouseenter').on('mouseenter', function(){
-			clearTimeout(languageRollover);
-		})
-		.off('mouseleave').on('mouseleave', function(){
-			$('.language-tooltip').remove();
-		});
+		// $('.language-tooltip').off('mouseenter').on('mouseenter', function(){
+		// 	clearTimeout(languageRollover);
+		// })
+		// .off('mouseleave').on('mouseleave', function(){
+		// 	$('.language-tooltip').remove();
+		// });
 
 
 		// Play video
@@ -739,38 +747,38 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 		// $('.fb-share-button.fb_iframe_widget').remove();
 	}
 
-	var createTooltip = function(obj){
+	// var createTooltip = function(obj){
 
-		$('.language-tooltip').remove();
+	// 	$('.language-tooltip').remove();
 
-		var linkColor = $(obj).children('.language-marker').css('background-color');
-		var linkPosition = $(obj).offset();
-		var linkSize = {
-			width: $(obj).width(),
-			height: $(obj).height()
-		}
-		var linkWidth = $(obj).width();
-		var query = $(obj).children('a').attr('query');
-		var service = $(obj).children('a').attr('service');
-		var language = $(obj).children('a').attr('language');
-		var translateLanguage = (language == 'pt-BR') ? ('pt') : (language);
-		// console.log(query + ', ' + service + ', ' + language);
+	// 	var linkColor = $(obj).children('.language-marker').css('background-color');
+	// 	var linkPosition = $(obj).offset();
+	// 	var linkSize = {
+	// 		width: $(obj).width(),
+	// 		height: $(obj).height()
+	// 	}
+	// 	var linkWidth = $(obj).width();
+	// 	var query = $(obj).children('a').attr('query');
+	// 	var service = $(obj).children('a').attr('service');
+	// 	var language = $(obj).children('a').attr('language');
+	// 	var translateLanguage = (language == 'pt-BR') ? ('pt') : (language);
+	// 	// console.log(query + ', ' + service + ', ' + language);
 
-		$('<div class="language-tooltip">' +				
-			'<a href="' + servicesAlias[service]['search_address'] + query + '&hl=' + language + '" target="_blank">Search</a>' + 
-			'<br />' +
-			'<a href="https://translate.google.com/?ie=UTF-8&hl=en#' + translateLanguage + '/en/' + query + '" target="_blank">Translate</a>' + 				
-		  '</div>')
-		  .css({
-		  	'top': (linkPosition.top + linkSize.height) + 'px',
-		  	'left': (linkPosition.left) + 'px',
-		  	'min-width': linkWidth + 'px',
-		  	'border-color': linkColor
-		  })
-		  .appendTo('body');
+	// 	$('<div class="language-tooltip">' +				
+	// 		'<a href="' + servicesAlias[service]['search_address'] + query + '&hl=' + language + '" target="_blank">Search</a>' + 
+	// 		'<br />' +
+	// 		'<a href="https://translate.google.com/?ie=UTF-8&hl=en#' + translateLanguage + '/en/' + query + '" target="_blank">Translate</a>' +
+	// 	  '</div>')
+	// 	  .css({
+	// 	  	'top': (linkPosition.top + linkSize.height) + 'px',
+	// 	  	'left': (linkPosition.left) + 'px',
+	// 	  	'min-width': linkWidth + 'px',
+	// 	  	'border-color': linkColor
+	// 	  })
+	// 	  .appendTo('body');
 
-		  attachEvents();
-	}	
+	// 	  attachEvents();
+	// }	
 
 	var removeSelectedLetter = function(){
 		console.log('Called removeSelectedLetter.');

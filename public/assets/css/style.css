@@ -780,6 +780,14 @@ div#lightbox.web{
 		border-bottom: 4px solid #444;
 		margin: 20px 70px 10px 70px;
 	}
+
+	div#lightbox h1 a img{
+		height: 28px;
+		width: auto;
+		display: inline-block;
+		vertical-align: baseline;
+		padding-left: 10px;
+	}	
 	
 	div#lightbox h2 {
 		margin: 0 50px;
