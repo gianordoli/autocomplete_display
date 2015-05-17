@@ -177,93 +177,118 @@ html, body{
 
 		/* LETTERS */
 		nav#header div#bar{ 
-			display: inline-block;
-			vertical-align: top;
-			width: calc(100% - 42px);
-			height: 42px;
-			opacity: 0.7;
-			background-color: #6e2ae7;
+			width: calc(100% - 140px);
+			position: fixed;
+			top: 60px;
+			left: 0;			
+		    overflow: hidden; /* clear the float */
 			margin: 0;
 			border: 0;
 			padding: 0;
 		}
 
-			nav#header div#bar ul#letters{
+		nav#header div.left{
+		    width: 20px;
+		    height: 42px;
+		    float: left;
+		    background-color: rgba(110, 42, 231, 0.7);
+		}
+		nav#header div.right{
+		    height: 42px;
+		    overflow: hidden;
+		    background-color: rgba(110, 42, 231, 0.7);			
+		}		
+
+			nav#header ul#letters{
+				float: left;
 				/*height: 100%;*/
+				/*display: inline-block;*/
 				margin: 0;
 				border: 0;
-				padding: 0 0 0 20px;
+				padding: 0;
 			}		
 
-				nav#header div#bar ul#letters li{
+				nav#header ul#letters li{
 					display: inline-block;
 					text-align: center;
-					height: 100%;
 				}		
 
-					nav#header div#bar ul#letters li a{
+					nav#header ul#letters li a{
 						display: block;
 						width: 34px;
 						line-height: 15px;
-						/*height: 100%;*/
+						height: 42px;
+						width: 35px;
 						padding: 5px 0;
 						border-width: 8px 4px 8px 4px;
 						border-style: solid;
 						/*border-color: rgba(110, 40, 230, 0.7);*/
-						border-color: #6e2ae7;				
 						text-transform: uppercase;
 						font-size: 15px;
 						font-weight: bold;
-						background-color: white;
 					}
 
-					nav#header div#bar ul#letters li a:link,
-					nav#header div#bar ul#letters li a:visited,
-					nav#header div#bar ul#letters li a:active,
-					nav#header div#bar ul#letters li a:hover{
+					nav#header ul#letters li a:link,
+					nav#header ul#letters li a:visited,
+					nav#header ul#letters li a:active,
+					nav#header ul#letters li a:hover{
 						outline: 0;
 						text-decoration: none;
+						border-color: rgba(110, 42, 231, 0.7);										
 						/*color: rgba(110, 40, 230, 0.7);*/
-						color: #6e2ae7;
+						color: rgba(110, 42, 231, 0.7);
 					}
 
-					nav#header div#bar ul#letters li a.letter-bt.not-active {
+					nav#header ul#letters li a.letter-bt.not-active {
 					   pointer-events: none;
 					   cursor: default;
 					}
 
-					nav#header  div#bar ul#letters li a.letter-bt.selected {
-					   /*background-color: rgba(110, 40, 230, 0.7);*/
-					   background-color: #6e2ae7;
+					nav#header ul#letters li a.letter-bt.selected {
+					   background-color: rgba(110, 42, 231, 0.7);
+					   border-color: rgba(110, 42, 231, 0);
 					   color: white;
 					}
 
 		/* ABOUT */
 		nav#header #about{
-			display: inline-block;
-			width: 42px;
+			position: fixed;
+			top: 60px;
+			right: 0;
+			width: 140px;
 			height: 42px;
-			float: right;
-			background-color: #ff6600;				
-			text-transform: uppercase;
+			background-color: #ff6600;
+			text-align: left;				
+			padding-left: 10px;
 			font-size: 15px;
 			font-weight: bold;
-			text-align: center;
 			opacity: 0.7;
 			cursor: pointer;
 			color: white;
 		}
 
+			nav#header #about img{
+				line-height: 42px;
+				display: inline-block;
+				vertical-align: middle;
+				margin-right: 10px;
+				padding: 0;
+				border: 0;
+			}
+
 			nav#header #about p{
 				line-height: 42px;
+				display: inline-block;
+				vertical-align: middle;
 				margin: 0;
 				padding: 0;
 				border: 0;
 			}		
 
-		nav#header ul#pages-links{
+		nav#header #about ul#pages-links{
 			background-color: #ff6600;		
-			opacity: 0.7;
+			/*opacity: 0.7;*/
+			width: 140px;
 			font-size: 15px;
 			font-weight: bold;
 			margin: 0;
@@ -273,10 +298,10 @@ html, body{
 			display: none;
 		}
 
-			nav#header ul#pages-links li a:link,
-			nav#header ul#pages-links li a:visited,
-			nav#header ul#pages-links li a:active,
-			nav#header ul#pages-links li a:hover{
+			nav#header #about ul#pages-links li a:link,
+			nav#header #about ul#pages-links li a:visited,
+			nav#header #about ul#pages-links li a:active,
+			nav#header #about ul#pages-links li a:hover{
 				color: white;
 				/*text-decoration: none;*/
 				outline: none;

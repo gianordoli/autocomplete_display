@@ -27,21 +27,29 @@ define(function (require) {
 			
 			// Services
 			if(isArchive){ $('nav#header').append(servicesUl); }
-			
+
 			// Purple bar
 			var bar = $('<div id="bar"></div>')
 						.appendTo('nav#header');
 
 			// Letters
-			if(isArchive){ $(bar).append(lettersUl); }
+			if(isArchive){
+				$(bar).append('<div class="left"></div>')
+					  .append(lettersUl)
+				var right = $('<div class="right"></div>')
+							.appendTo(bar);
+			}
 
-			// About
-			$('nav#header').append('<div id="about"><p>?</p></div>' +
-									'<ul id="pages-links">' +
-										'<li><a href="about.html">About</a></li>' +
-										'<li><a href="faq.html">FAQ</a></li>' +
-										'<li><a href="technology.html">Tech Info</a></li>' +
-									'</ul>');
+			// // About
+			// $(bar).append
+			var about = $('<div id="about"><img src="/assets/img/hamburger.png"/><p>More Info</p>' +
+							'<ul id="pages-links">' +
+								'<li><a href="about.html">About</a></li>' +
+								'<li><a href="faq.html">FAQ</a></li>' +
+								'<li><a href="technology.html">Tech Info</a></li>' +
+							'</ul>' +
+						  '</div>')
+						  .appendTo('nav#header');
 
 			callback();
 
