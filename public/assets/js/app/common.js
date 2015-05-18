@@ -107,6 +107,7 @@ define(function (require) {
 
 			$(container).append(loaderContainer);
 			$(loaderContainer).append(loader);
+			$(loaderContainer).append('<p><b>Loading<br/>Google Autocomplete<br/>suggestions</b></p>');
 		},
 
 		getParameterByName: function(name) {
