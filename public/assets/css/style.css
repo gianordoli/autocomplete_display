@@ -89,7 +89,60 @@ html, body{
 	margin: 0;
 	padding: 0;
 	border: 0;
-}	
+}
+
+div#logo{
+	position: absolute;
+	top: calc(50% - 210px);
+	left: calc(50% - 400px);
+	width: 800px;
+	height: 420px;
+	border: 16px solid rgb(110, 42, 231);
+	opacity: 0.7;
+	cursor: default;
+}
+	div#logo p#title{
+		position: absolute;
+		top: calc(50% - 160px);
+		left: calc(50% - 290px);		
+		font-size: 80px;
+		line-height: 72px;
+		font-weight: bold;
+		color: #ff6600;
+	}
+	div#logo p#tagline{
+		position: absolute;
+		top: calc(50% - 14px);
+		left: calc(50% + 20px);		
+		font-size: 24px;
+		line-height: 26px;
+		font-weight: bold;
+		color: rgb(110, 42, 231);
+	}
+	div#explore-bt{
+		position: absolute;
+		top: calc(50% + 210px + 40px);
+		left: calc(50% - 90px);
+		width: 180px;
+		height: 60px;
+		border: 8px solid #ff6600;
+		opacity: 0.7;
+		background-color: transparent;
+		font-size: 24px;
+		line-height: 44px;
+		text-align: center;
+		font-weight: bold;
+		color: #ff6600;
+		outline: none;
+	}
+	div#explore-bt a:link,
+	div#explore-bt a:visited,
+	div#explore-bt a:active,
+	div#explore-bt a:hover{
+		outline: none;
+		color: #ff6600;
+		text-decoration: none;
+	}	
 
 	/* Nav Bar */
 

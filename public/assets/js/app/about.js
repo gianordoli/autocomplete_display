@@ -87,7 +87,7 @@ define(['./common'], function (common) {
 	/*-------------------- APP INIT ---------------------*/
 	// GLOBAL VARS
 	var servicesAlias = {
-		web: 'Google Web',
+		web: 'Google.com',
 		images: 'Google Images',
 		youtube: 'Youtube'
 	}

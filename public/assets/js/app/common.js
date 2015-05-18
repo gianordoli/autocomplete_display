@@ -8,13 +8,17 @@ define(function (require) {
 		appendNavBar: function(isArchive, callback){
 
 			console.log('Appending NavBar');
+			var today = new Date();
+			var monthNames = ["January", "February", "March", "April", "May", "June",
+			  "July", "August", "September", "October", "November", "December"
+			];
 
 			var servicesUl = $('<ul id="services">' +
 									'<li class="web"><div></div>Google.com</li>' +
 									'<li class="images"><div></div>Google Images</li>' +
 									'<li class="youtube"><div></div>Youtube</li>' +
 									'<li><img src="/assets/img/stack.png" />Number of Languages</li>' +
-									'<li class="data">Data: Feb 21 - May 6</li>' +
+									'<li class="data">Data: Feb 21 - ' + monthNames[today.getMonth()] + ' ' + today.getDate() + '</li>' +
 								'</ul>');
 			var lettersUl = $('<ul id="letters"></ul>');
 			for(var i = 65; i <= 90; i++){
@@ -23,7 +27,7 @@ define(function (require) {
 			}
 
 			// Title
-			$('nav#header').append('<h1><a href="archive.html#A"><span>Autocomplete</span> Archive</a></h1>');
+			$('nav#header').append('<h1><a href="/index.html"><span>Autocomplete</span> Archive</a></h1>');
 			
 			// Services
 			if(isArchive){ $('nav#header').append(servicesUl); }

@@ -897,7 +897,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 	// GLOBAL VARS
 	var servicesAlias = {
 		web: {
-			name: 'Google Web',
+			name: 'Google.com',
 			search_address: 'https://www.google.com/#q='
 		},
 		images: {
