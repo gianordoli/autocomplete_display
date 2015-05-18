@@ -91,15 +91,28 @@ html, body{
 	border: 0;
 }
 
+div#bg{
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background-size: cover;
+	background-position: center;
+	/*background-image: url*/	
+}
+
 div#logo{
 	position: absolute;
 	top: calc(50% - 210px);
 	left: calc(50% - 400px);
 	width: 800px;
 	height: 420px;
-	border: 16px solid rgb(110, 42, 231);
-	opacity: 0.7;
+	/*border: 16px solid rgb(110, 42, 231);*/
+	border: 16px solid #ff6600;
+	opacity: 0.8;
 	cursor: default;
+	color: #ff6600;
 }
 	div#logo p#title{
 		position: absolute;
@@ -108,7 +121,7 @@ div#logo{
 		font-size: 80px;
 		line-height: 72px;
 		font-weight: bold;
-		color: #ff6600;
+		/*color: #ff6600;*/
 	}
 	div#logo p#tagline{
 		position: absolute;
@@ -117,7 +130,7 @@ div#logo{
 		font-size: 24px;
 		line-height: 26px;
 		font-weight: bold;
-		color: rgb(110, 42, 231);
+		color: rgba(0, 0, 0, 0.7);
 	}
 	div#explore-bt{
 		position: absolute;
@@ -126,7 +139,7 @@ div#logo{
 		width: 180px;
 		height: 60px;
 		border: 8px solid #ff6600;
-		opacity: 0.7;
+		opacity: 0.8;
 		background-color: transparent;
 		font-size: 24px;
 		line-height: 44px;
