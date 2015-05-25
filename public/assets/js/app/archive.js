@@ -31,84 +31,85 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 				enableNavigation();
 				$(container).empty();
-	        	processData(response, container);
+				appendResults(response['results'], container);
+	        	// processData(response, container);
 	        }
 	    });
 	}
 
-	var processData = function(data, container){
+	// var processData = function(data, container){
 
-		console.log('Called processData.');
-		data['results'] = common.refineDates(data['results']);
+	// 	console.log('Called processData.');
+	// 	data['results'] = common.refineDates(data['results']);
 
-    	var clusteredData = _.groupBy(data['results'], function(item, index, list){
-    		// console.log(item['query']);
-    		return item['query'] + '#' + item['service'];
-    	});
-    	// console.log(clusteredData);
-    	console.log('Clustering to ' + Object.keys(clusteredData).length + ' query#service objects.');	      
+ //    	var clusteredData = _.groupBy(data['results'], function(item, index, list){
+ //    		// console.log(item['query']);
+ //    		return item['query'] + '#' + item['service'];
+ //    	});
+ //    	// console.log(clusteredData);
+ //    	console.log('Clustering to ' + Object.keys(clusteredData).length + ' query#service objects.');	      
 
-    	var sortedData = _.sortBy(clusteredData, function(value, key, collection){
-    		// console.log(key.substring(0, key.indexOf('#')));
-    		return key.substring(0, key.indexOf('#'));
-    	});
-    	// console.log(sortedData);
-    	// clusteredData = _.shuffle(clusteredData);
-    	// clusteredData = _.sample(clusteredData, 50);
+ //    	var sortedData = _.sortBy(clusteredData, function(value, key, collection){
+ //    		// console.log(key.substring(0, key.indexOf('#')));
+ //    		return key.substring(0, key.indexOf('#'));
+ //    	});
+ //    	// console.log(sortedData);
+ //    	// clusteredData = _.shuffle(clusteredData);
+ //    	// clusteredData = _.sample(clusteredData, 50);
 
-    	var groupedQueries = [];
+ //    	var groupedQueries = [];
 
-    	for(var i in sortedData){
-    		// console.log(sortedData[i]);
-    		var thisQuery = {
-    			query: sortedData[i][0]['query'],
-    			service: sortedData[i][0]['service'],
-    			languages: [],	// All languages
-    			rankings: [],	// All ranking positions
-    			dates: []		// All dates
-    		}
+ //    	for(var i in sortedData){
+ //    		// console.log(sortedData[i]);
+ //    		var thisQuery = {
+ //    			query: sortedData[i][0]['query'],
+ //    			service: sortedData[i][0]['service'],
+ //    			languages: [],	// All languages
+ //    			rankings: [],	// All ranking positions
+ //    			dates: []		// All dates
+ //    		}
 
-    		for(var j in sortedData[i]){
-    			// console.log(sortedData[i][j]);
-    			var language = sortedData[i][j]['language_name'];
-    			var ranking = sortedData[i][j]['ranking'];
-    			var date = sortedData[i][j]['date'];
+ //    		for(var j in sortedData[i]){
+ //    			// console.log(sortedData[i][j]);
+ //    			var language = sortedData[i][j]['language_name'];
+ //    			var ranking = sortedData[i][j]['ranking'];
+ //    			var date = sortedData[i][j]['date'];
     			
-    			if(thisQuery['languages'].indexOf(language) < 0){
-    				thisQuery['languages'].push(language);
-    			}
-    			if(thisQuery['rankings'].indexOf(ranking) < 0){
-    				thisQuery['rankings'].push(ranking);
-    			}
-    			if(thisQuery['dates'].indexOf(date) < 0){
-    				thisQuery['dates'].push(date);
-    			}
+ //    			if(thisQuery['languages'].indexOf(language) < 0){
+ //    				thisQuery['languages'].push(language);
+ //    			}
+ //    			if(thisQuery['rankings'].indexOf(ranking) < 0){
+ //    				thisQuery['rankings'].push(ranking);
+ //    			}
+ //    			if(thisQuery['dates'].indexOf(date) < 0){
+ //    				thisQuery['dates'].push(date);
+ //    			}
 
-    			// Storing images and youtube videos
-    			if(sortedData[i][j]['service'] == 'images'){
-    				thisQuery['url'] = sortedData[i][j]['url'];
-    			}else if(sortedData[i][j]['service'] == 'youtube'){
-					thisQuery['videoId'] = sortedData[i][j]['videoId'];
-	    			thisQuery['thumbnail'] = sortedData[i][j]['thumbnail'];
-    			}
-    		}
-    		thisQuery['languages'] = _.sortBy(thisQuery['languages'], function(item, index, array){
-    			return item;
-    		});
-    		thisQuery['rankings'] = _.sortBy(thisQuery['rankings'], function(item, index, array){
-    			return item;
-    		});
-    		thisQuery['dates'] = _.sortBy(thisQuery['dates'], function(item, index, array){
-    			return item;
-    		});
-    		// console.log(thisQuery);
-    		// console.log(thisQuery['languages']);
-    		groupedQueries.push(thisQuery);
-    	}
-    	// console.log(groupedQueries);
+ //    			// Storing images and youtube videos
+ //    			if(sortedData[i][j]['service'] == 'images'){
+ //    				thisQuery['url'] = sortedData[i][j]['url'];
+ //    			}else if(sortedData[i][j]['service'] == 'youtube'){
+	// 				thisQuery['videoId'] = sortedData[i][j]['videoId'];
+	//     			thisQuery['thumbnail'] = sortedData[i][j]['thumbnail'];
+ //    			}
+ //    		}
+ //    		thisQuery['languages'] = _.sortBy(thisQuery['languages'], function(item, index, array){
+ //    			return item;
+ //    		});
+ //    		thisQuery['rankings'] = _.sortBy(thisQuery['rankings'], function(item, index, array){
+ //    			return item;
+ //    		});
+ //    		thisQuery['dates'] = _.sortBy(thisQuery['dates'], function(item, index, array){
+ //    			return item;
+ //    		});
+ //    		// console.log(thisQuery);
+ //    		// console.log(thisQuery['languages']);
+ //    		groupedQueries.push(thisQuery);
+ //    	}
+ //    	// console.log(groupedQueries);
 
-    	appendResults(groupedQueries, container);
-	}
+ //    	appendResults(groupedQueries, container);
+	// }
 
 	var appendResults = function(data, container){
 		
