@@ -196,10 +196,10 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 				itemSelector: '.item'
 			});
 			masonryIterator ++;
-			if(masonryIterator > 4){
+			if(masonryIterator > 5){
 				clearInterval(fallback);
 			}
-		}, 4000);
+		}, 5000);
 
 		// layout Masonry again after all images have loaded
 		$container.imagesLoaded( function() {
