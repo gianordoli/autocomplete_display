@@ -98,7 +98,18 @@ app.control = (function() {
 
 	// A function where we keep all user's interaction listener (buttons, etc)
 	function attachEvents(data) {
-		console.log('Called attachEvents.')
+		console.log('Called attachEvents.');
+
+		$('#about-bt').off().on('click', function(){
+			if($('#about-container').css('display') == 'none'){
+				$('#about-container').show();
+				$(this).html('<img src="img/close_bt.png">');
+			}else{
+				$('#about-container').hide();
+				$(this).html('About');
+			}
+		});
+
 		document.onkeydown = checkKey;
 
 		$('#right, #left').off().on('click', function(){
