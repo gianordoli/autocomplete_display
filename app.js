@@ -107,6 +107,8 @@ app.post('/letter', function(request, response) {
 
             results = getUrls(results);
 
+            results = processData(results);
+
             console.log('Sending back results.');
             // console.log(date2);
             console.log(results.length);
@@ -119,6 +121,91 @@ app.post('/letter', function(request, response) {
         });         
     });
 });
+
+var processData = function(data){
+
+    console.log('Called processData.');
+    data = refineDates(data);
+
+    var clusteredData = _.groupBy(data, function(item, index, list){
+        // console.log(item['query']);
+        return item['query'] + '#' + item['service'];
+    });
+    // console.log(clusteredData);
+    console.log('Clustering to ' + Object.keys(clusteredData).length + ' query#service objects.');        
+
+    var sortedData = _.sortBy(clusteredData, function(value, key, collection){
+        // console.log(key.substring(0, key.indexOf('#')));
+        return key.substring(0, key.indexOf('#'));
+    });
+    // console.log(sortedData);
+    // clusteredData = _.shuffle(clusteredData);
+    // clusteredData = _.sample(clusteredData, 50);
+
+    var groupedQueries = [];
+
+    for(var i in sortedData){
+        // console.log(sortedData[i]);
+        var thisQuery = {
+            query: sortedData[i][0]['query'],
+            service: sortedData[i][0]['service'],
+            languages: [],  // All languages
+            rankings: [],   // All ranking positions
+            dates: []       // All dates
+        }
+
+        for(var j in sortedData[i]){
+            // console.log(sortedData[i][j]);
+            var language = sortedData[i][j]['language_name'];
+            var ranking = sortedData[i][j]['ranking'];
+            var date = sortedData[i][j]['date'];
+            
+            if(thisQuery['languages'].indexOf(language) < 0){
+                thisQuery['languages'].push(language);
+            }
+            if(thisQuery['rankings'].indexOf(ranking) < 0){
+                thisQuery['rankings'].push(ranking);
+            }
+            if(thisQuery['dates'].indexOf(date) < 0){
+                thisQuery['dates'].push(date);
+            }
+
+            // Storing images and youtube videos
+            if(sortedData[i][j]['service'] == 'images'){
+                thisQuery['url'] = sortedData[i][j]['url'];
+            }else if(sortedData[i][j]['service'] == 'youtube'){
+                thisQuery['videoId'] = sortedData[i][j]['videoId'];
+                thisQuery['thumbnail'] = sortedData[i][j]['thumbnail'];
+            }
+        }
+        thisQuery['languages'] = _.sortBy(thisQuery['languages'], function(item, index, array){
+            return item;
+        });
+        thisQuery['rankings'] = _.sortBy(thisQuery['rankings'], function(item, index, array){
+            return item;
+        });
+        thisQuery['dates'] = _.sortBy(thisQuery['dates'], function(item, index, array){
+            return item;
+        });
+        // console.log(thisQuery);
+        // console.log(thisQuery['languages']);
+        groupedQueries.push(thisQuery);
+    }
+    // console.log(groupedQueries);
+
+    return groupedQueries;
+}
+
+var refineDates = function(data){
+    for(var i in data){
+        data[i]['date'] = new Date(data[i]['date']);
+        data[i]['date'].setMinutes(0);
+        data[i]['date'].setSeconds(0);
+        data[i]['date'].setMilliseconds(0);
+        data[i]['date'] = data[i]['date'].getTime();
+    }
+    return data;
+}
 
 app.post('/query', function(request, response) {
 
@@ -256,6 +343,26 @@ app.post('/shorten', function(request, response) {
     });    
 
 
+});
+
+
+/*------------------- AUTOCOMPLETE 5W -------------------*/
+app.post('/start', function(request, response) {
+
+    MongoClient.connect('mongodb://127.0.0.1:27017/5w_1h', function(err, db) {
+        console.log('Connecting to DB...');
+        if(err) throw err;
+        console.log('Connected.');
+        var collection = db.collection('records');
+
+        // Locate all the entries using find 
+        collection.find({}).toArray(function(err, results) {
+            console.dir(results);
+            db.close(); // Let's close the db 
+            response.json(results);
+        });     
+
+    });
 });
 
 /*----------------- INIT SERVER -----------------*/
