@@ -345,6 +345,26 @@ app.post('/shorten', function(request, response) {
 
 });
 
+
+/*------------------- AUTOCOMPLETE 5W -------------------*/
+app.post('/start', function(request, response) {
+
+    MongoClient.connect('mongodb://127.0.0.1:27017/5w_1h', function(err, db) {
+        console.log('Connecting to DB...');
+        if(err) throw err;
+        console.log('Connected.');
+        var collection = db.collection('records');
+
+        // Locate all the entries using find 
+        collection.find({}).toArray(function(err, results) {
+            console.dir(results);
+            db.close(); // Let's close the db 
+            response.json(results);
+        });     
+
+    });
+});
+
 /*----------------- INIT SERVER -----------------*/
 var PORT = 3000; //the port you want to use
 app.listen(PORT, function() {
