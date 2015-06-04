@@ -18,7 +18,8 @@ define(function (require) {
 									'<li class="images"><div></div>Google Images</li>' +
 									'<li class="youtube"><div></div>Youtube</li>' +
 									'<li><img src="/assets/img/stack.png" />Number of Languages</li>' +
-									'<li class="data">Data: Feb 21 - ' + monthNames[today.getMonth()] + ' ' + today.getDate() + '</li>' +
+									// '<li class="data">Data: Feb 21 - ' + monthNames[today.getMonth()] + ' ' + today.getDate() + '</li>' +
+									'<li class="data">Data: Feb 21 - May 30</li>' +
 								'</ul>');
 			var lettersUl = $('<ul id="letters"></ul>');
 			for(var i = 65; i <= 90; i++){
