@@ -20,15 +20,16 @@ require(['config'], function () {
 		// INDEX
 		if(filename == 'archive'){
 
-			// masonry
-			require(['masonry'], function(Masonry) {
-				console.log('Loaded Masonry.');
-			    // require jquery-bridget, it's included in masonry.pkgd.js
+			// Isotope
+			require(['isotope'], function(Isotope) {
+				
+				console.log('Loaded Isotope.');
+			    // require jquery-bridget to make Isotope work as a JQuery plugin
 			    require(['jquery-bridget/jquery.bridget'], function() {
+
 			    	console.log('Loaded jquery.bridget.');
-					// make Masonry a jQuery plugin
-					$.bridget( 'masonry', Masonry );
-					// now you can use $().masonry()
+					$.bridget( 'isotope', Isotope );
+
 					// Require imagesLoaded
 					require(['imagesloaded']);
 					console.log('Loaded imagesLoaded.');

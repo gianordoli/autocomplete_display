@@ -14,13 +14,15 @@ define(function (require) {
 			];
 
 			var servicesUl = $('<ul id="services">' +
-									'<li class="web"><div></div>Google.com</li>' +
-									'<li class="images"><div></div>Google Images</li>' +
-									'<li class="youtube"><div></div>Youtube</li>' +
-									'<li><img src="/assets/img/stack.png" />Number of Languages</li>' +
-									// '<li class="data">Data: Feb 21 - ' + monthNames[today.getMonth()] + ' ' + today.getDate() + '</li>' +
-									'<li class="data">Data: Feb 21 - May 30</li>' +
+									'<li class="web selected"><div></div>Google.com</li>' +
+									'<li class="images selected"><div></div>Google Images</li>' +
+									'<li class="youtube selected"><div></div>Youtube</li>' +
 								'</ul>');
+			
+			var infoUl = $('<ul id="info">' +			
+								'<li><img src="/assets/img/stack.png" />Number of Languages</li>' +
+								'<li class="data">Data: Feb 21 - May 30</li>' +
+							'</ul>');
 			var lettersUl = $('<ul id="letters"></ul>');
 			for(var i = 65; i <= 90; i++){
 				var letter = String.fromCharCode(i);
@@ -31,7 +33,7 @@ define(function (require) {
 			$('nav#header').append('<h1><a href="/index.html"><span>Autocomplete</span> Archive</a></h1>');
 			
 			// Services
-			if(isArchive){ $('nav#header').append(servicesUl); }
+			if(isArchive){ $('nav#header').append(servicesUl).append(infoUl); }
 
 			// Purple bar
 			var bar = $('<div id="bar"></div>')

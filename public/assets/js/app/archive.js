@@ -182,36 +182,41 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 	var drawLayout = function(parentDiv){
 		console.log('Called drawLayout.');
-		$container = $(parentDiv).masonry();
-		// $('.item').css('visibility', 'hidden');
 
-		var masonryIterator = 0;
+		// init Isotope
+		$grid = $(parentDiv).isotope();
+
+		var isotopeIterator = 0;
 
 		var fallback = setInterval(function(){
 			console.log('Images took too long to load.');
-			console.log('Calling Masonry anyway #' + (masonryIterator + 1));
-			$container.masonry({
-				// columnWidth: 50,
-				containerStyle: null,
-				itemSelector: '.item'
-			});
-			masonryIterator ++;
-			if(masonryIterator > 5){
+			console.log('Calling Isotope anyway #' + (isotopeIterator + 1));
+			
+			layoutIsotope($grid);
+
+			isotopeIterator ++;
+			if(isotopeIterator > 5){
 				clearInterval(fallback);
 			}
 		}, 5000);
 
 		// layout Masonry again after all images have loaded
-		$container.imagesLoaded( function() {
+		$grid.imagesLoaded( function() {
 			console.log('Finished loading images.');
-			console.log('Calling Masonry');
-			// clearTimeout(fallback);
+			console.log('Calling Isotope again');
+			
 			clearInterval(fallback);
-			$container.masonry({
-				// columnWidth: 50,
-				containerStyle: null,
-				itemSelector: '.item'
-			});
+			layoutIsotope($grid);
+		});
+	}
+
+	var layoutIsotope = function(obj){
+		obj.isotope({
+			itemSelector: '.item',
+			// percentPosition: true,
+			masonry: {
+				containerStyle: null
+			}
 		});
 	}
 
@@ -466,6 +471,40 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 	var attachEvents = function(){
 
+		// Filters
+		$('#services').children('li').off('click').on('click', function(e){
+
+			// Toggle selected
+			if($(e.target).hasClass('selected')){
+				$(e.target).removeClass('selected');
+			}else{
+				$(e.target).addClass('selected');
+			}
+
+			// Loop through all services to see which one should stay on
+			var selectedServices = [];
+			$(e.target).parent().children().each(function(index, item){
+				if($(item).attr('class').indexOf('selected') > -1){
+					selectedServices.push($(item).attr('class').replace(' selected', ''));
+				}
+			});
+			console.log(selectedServices);
+				
+			var selectedClass = e.target.className;
+			$grid.isotope({
+				// filter element with numbers greater than 50
+				filter: function() {
+				// _this_ is the item element
+				var child = $(this).children('.content');
+				var childService = $(child).attr('class').replace('content ', '');
+				// console.log(childService);
+
+				// return true to show, false to hide
+				return selectedServices.indexOf(childService) > -1;
+				}
+			});
+		});
+
 		// Lightbox
 		$('#lightbox-shadow').off('click').on('click', function() {
 			removeLightbox();
@@ -474,27 +513,6 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 		$('#close-bt').off('click').on('click', function() {
 			removeLightbox();
 		});
-
-		// var languageRollover;
-
-		// $('.language-bt').off('mouseenter').on('mouseenter', function() {
-		// 	clearTimeout(languageRollover);
-		// 	createTooltip($(this));
-		// })				
-		// .off('mouseleave').on('mouseleave', function() {
-	 //    	clearTimeout(languageRollover);
-	 //    	languageRollover = setTimeout(function(){
-	 //    		$('.language-tooltip').remove();
-	 //    	}, 1000);
-		// });
-
-		// $('.language-tooltip').off('mouseenter').on('mouseenter', function(){
-		// 	clearTimeout(languageRollover);
-		// })
-		// .off('mouseleave').on('mouseleave', function(){
-		// 	$('.language-tooltip').remove();
-		// });
-
 
 		// Play video
 		$('.content.youtube').children('.youtube').off('click').on('click', function(){
@@ -518,6 +536,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 	    });
 
 		// Show description
+		// ------------------------------------------------------
 		$('.item').off('mouseenter').on('mouseenter', function(){
 			$(this).css('z-index',  1000);
 
@@ -538,7 +557,10 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			$(this).children('.hover').remove();
 			$(this).children('.hover-icon').remove();
 		});
+		// ------------------------------------------------------
 
+		// Adjust stacks' sizes on window resize
+		// ------------------------------------------------------
 		var debounce;
 		$(window).resize(function() {
 		    clearTimeout(debounce);
@@ -548,7 +570,8 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 		function doneResizing(){
 			console.log('Done resizing.');
 			adjustStacks();
-		}		
+		}
+		// ------------------------------------------------------	
 	}
 
 	var adjustStacks = function(){
