@@ -471,17 +471,36 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 	var attachEvents = function(){
 
+		// Filters
 		$('#services').children('li').off('click').on('click', function(e){
-			console.log(e.target.className);
+
+			// Toggle selected
+			if($(e.target).hasClass('selected')){
+				$(e.target).removeClass('selected');
+			}else{
+				$(e.target).addClass('selected');
+			}
+
+			// Loop through all services to see which one should stay on
+			var selectedServices = [];
+			$(e.target).parent().children().each(function(index, item){
+				if($(item).attr('class').indexOf('selected') > -1){
+					selectedServices.push($(item).attr('class').replace(' selected', ''));
+				}
+			});
+			console.log(selectedServices);
+				
 			var selectedClass = e.target.className;
 			$grid.isotope({
 				// filter element with numbers greater than 50
 				filter: function() {
 				// _this_ is the item element
 				var child = $(this).children('.content');
+				var childService = $(child).attr('class').replace('content ', '');
+				// console.log(childService);
 
 				// return true to show, false to hide
-				return $(child).hasClass(selectedClass);
+				return selectedServices.indexOf(childService) > -1;
 				}
 			});
 		});
