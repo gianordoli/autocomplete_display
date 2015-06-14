@@ -182,36 +182,41 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 	var drawLayout = function(parentDiv){
 		console.log('Called drawLayout.');
-		$container = $(parentDiv).masonry();
-		// $('.item').css('visibility', 'hidden');
 
-		var masonryIterator = 0;
+		// init Isotope
+		$grid = $(parentDiv).isotope();
+
+		var isotopeIterator = 0;
 
 		var fallback = setInterval(function(){
 			console.log('Images took too long to load.');
-			console.log('Calling Masonry anyway #' + (masonryIterator + 1));
-			$container.masonry({
-				// columnWidth: 50,
-				containerStyle: null,
-				itemSelector: '.item'
-			});
-			masonryIterator ++;
-			if(masonryIterator > 5){
+			console.log('Calling Isotope anyway #' + (isotopeIterator + 1));
+			
+			layoutIsotope($grid);
+
+			isotopeIterator ++;
+			if(isotopeIterator > 5){
 				clearInterval(fallback);
 			}
 		}, 5000);
 
 		// layout Masonry again after all images have loaded
-		$container.imagesLoaded( function() {
+		$grid.imagesLoaded( function() {
 			console.log('Finished loading images.');
-			console.log('Calling Masonry');
-			// clearTimeout(fallback);
+			console.log('Calling Isotope again');
+			
 			clearInterval(fallback);
-			$container.masonry({
-				// columnWidth: 50,
-				containerStyle: null,
-				itemSelector: '.item'
-			});
+			layoutIsotope($grid);
+		});
+	}
+
+	var layoutIsotope = function(obj){
+		obj.isotope({
+			itemSelector: '.item',
+			// percentPosition: true,
+			masonry: {
+				containerStyle: null
+			}
 		});
 	}
 
