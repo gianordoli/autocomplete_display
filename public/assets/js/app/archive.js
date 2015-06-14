@@ -471,6 +471,21 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 
 	var attachEvents = function(){
 
+		$('#services').children('li').off('click').on('click', function(e){
+			console.log(e.target.className);
+			var selectedClass = e.target.className;
+			$grid.isotope({
+				// filter element with numbers greater than 50
+				filter: function() {
+				// _this_ is the item element
+				var child = $(this).children('.content');
+
+				// return true to show, false to hide
+				return $(child).hasClass(selectedClass);
+				}
+			});
+		});
+
 		// Lightbox
 		$('#lightbox-shadow').off('click').on('click', function() {
 			removeLightbox();
@@ -479,27 +494,6 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 		$('#close-bt').off('click').on('click', function() {
 			removeLightbox();
 		});
-
-		// var languageRollover;
-
-		// $('.language-bt').off('mouseenter').on('mouseenter', function() {
-		// 	clearTimeout(languageRollover);
-		// 	createTooltip($(this));
-		// })				
-		// .off('mouseleave').on('mouseleave', function() {
-	 //    	clearTimeout(languageRollover);
-	 //    	languageRollover = setTimeout(function(){
-	 //    		$('.language-tooltip').remove();
-	 //    	}, 1000);
-		// });
-
-		// $('.language-tooltip').off('mouseenter').on('mouseenter', function(){
-		// 	clearTimeout(languageRollover);
-		// })
-		// .off('mouseleave').on('mouseleave', function(){
-		// 	$('.language-tooltip').remove();
-		// });
-
 
 		// Play video
 		$('.content.youtube').children('.youtube').off('click').on('click', function(){
@@ -523,6 +517,7 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 	    });
 
 		// Show description
+		// ------------------------------------------------------
 		$('.item').off('mouseenter').on('mouseenter', function(){
 			$(this).css('z-index',  1000);
 
@@ -543,7 +538,10 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			$(this).children('.hover').remove();
 			$(this).children('.hover-icon').remove();
 		});
+		// ------------------------------------------------------
 
+		// Adjust stacks' sizes on window resize
+		// ------------------------------------------------------
 		var debounce;
 		$(window).resize(function() {
 		    clearTimeout(debounce);
@@ -553,7 +551,8 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 		function doneResizing(){
 			console.log('Done resizing.');
 			adjustStacks();
-		}		
+		}
+		// ------------------------------------------------------	
 	}
 
 	var adjustStacks = function(){

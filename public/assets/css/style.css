@@ -213,7 +213,7 @@ div#logo{
 			line-height: 36px;
 			margin: 10px 20px;
 			border: 0;
-			padding: 0;	
+			padding: 0;
 		}
 
 			nav#header ul#services li{
@@ -223,6 +223,7 @@ div#logo{
 				font-size: 15px;
 				vertical-align: middle;
 				margin-right: 20px;
+				cursor: pointer;
 			}
 
 			nav#header ul#services li.web		{	color: hsl(216, 86%, 55%);	}
