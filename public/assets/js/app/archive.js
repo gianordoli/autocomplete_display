@@ -401,29 +401,6 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 						    .scale(yScale)
 						    .orient("left");
 
-        // Now appending the axes
-        chart.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .attr("class", "x axis")
-            .call(xAxis);
-
-        chart.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-            .append("text") // Label
-            .attr("transform", "rotate(-90)")
-            .attr("y", -55)
-            .attr("x", 34)
-            .attr("class", "label")
-            .style("text-anchor", "end")
-            // .text("Position on Autocomplete");
-            .text("Most Searched For Order");
-
-		// d3.selectAll("g.y.axis g.tick line")
-		//     .attr("x2", function(d){
-		//            return width;
-		//     });
-
 	  	// Lines
 		var language = chart.selectAll(".line")
 				      		.data(dataset)
@@ -452,6 +429,60 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 							.attr("d", function(d, i) {
 								return line(d);
 							});
+
+
+
+		if(dataset.length == 1){
+			if(dataset[0].length == 1){
+			  	// Dots
+			  	var languageDots = chart.selectAll("g")
+						      		.data(dataset)
+								    .enter()
+									.append("g")
+									.attr('name', function(d, i){
+										return i;
+									});
+
+				languageDots.selectAll("circle")
+				      		.data(function(d) { return d; })
+						    .enter()
+							.append("circle")
+							.attr('fill', function(d, i){
+								var j = d3.select(this.parentNode).attr('name');
+								return languagesPalette[j]['color'];
+							})
+							.attr('r', 10)
+		                    .attr("cx", function(d, i){
+		                        return xScale(d['date']);
+		                    })
+		                    .attr("cy", function(d, i){
+		                        return yScale(10);
+		                    })                   
+							.transition()
+							.duration(1000)
+		                    .attr("cy", function(d, i){
+		                        return yScale(d['ranking'] + 1);
+		                    });
+			}
+		}
+
+        // Now appending the axes
+        chart.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .attr("class", "x axis")
+            .call(xAxis);
+
+        chart.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text") // Label
+            .attr("transform", "rotate(-90)")
+            .attr("y", -55)
+            .attr("x", 34)
+            .attr("class", "label")
+            .style("text-anchor", "end")
+            // .text("Position on Autocomplete");
+            .text("Most Searched For Order");
 
 		var languagesList = $('<ul></ul>');
 		for(var i in languagesPalette){

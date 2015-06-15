@@ -901,8 +901,7 @@ div#lightbox.web{
 	div#lightbox svg{
 		display: block;
 		margin: 0;
-		/*float: left;*/
-	}
+	}	
 
 	div#lightbox ul{
 		padding: 0;
@@ -936,6 +935,7 @@ div#lightbox.web{
 	path.line{
 		fill: none;
 		stroke-width: 8px;
+		stroke-linecap: round;		
 	}
 
 	/*----- Axis -----*/
