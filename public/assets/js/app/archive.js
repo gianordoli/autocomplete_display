@@ -560,7 +560,8 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 	    	console.log('Current hash: ' + currentHash);
 	    	if(newHash != currentHash){
 	    		loadData(newHash);
-	    		currentHash = newHash;	
+	    		currentHash = newHash;
+	    		resetFilters();
 	    	}else if(common.getParameterByName('lightbox') != null){
 	    		createLightbox();
 	    	}	        
@@ -603,6 +604,15 @@ define(['./common', 'd3', 'twitter-widgets'], function (common) {
 			adjustStacks();
 		}
 		// ------------------------------------------------------	
+	}
+
+	var resetFilters = function(){
+		$('#services').children('li').each(function(index, item){
+			// console.log(item);
+			if(!$(item).hasClass('selected')){
+				$(item).addClass('selected')
+			}
+		});
 	}
 
 	var adjustStacks = function(){
