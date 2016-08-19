@@ -21,7 +21,7 @@ define(function (require) {
 			
 			var infoUl = $('<ul id="info">' +			
 								'<li><img src="/assets/img/stack.png" />Number of Languages</li>' +
-								'<li class="data">Data: Feb 21 - May 30</li>' +
+								'<li class="data">Data: Feb-Aug, 2015</li>' +
 							'</ul>');
 			var lettersUl = $('<ul id="letters"></ul>');
 			for(var i = 65; i <= 90; i++){

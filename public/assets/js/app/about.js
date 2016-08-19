@@ -41,9 +41,13 @@ define(['./common'], function (common) {
 					return item['query'];
 				});
 			}
-			groupedbyService[key] = _.toArray(groupedbyService[key]);			
+			groupedbyService[key] = _.toArray(groupedbyService[key]);
+			// Now sorting by initials to fix a weird bug...
+			groupedbyService[key] = _.sortBy(groupedbyService[key], function(obj){ return obj[0][0]; });
 		}
-
+		console.log(groupedbyService);
+		// var sortedByLetter = _.sortBy(groupedbyService, function(obj){ return obj['date']; });			
+		// appendResults(sortedByLetter);
 		appendResults(groupedbyService);
 	}
 

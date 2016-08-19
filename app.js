@@ -307,8 +307,10 @@ var getUrls = function(data){
 
 app.post('/about', function(request, response) {
 
-    var date1 = new Date(1424476800000);
-    var date2 = new Date(1424476800000 + 86400000);
+    // var date1 = new Date(1424476800000);
+    var date1 = new Date(1433116800000);
+    // var date2 = new Date(1424476800000 + 86400000);
+    var date2 = new Date(date1 + 86400000);
 
     MongoClient.connect('mongodb://127.0.0.1:27017/thesis', function(err, db) {
         
@@ -321,10 +323,10 @@ app.post('/about', function(request, response) {
         var recordsCollection = db.collection('records');
 
         recordsCollection.find({
-            'date': { '$gt': date1, '$lte': date2 },
+            'date': { '$gte': date1, '$lte': date2 },
             'language_code': 'en'
 
-        }).toArray(function(err, results) {
+        }).sort({'date': 1}).toArray(function(err, results) {
             // console.dir(results);
             console.log('Found ' + results.length + ' results.');
 
