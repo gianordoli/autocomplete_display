@@ -250,8 +250,13 @@ var getUrls = function(data){
 
     console.log('Calling getUrls.');
 
+    var i = 0;
+
     // Getting youtube and images url from the other DBs
-    for(var i = 0; i < data.length; i++){
+    // for(var i = 0; i < data.length; i++){
+
+    // We need a while loop because we might change the array length on the fly
+    while(i < data.length){
         
         // console.log(data[i]['service']);
 
@@ -263,7 +268,14 @@ var getUrls = function(data){
             });
             // console.log(data[i]['query']);
             // console.log(record);
-            data[i]['url'] = record['url'];
+
+            // If the record doesn't exist, let's remove this item from the data
+            if(record === undefined){
+                data.splice(i, 1);
+            }else{            
+                data[i]['url'] = record['url'];
+                // console.log(data['url']);
+            }
 
         }else if(data[i]['service'] == 'youtube'){
             // console.log(data[i]['query']);
@@ -274,10 +286,18 @@ var getUrls = function(data){
             });
             // console.log(data[i]['query']);
             // console.log(record);
-            data[i]['videoId'] = record['videoId'];
-            data[i]['thumbnail'] = record['thumbnail'];
-            // console.log(results[i]);
+
+            // If the record doesn't exist, let's remove this item from the data
+            if(record === undefined){
+                data.splice(i, 1);
+            }else{
+                data[i]['videoId'] = record['videoId'];
+                data[i]['thumbnail'] = record['thumbnail'];
+                // console.log(results[i]);
+            }
         }
+
+        i++;
     }
 
     console.log('Grabbed image and youtube urls.');
