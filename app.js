@@ -366,7 +366,7 @@ app.post('/start', function(request, response) {
 });
 
 /*----------------- INIT SERVER -----------------*/
-var PORT = 3000; //the port you want to use
+var PORT = 3300; //the port you want to use
 app.listen(PORT, function() {
     console.log('Server running at port ' + PORT + '. Ctrl+C to terminate.');
 });
